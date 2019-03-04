@@ -20,7 +20,10 @@
                              PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="domain:PanelItem">
-                            <TextBlock Text="{Binding Name}" Margin="32 0 32 0" />
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="{Binding Icon}" Margin="27 0 0 0"/>
+                                <TextBlock Text="{Binding Name}" Margin="5 0 32 0" />
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
