@@ -18,13 +18,13 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="1" Margin="24 0 0 0" VerticalAlignment="Center">
-                <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}" TextWrapping="Wrap">Welcome to Material Design In XAML Toolkit</TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}" TextWrapping="Wrap">Tospaa Otomasyon Yazılımına Hoşgeldiniz</TextBlock>
                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                         Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
                         CommandParameter="{x:Static Dock.Left}">
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Binoculars" />
-                        <TextBlock Margin="8 0 0 0">EXPLORE</TextBlock>
+                        <TextBlock Margin="8 0 0 0">KEŞFEDİN</TextBlock>
                     </StackPanel>
                 </Button>
             </StackPanel>

@@ -41,7 +41,7 @@
                             <Button Content="Goodbye"/>
                         </StackPanel>
                     </materialDesign:PopupBox>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22">Material Design In XAML Toolkit</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22">Tospaa Otomasyon</TextBlock>
                 </DockPanel>
             </materialDesign:ColorZone>
             <Grid>

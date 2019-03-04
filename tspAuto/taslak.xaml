@@ -6,83 +6,19 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:local="clr-namespace:tspAuto"
       mc:Ignorable="d">
-    <ScrollViewer>
-        <StackPanel>
-            <Grid>
-                <materialDesign:ColorZone
-                        Mode="PrimaryMid"
-                        Padding="16">
-                    <DockPanel>
-                        <materialDesign:PopupBox
-                                DockPanel.Dock="Right"
-                                StaysOpen="True">
-                            <Grid
-                                Width="300"
-                                Margin="8,8,8,8">
-                                <Grid.Resources>
-                                    <Style
-                                        TargetType="CheckBox"
-                                        BasedOn="{StaticResource MaterialDesignCheckBox}">
-                                        <Setter
-                                            Property="Margin"
-                                            Value="8,8,10,8" />
-                                    </Style>
-                                    <Style
-                                        TargetType="TextBox"
-                                        BasedOn="{StaticResource MaterialDesignTextBox}">
-                                        <Setter
-                                            Property="materialDesign:HintAssist.IsFloating"
-                                            Value="True" />
-                                        <Setter
-                                            Property="Margin"
-                                            Value="8,8,8,8" />
-                                    </Style>
-                                </Grid.Resources>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <TextBlock
-                                    Grid.Column="0"
-                                    Grid.Row="0"
-                                    Style="{StaticResource MaterialDesignTitleTextBlock}"
-                                    Margin="8,8,8,16">
-                                    SEÇENEKLER
-                                </TextBlock>
-                                <TextBlock
-                                    Grid.Column="0"
-                                    Grid.Row="1"
-                                    materialDesign:HintAssist.Hint="Setting 1"
-                                    Margin="12,8,8,8"
-                                    Text="Bring Window to Top" />
-                                <CheckBox
-                                    x:Name="BringTop"
-                                    Grid.Column="1"
-                                    Grid.Row="1"
-                                    VerticalAlignment="Bottom" />
-                            </Grid>
-                        </materialDesign:PopupBox>
-                        <StackPanel
-                                Orientation="Horizontal">
-                            <ToggleButton
-                                    x:Name="MenuToggleButton"
-                                    Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
-                            <TextBlock
-                                    HorizontalAlignment="Center"
-                                    FontSize="22">
-                                    Otomasyoncu Tospaa Usta - taslak
-                            </TextBlock>
-                        </StackPanel>
-                    </DockPanel>
-                </materialDesign:ColorZone>
-            </Grid>
-        </StackPanel>
-    </ScrollViewer>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1" Margin="24 0 0 0" VerticalAlignment="Center">
+                <TextBlock Style="{StaticResource MaterialDesignDisplay1TextBlock}" TextWrapping="Wrap">Bu bir taslaktır.</TextBlock>
+            </StackPanel>
+        </Grid>
+    </Grid>
 </UserControl>
