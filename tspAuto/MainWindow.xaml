@@ -26,89 +26,36 @@
                 </ListBox>
             </DockPanel>
         </materialDesign:DrawerHost.LeftDrawerContent>
-        <Grid>
-            <materialDesign:ColorZone
-                Mode="PrimaryMid"
-                Padding="16"
-                Grid.Row="1"
-                Grid.Column="1">
+        <DockPanel>
+            <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                            Mode="PrimaryMid" DockPanel.Dock="Top">
                 <DockPanel>
-                    <materialDesign:PopupBox
-                        DockPanel.Dock="Right"
-                        StaysOpen="True">
-                        <Grid
-                        Width="300"
-                        Margin="8,8,8,8">
-                            <Grid.Resources>
-                                <Style
-                                    TargetType="CheckBox"
-                                    BasedOn="{StaticResource MaterialDesignCheckBox}">
-                                    <Setter
-                                        Property="Margin"
-                                        Value="8,8,10,8" />
-                                </Style>
-                                <Style
-                                    TargetType="TextBox"
-                                    BasedOn="{StaticResource MaterialDesignTextBox}">
-                                    <Setter
-                                        Property="materialDesign:HintAssist.IsFloating"
-                                        Value="True" />
-                                    <Setter
-                                        Property="Margin"
-                                        Value="8,8,8,8" />
-                                </Style>
-                            </Grid.Resources>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <TextBlock
-                                Grid.Column="0"
-                                Grid.Row="0"
-                                Style="{StaticResource MaterialDesignTitleTextBlock}"
-                                Margin="8,8,8,16">
-                            SEÇENEKLER
-                            </TextBlock>
-                            <TextBlock
-                                Grid.Column="0"
-                                Grid.Row="1"
-                                materialDesign:HintAssist.Hint="Setting 1"
-                                Margin="12,8,8,8"
-                                Text="Bring Window to Top" />
-                            <CheckBox
-                                x:Name="BringTop"
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                VerticalAlignment="Bottom" />
-                        </Grid>
+                    <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
+                                        x:Name="MenuToggleButton"/>
+                    <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
+                        <StackPanel>
+                            <Button Content="Hello World"/>
+                            <Button Content="Nice Popup"/>
+                            <Button Content="Can't Touch This" IsEnabled="False" />
+                            <Separator/>
+                            <Button Content="Goodbye"/>
+                        </StackPanel>
                     </materialDesign:PopupBox>
-                    <StackPanel
-                        Orientation="Horizontal"
-                        DockPanel.Dock="Top">
-                        <ToggleButton
-                            x:Name="MenuToggleButton"
-                            Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="22">
-                            Otomasyoncu Tospaa Usta
-                        </TextBlock>
-                    </StackPanel>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22">Material Design In XAML Toolkit</TextBlock>
                 </DockPanel>
             </materialDesign:ColorZone>
-            <ScrollViewer Grid.Row="2" Grid.Column="2"
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ScrollViewer Grid.Row="1"
                                   HorizontalScrollBarVisibility="{Binding ElementName=SolPanelListBox, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
                                   VerticalScrollBarVisibility="{Binding ElementName=SolPanelListBox, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}" 
                                   Padding="{Binding ElementName=SolPanelListBox, Path=SelectedItem.MarginRequirement}">
-                <ContentControl Content="{Binding ElementName=SolPanelListBox, Path=SelectedItem.Content}" />
-            </ScrollViewer>
-        </Grid>
+                    <ContentControl Content="{Binding ElementName=SolPanelListBox, Path=SelectedItem.Content}" />
+                </ScrollViewer>
+            </Grid>
+        </DockPanel>
     </materialDesign:DrawerHost>
 </Window>
