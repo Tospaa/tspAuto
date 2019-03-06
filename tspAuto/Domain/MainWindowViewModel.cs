@@ -13,7 +13,7 @@ namespace tspAuto.Domain
             PanelItems = new[]
                 {
                     new PanelItem("Ana Sayfa", new Home(), "HomeVariant"),
-                    new PanelItem("Taslak", new taslak(), "Worker"),
+                    new PanelItem("Yeni Müvekkil Ekle", new YeniMuvekkilEkle(), "Add"),
                     new PanelItem("Yeni İş Ekle", new YeniIsEkle(), "Add")
                 };
         }

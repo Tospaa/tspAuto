@@ -74,6 +74,9 @@
     <Compile Include="YeniIsEkle.xaml.cs">
       <DependentUpon>YeniIsEkle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="YeniMuvekkilEkle.xaml.cs">
+      <DependentUpon>YeniMuvekkilEkle.xaml</DependentUpon>
+    </Compile>
     <Page Include="Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -95,6 +98,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="YeniIsEkle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="YeniMuvekkilEkle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

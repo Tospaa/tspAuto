@@ -7,22 +7,29 @@
         xmlns:domain="clr-namespace:tspAuto.Domain"
         xmlns:local="clr-namespace:tspAuto"
         mc:Ignorable="d"
-        Title="Acayip bi' Otomasyon" Height="450" Width="800">
+        Title="Acayip bi' Otomasyon" Height="450" Width="800"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{StaticResource MaterialDesignFont}">
     <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
         <materialDesign:DrawerHost.LeftDrawerContent>
             <DockPanel MinWidth="212">
-                <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
-                    DockPanel.Dock="Top"
-                    HorizontalAlignment="Right" Margin="16"
-                    IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-                <ListBox x:Name="SolPanelListBox" Margin="0 16 0 16" SelectedIndex="0"                         
-                             ItemsSource="{Binding PanelItems}"
-                             PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
+                <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                              DockPanel.Dock="Top"
+                              HorizontalAlignment="Right" Margin="16"
+                              IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                <!--TODO: Buradaki ListBox'ı TreeView'a çevir ki böyle açmalı maçmalı şeyler dönsün.-->
+                <ListBox x:Name="SolPanelListBox" Margin="0 16 0 16" SelectedIndex="0"
+                         ItemsSource="{Binding PanelItems}"
+                         PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="domain:PanelItem">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="{Binding Icon}" Margin="27 0 0 0"/>
-                                <TextBlock Text="{Binding Name}" Margin="5 0 32 0" />
+                                <TextBlock Text="{Binding Name}" FontSize="16" Margin="5 0 32 0" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -31,10 +38,10 @@
         </materialDesign:DrawerHost.LeftDrawerContent>
         <DockPanel>
             <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                            Mode="PrimaryMid" DockPanel.Dock="Top">
+                                      Mode="PrimaryMid" DockPanel.Dock="Top">
                 <DockPanel>
                     <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
-                                        x:Name="MenuToggleButton"/>
+                                  x:Name="MenuToggleButton"/>
                     <materialDesign:PopupBox DockPanel.Dock="Right" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
                         <StackPanel>
                             <Button Content="Hello World"/>
@@ -53,9 +60,9 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <ScrollViewer Grid.Row="1"
-                                  HorizontalScrollBarVisibility="{Binding ElementName=SolPanelListBox, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
-                                  VerticalScrollBarVisibility="{Binding ElementName=SolPanelListBox, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}" 
-                                  Padding="{Binding ElementName=SolPanelListBox, Path=SelectedItem.MarginRequirement}">
+                              HorizontalScrollBarVisibility="{Binding ElementName=SolPanelListBox, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
+                              VerticalScrollBarVisibility="{Binding ElementName=SolPanelListBox, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}"
+                              Padding="{Binding ElementName=SolPanelListBox, Path=SelectedItem.MarginRequirement}">
                     <ContentControl Content="{Binding ElementName=SolPanelListBox, Path=SelectedItem.Content}" />
                 </ScrollViewer>
             </Grid>
