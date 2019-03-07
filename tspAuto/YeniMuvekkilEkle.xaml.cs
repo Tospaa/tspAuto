@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Data.SQLite;
 using System.IO;
 
@@ -26,53 +15,94 @@ namespace tspAuto
         {
             InitializeComponent();
 
-            TarihSec.Language = System.Windows.Markup.XmlLanguage.GetLanguage("tr-TR");
+            VekTarihi.Language = System.Windows.Markup.XmlLanguage.GetLanguage("tr-TR");
         }
-
-        SQLiteConnection con;
-        SQLiteDataAdapter da;
-        SQLiteCommand cmd;
-        //string Properties. = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\{Properties.Resources.Title}\\{Properties.Resources.DatabaseFilePath}";
 
         private void Muvekkil_Kaydet_Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (!File.Exists(Properties.Settings.Default.DatabaseFilePath))
+                if (Properties.Settings.Default.DatabaseFilePath != "" && File.Exists(Properties.Settings.Default.DatabaseFilePath))
                 {
-                    SQLiteConnection.CreateFile(Properties.Settings.Default.DatabaseFilePath);
-
-                    string sql = @"CREATE TABLE Student(
-                            ID INTEGER PRIMARY KEY AUTOINCREMENT ,
-                            FirstName           TEXT      NOT NULL,
-                            LastName            TEXT       NOT NULL
+                    string sql = @"CREATE TABLE IF NOT EXISTS Muvekkil(
+                            ID   INTEGER PRIMARY KEY AUTOINCREMENT,
+                            MuvekkilTuru        TEXT      NOT NULL,
+                            NoterIsmi           TEXT      NOT NULL,
+                            VekaletTarihi       TEXT      NOT NULL,
+                            VekYevmiyeNo        TEXT      NOT NULL,
+                            AhzuKabza           BOOLEAN   NOT NULL,
+                            Feragat             BOOLEAN   NOT NULL,
+                            Ibra                BOOLEAN   NOT NULL,
+                            Sulh                BOOLEAN   NOT NULL,
+                            Banka               TEXT      NOT NULL,
+                            Sube                TEXT      NOT NULL,
+                            IBANno              TEXT      NOT NULL
                             );";
-                    con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};");
+
+                    string sql2 = $@"INSERT INTO Muvekkil(
+                            MuvekkilTuru,NoterIsmi,VekaletTarihi,VekYevmiyeNo,AhzuKabza,Feragat,Ibra,Sulh,Banka,Sube,IBANno) VALUES(
+                            '{MuvekkilTuru.Text}','{NoterIsmi.Text}','{String.Format("{0:dd.MM.yyyy}", VekTarihi.SelectedDate)}','{VekYevNo.Text}',
+                            {AhzuKabza.SelectedIndex},{Feragat.SelectedIndex},{Ibra.SelectedIndex},{Sulh.SelectedIndex},
+                            '{Banka.Text}','{Sube.Text}','{IBANno.Text}');";
+                    
+                    bool basarili = false;
+
                     try
                     {
-                        con.Open();
-                        cmd = new SQLiteCommand(sql, con);
-                        cmd.ExecuteNonQuery();
+                        using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
+                        {
+                            con.Open();
+                            new SQLiteCommand(sql + sql2, con).ExecuteNonQuery();
+
+                            basarili = true;
+                        }
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Veritabanı oluşturulamadı.");
+                        MessageBox.Show("Veritabanı işlemi sırasında bir hata oluştu.\n\n" + ex.Message);
                     }
                     finally
                     {
-                        con.Close();
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        if (basarili)
+                        {
+                            MessageBox.Show("Veritabanı girdisi başarılı.");
+                            MuvekkilTuru.Text = "";
+                            NoterIsmi.Text = "";
+                            VekTarihi.SelectedDate = null;
+                            VekYevNo.Text = "";
+                            AhzuKabza.SelectedIndex = 1;
+                            Feragat.SelectedIndex = 1;
+                            Ibra.SelectedIndex = 1;
+                            Sulh.SelectedIndex = 1;
+                            Banka.Text = "";
+                            Sube.Text = "";
+                            IBANno.Text = "";
+                        }
                     }
                 }
+                else if (Properties.Settings.Default.DatabaseFilePath == "")
+                {
+                    MessageBox.Show("Veritabanı seçilmemiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                }
+                else if (!File.Exists(Properties.Settings.Default.DatabaseFilePath))
+                {
+                    MessageBox.Show("Veritabanı silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                }
             }
-            catch (System.IO.DirectoryNotFoundException)
+            catch (DirectoryNotFoundException)
             {
-                MessageBox.Show("Bazı dosyalar silinmiş.");
+                MessageBox.Show("Bazı dosyalar silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
             }
         }
 
         private void Sirket_Kaydet_Button_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(Properties.Settings.Default.DatabaseFilePath);
+            if (VekTarihi.SelectedDate != null)
+            {
+                MessageBox.Show(String.Format("{0:dd.MM.yyyy}", VekTarihi.SelectedDate));
+            }
         }
     }
 }

@@ -32,5 +32,20 @@ namespace tspAuto
 
             MenuToggleButton.IsChecked = false;
         }
+
+        private void AramaKomutu(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.SonArama = AramaTextbox.Text;
+            Properties.Settings.Default.Save();
+            SolPanelListBox.SelectedIndex = 1;
+        }
+
+        private void AramaTextbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                AramaKomutu(new object(), new RoutedEventArgs());
+            }
+        }
     }
 }

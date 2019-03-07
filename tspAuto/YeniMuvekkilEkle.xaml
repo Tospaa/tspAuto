@@ -67,6 +67,7 @@
                         <TextBlock Grid.Column="0" Grid.Row="13">IBAN No</TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="14"></TextBlock>
                         <ComboBox Grid.Column="2" Grid.Row="0"
+                                  Name="MuvekkilTuru"
                                   materialDesign:HintAssist.Hint="Müvekkil Türü">
                             <ComboBoxItem>
                                 Şirket
@@ -85,49 +86,58 @@
                             </ComboBoxItem>
                         </ComboBox>
                         <TextBox Grid.Column="2" Grid.Row="2"
+                                 Name="NoterIsmi"
                                  materialDesign:HintAssist.Hint="Noter İsmi" />
                         <DatePicker Grid.Column="2" Grid.Row="3"
-                                    Name="TarihSec" FontSize="18" Margin="0 0 0 8"
+                                    Name="VekTarihi" FontSize="18" Margin="0 0 0 8"
                                     materialDesign:HintAssist.Hint="Tarih Seç" />
                         <TextBox Grid.Column="2" Grid.Row="4"
+                                 Name="VekYevNo"
                                  materialDesign:HintAssist.Hint="Vekalet Yevmiye Numarası" />
-                        <ComboBox Grid.Column="2" Grid.Row="6">
-                            <ComboBoxItem IsSelected="True">
-                                Evet
-                            </ComboBoxItem>
+                        <ComboBox Grid.Column="2" Grid.Row="6"
+                                  Name="AhzuKabza">
                             <ComboBoxItem>
                                 Hayır
+                            </ComboBoxItem>
+                            <ComboBoxItem IsSelected="True">
+                                Evet
                             </ComboBoxItem>
                         </ComboBox>
-                        <ComboBox Grid.Column="2" Grid.Row="7">
-                            <ComboBoxItem IsSelected="True">
-                                Evet
-                            </ComboBoxItem>
+                        <ComboBox Grid.Column="2" Grid.Row="7"
+                                  Name="Feragat">
                             <ComboBoxItem>
                                 Hayır
+                            </ComboBoxItem>
+                            <ComboBoxItem IsSelected="True">
+                                Evet
                             </ComboBoxItem>
                         </ComboBox>
-                        <ComboBox Grid.Column="2" Grid.Row="8">
-                            <ComboBoxItem IsSelected="True">
-                                Evet
-                            </ComboBoxItem>
+                        <ComboBox Grid.Column="2" Grid.Row="8"
+                                  Name="Ibra">
                             <ComboBoxItem>
                                 Hayır
+                            </ComboBoxItem>
+                            <ComboBoxItem IsSelected="True">
+                                Evet
                             </ComboBoxItem>
                         </ComboBox>
-                        <ComboBox Grid.Column="2" Grid.Row="9">
-                            <ComboBoxItem IsSelected="True">
-                                Evet
-                            </ComboBoxItem>
+                        <ComboBox Grid.Column="2" Grid.Row="9"
+                                  Name="Sulh">
                             <ComboBoxItem>
                                 Hayır
+                            </ComboBoxItem>
+                            <ComboBoxItem IsSelected="True">
+                                Evet
                             </ComboBoxItem>
                         </ComboBox>
                         <TextBox Grid.Column="2" Grid.Row="11"
+                                 Name="Banka"
                                  materialDesign:HintAssist.Hint="Banka İsmi" />
                         <TextBox Grid.Column="2" Grid.Row="12"
+                                 Name="Sube"
                                  materialDesign:HintAssist.Hint="Banka Şubesi" />
                         <TextBox Grid.Column="2" Grid.Row="13"
+                                 Name="IBANno"
                                  materialDesign:HintAssist.Hint="Hesap IBAN No" />
                         <Button Grid.Column="2" Grid.Row="14" HorizontalAlignment="Right"
                                 Style="{StaticResource MaterialDesignRaisedAccentButton}"

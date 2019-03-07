@@ -34,5 +34,17 @@ namespace tspAuto.Properties {
                 this["DatabaseFilePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SonArama {
+            get {
+                return ((string)(this["SonArama"]));
+            }
+            set {
+                this["SonArama"] = value;
+            }
+        }
     }
 }
