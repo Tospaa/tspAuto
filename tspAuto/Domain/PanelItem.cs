@@ -11,16 +11,14 @@ namespace tspAuto.Domain
         private string _name;
         private object _content;
         private string _icon;
-        private string _visibility;
         private ScrollBarVisibility _horizontalScrollBarVisibilityRequirement;
         private ScrollBarVisibility _verticalScrollBarVisibilityRequirement;
         private Thickness _marginRequirement = new Thickness(16);
 
-        public PanelItem(string name, object content, string icon, string visibility = "Visible")
+        public PanelItem(string name, object content, string icon)
         {
             _name = name;
             _icon = icon;
-            _visibility = visibility;
             Content = content;
         }
 
@@ -40,12 +38,6 @@ namespace tspAuto.Domain
         {
             get { return _icon; }
             set { this.MutateVerbose(ref _icon, value, RaisePropertyChanged()); }
-        }
-
-        public string Visibility
-        {
-            get { return _visibility; }
-            set { this.MutateVerbose(ref _visibility, value, RaisePropertyChanged()); }
         }
 
         public ScrollBarVisibility HorizontalScrollBarVisibilityRequirement

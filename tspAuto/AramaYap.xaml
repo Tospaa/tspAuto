@@ -9,9 +9,26 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <StackPanel Orientation="Vertical">
-        <TextBox Name="AramaKutusu" FontSize="25"
-                 Text="{Binding Source={x:Static p:Settings.Default},Path=SonArama, Mode=TwoWay}"
-                 TextChanged="AramaKutusu_TextChanged"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <materialDesign:PackIcon
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Kind="Magnify"
+                Opacity=".56"/>
+            <TextBox
+                Name="AramaKutusu"
+                FontSize="25"
+                Grid.Column="1"
+                Margin="8 0 0 0"
+                materialDesign:HintAssist.Hint="Arama yap"
+                materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                Text="{Binding Source={x:Static p:Settings.Default},Path=SonArama, Mode=TwoWay}"
+                TextChanged="AramaKutusu_TextChanged"/>
+        </Grid>
         <DataGrid Name="MuvekkilSonuc" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 
                   AlternatingRowBackground="Gainsboro" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True">
             <DataGrid.Columns>
@@ -19,10 +36,10 @@
                 <DataGridTextColumn Header="Noter İsmi" Binding="{Binding NoterIsmi}"/>
                 <DataGridTextColumn Header="Vekalet Tarihi" Binding="{Binding VekaletTarihi}"/>
                 <DataGridTextColumn Header="Vek. Yevmiye No" Binding="{Binding VekYevmiyeNo}"/>
-                <DataGridTextColumn Header="Ahzu Kabza" AutomationProperties.ItemType="Boolean" Binding="{Binding AhzuKabza}"/>
-                <DataGridTextColumn Header="Feragat" Binding="{Binding Feragat}"/>
-                <DataGridTextColumn Header="İbra" Binding="{Binding Ibra}"/>
-                <DataGridTextColumn Header="Sulh" Binding="{Binding Sulh}"/>
+                <DataGridCheckBoxColumn Header="Ahzu Kabza" AutomationProperties.ItemType="Boolean" Binding="{Binding AhzuKabza}"/>
+                <DataGridCheckBoxColumn Header="Feragat" Binding="{Binding Feragat}"/>
+                <DataGridCheckBoxColumn Header="İbra" Binding="{Binding Ibra}"/>
+                <DataGridCheckBoxColumn Header="Sulh" Binding="{Binding Sulh}"/>
                 <DataGridTextColumn Header="Banka" Binding="{Binding Banka}"/>
                 <DataGridTextColumn Header="Şube" Binding="{Binding Sube}"/>
                 <DataGridTextColumn Header="IBAN No" Binding="{Binding IBANno}"/>

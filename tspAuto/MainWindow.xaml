@@ -8,6 +8,7 @@
         xmlns:local="clr-namespace:tspAuto"
         mc:Ignorable="d"
         Title="Acayip bi' Otomasyon" Height="450" Width="800"
+        Closing="Window_Closing"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextOptions.TextFormattingMode="Ideal" 
@@ -28,7 +29,7 @@
                              PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="domain:PanelItem">
-                                <StackPanel Orientation="Horizontal" Visibility="{Binding Visibility}">
+                                <StackPanel Orientation="Horizontal">
                                     <materialDesign:PackIcon Kind="{Binding Icon}" Margin="27 0 0 0"/>
                                     <TextBlock Text="{Binding Name}" FontSize="16" Margin="5 0 32 0" />
                                 </StackPanel>
@@ -59,16 +60,15 @@
                                     <ColumnDefinition
                                         Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button
-                                    Style="{DynamicResource MaterialDesignToolButton}">
-                                    <materialDesign:PackIcon
-                                        Kind="Magnify"
-                                        Opacity=".56" />
-                                </Button>
+                                <materialDesign:PackIcon
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Kind="Magnify"
+                                    Opacity=".56" />
                                 <TextBox
                                     Grid.Column="1"
                                     Margin="8 0 0 0"
-                                    Name="AramaTextbox"
+                                    x:Name="AramaTextbox"
                                     materialDesign:HintAssist.Hint="Arama yap"
                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                     BorderThickness="0"
@@ -77,11 +77,13 @@
                                     KeyDown="AramaTextbox_KeyDown"/>
                                 <Button
                                     Style="{DynamicResource MaterialDesignToolButton}"
-                                    Grid.Column="2">
+                                    Grid.Column="2"
+                                    Click="Temizle_Button_Click">
                                     <materialDesign:PackIcon
-                                        Kind="Microphone"
+                                        Kind="Close"
                                         Opacity=".56"
-                                        Margin="8 0 0 0" />
+                                        Margin="8 0 0 0" 
+                                        />
                                 </Button>
                             </Grid>
                         </materialDesign:ColorZone>

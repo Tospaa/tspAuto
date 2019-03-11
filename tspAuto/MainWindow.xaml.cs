@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -35,9 +33,12 @@ namespace tspAuto
 
         private void AramaKomutu(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.SonArama = AramaTextbox.Text;
-            Properties.Settings.Default.Save();
-            SolPanelListBox.SelectedIndex = 1;
+            if (AramaTextbox.Text.Length >= 1)
+            {
+                Properties.Settings.Default.SonArama = AramaTextbox.Text;
+                AramaTextbox.Text = string.Empty;
+                SolPanelListBox.SelectedIndex = 1;
+            }
         }
 
         private void AramaTextbox_KeyDown(object sender, KeyEventArgs e)
@@ -46,6 +47,17 @@ namespace tspAuto
             {
                 AramaKomutu(new object(), new RoutedEventArgs());
             }
+        }
+
+        private void Temizle_Button_Click(object sender, RoutedEventArgs e)
+        {
+            AramaTextbox.Text = string.Empty;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Properties.Settings.Default.SonArama = string.Empty;
+            Properties.Settings.Default.Save();
         }
     }
 }

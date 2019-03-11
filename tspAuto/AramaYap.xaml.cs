@@ -19,7 +19,7 @@ namespace tspAuto
 
         private void AramaKutusu_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (AramaKutusu.Text.Length >= 3)
+            if (AramaKutusu.Text.Length >= 1)
             {
                 Arama();
             }

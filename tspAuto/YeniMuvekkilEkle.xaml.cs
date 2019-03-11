@@ -68,17 +68,17 @@ namespace tspAuto
                         if (basarili)
                         {
                             MessageBox.Show("Veritabanı girdisi başarılı.");
-                            MuvekkilTuru.Text = "";
-                            NoterIsmi.Text = "";
+                            MuvekkilTuru.Text = string.Empty;
+                            NoterIsmi.Text = string.Empty;
                             VekTarihi.SelectedDate = null;
-                            VekYevNo.Text = "";
+                            VekYevNo.Text = string.Empty;
                             AhzuKabza.SelectedIndex = 1;
                             Feragat.SelectedIndex = 1;
                             Ibra.SelectedIndex = 1;
                             Sulh.SelectedIndex = 1;
-                            Banka.Text = "";
-                            Sube.Text = "";
-                            IBANno.Text = "";
+                            Banka.Text = string.Empty;
+                            Sube.Text = string.Empty;
+                            IBANno.Text = string.Empty;
                         }
                     }
                 }
