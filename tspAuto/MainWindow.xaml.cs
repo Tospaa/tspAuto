@@ -19,6 +19,7 @@ namespace tspAuto
         }
 
         //private static Notification notification;
+        bool reallyClose = false;
 
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -61,8 +62,16 @@ namespace tspAuto
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Properties.Settings.Default.SonArama = string.Empty;
-            Properties.Settings.Default.Save();
+            if (reallyClose)
+            {
+                Properties.Settings.Default.SonArama = string.Empty;
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                e.Cancel = true;
+                Hide();
+            }
         }
     }
 }
