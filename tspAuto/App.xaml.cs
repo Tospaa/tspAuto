@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace tspAuto
 {
@@ -13,5 +7,20 @@ namespace tspAuto
     /// </summary>
     public partial class App : Application
     {
+        private static System.Threading.Mutex _mutex = null;
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            _mutex = new System.Threading.Mutex(true, tspAuto.Properties.Resources.Title, out bool createdNew);
+
+            if (!createdNew)
+            {
+                //app is already running! Exiting the application
+                MessageBox.Show($"{tspAuto.Properties.Resources.Title} programı zaten arkada çalışıyor.");
+                Current.Shutdown();
+            }
+
+            base.OnStartup(e);
+        }
     }
 }
