@@ -9,7 +9,6 @@
         xmlns:p="clr-namespace:tspAuto.Properties"
         mc:Ignorable="d"
         Title="{x:Static p:Resources.Title}" Height="750" Width="800"
-        Icon="favicon.ico"
         Closing="Window_Closing"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
