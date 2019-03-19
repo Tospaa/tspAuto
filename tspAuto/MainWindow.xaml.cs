@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows;
-using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using tspAuto.Domain;
@@ -13,25 +12,24 @@ namespace tspAuto
     /// </summary>
     public partial class MainWindow : Window
     {
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.ContextMenu contextMenu1;
-        private System.Windows.Forms.MenuItem menuItem1;
-        private System.Windows.Forms.MenuItem menuItem2;
-        private System.ComponentModel.IContainer components;
+        private ContextMenu contextMenu1 = new ContextMenu();
+        private MenuItem menuItem1 = new MenuItem();
+        private MenuItem menuItem2 = new MenuItem();
+        private NotifyIcon notifyIcon1 = new NotifyIcon();
+        private static Notification notification;
+        bool reallyClose = false;
 
         public MainWindow()
         {
             InitializeComponent();
 
             DataContext = new MainWindowViewModel();
+        }
 
-            components = new System.ComponentModel.Container();
-            contextMenu1 = new System.Windows.Forms.ContextMenu();
-            menuItem1 = new System.Windows.Forms.MenuItem();
-            menuItem2 = new System.Windows.Forms.MenuItem();
-
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
             // Initialize contextMenu1
-            contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] { menuItem1, menuItem2 });
+            contextMenu1.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2 });
 
             // Initialize menuItem1
             menuItem1.Index = 0;
@@ -44,11 +42,9 @@ namespace tspAuto
             menuItem2.Click += new EventHandler(menuItem1_Click);
 
             // Create the NotifyIcon.
-            notifyIcon1 = new System.Windows.Forms.NotifyIcon(components);
-
             // The Icon property sets the icon that will appear
             // in the systray for this application.
-            notifyIcon1.Icon = System.Drawing.Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.BaseDirectory + @"\tspAuto.exe");
+            notifyIcon1.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             // The ContextMenu property sets the menu that will
             // appear when the systray icon is right clicked.
@@ -73,6 +69,11 @@ namespace tspAuto
                 Show();
             }
 
+            if (WindowState == WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+            }
+
             // Activate the form.
             Activate();
         }
@@ -84,16 +85,13 @@ namespace tspAuto
             Close();
         }
 
-        //private static Notification notification;
-        bool reallyClose = false;
-
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //until we had a StaysOpen glag to Drawer, this will help with scroll bars
             var dependencyObject = Mouse.Captured as DependencyObject;
             while (dependencyObject != null)
             {
-                if (dependencyObject is ScrollBar) return;
+                if (dependencyObject is System.Windows.Controls.Primitives.ScrollBar) return;
                 dependencyObject = VisualTreeHelper.GetParent(dependencyObject);
             }
 
@@ -108,12 +106,12 @@ namespace tspAuto
                 AramaTextbox.Text = string.Empty;
                 SolPanelListBox.SelectedIndex = 1;
 
-                /*notification = new Notification("Arama yapıldı beybii");
-                notification.Show();*/
+                notification = new Notification("Arama yapıldı beybii");
+                notification.Show();
             }
         }
 
-        private void AramaTextbox_KeyDown(object sender, KeyEventArgs e)
+        private void AramaTextbox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
