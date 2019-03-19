@@ -18,6 +18,8 @@ namespace tspAuto
             DataContext = new MainWindowViewModel();
         }
 
+        //private static Notification notification;
+
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //until we had a StaysOpen glag to Drawer, this will help with scroll bars
@@ -38,6 +40,9 @@ namespace tspAuto
                 Properties.Settings.Default.SonArama = AramaTextbox.Text;
                 AramaTextbox.Text = string.Empty;
                 SolPanelListBox.SelectedIndex = 1;
+
+                /*notification = new Notification("Arama yapıldı beybii");
+                notification.Show();*/
             }
         }
 

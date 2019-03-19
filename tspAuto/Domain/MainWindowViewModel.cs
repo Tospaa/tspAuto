@@ -65,7 +65,7 @@ namespace tspAuto.Domain
 
                     if (Convert.ToBoolean(result))
                     {
-                        Properties.Settings.Default.DatabaseFilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\{Properties.Resources.Title}\\veri_{DateTime.Now.ToString("yyyyddMMHHmmss")}.db";
+                        Properties.Settings.Default.DatabaseFilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\{Properties.Resources.Title}\\veri_{DateTime.Now.ToString("yyyyMMddHHmmss")}.db";
                         Properties.Settings.Default.Save();
 
                         SQLiteConnection.CreateFile(Properties.Settings.Default.DatabaseFilePath);
