@@ -104,7 +104,8 @@
                 <CheckBox Grid.Column="2" Grid.Row="7"
                           Style="{StaticResource MaterialDesignCheckBox}" />
                 <Button Grid.Column="2" Grid.Row="8" HorizontalAlignment="Right"
-                        Style="{StaticResource MaterialDesignRaisedAccentButton}">
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        Click="Button_Click">
                     KAYDET
                 </Button>
             </Grid>

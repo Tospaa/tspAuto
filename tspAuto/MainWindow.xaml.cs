@@ -12,10 +12,10 @@ namespace tspAuto
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ContextMenu contextMenu1 = new ContextMenu();
+        private ContextMenu contextMenu = new ContextMenu();
         private MenuItem menuItem1 = new MenuItem();
         private MenuItem menuItem2 = new MenuItem();
-        private NotifyIcon notifyIcon1 = new NotifyIcon();
+        public NotifyIcon notifyIcon = new NotifyIcon();
         private static Notification notification;
         bool reallyClose = false;
 
@@ -29,12 +29,12 @@ namespace tspAuto
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Initialize contextMenu1
-            contextMenu1.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2 });
+            contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2 });
 
             // Initialize menuItem1
             menuItem1.Index = 0;
             menuItem1.Text = "Programı Aç";
-            menuItem1.Click += new EventHandler(notifyIcon1_DoubleClick);
+            menuItem1.Click += new EventHandler(notifyIcon_DoubleClick);
 
             // Initialize menuItem2
             menuItem2.Index = 1;
@@ -44,22 +44,29 @@ namespace tspAuto
             // Create the NotifyIcon.
             // The Icon property sets the icon that will appear
             // in the systray for this application.
-            notifyIcon1.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             // The ContextMenu property sets the menu that will
             // appear when the systray icon is right clicked.
-            notifyIcon1.ContextMenu = contextMenu1;
+            notifyIcon.ContextMenu = contextMenu;
 
             // The Text property sets the text that will be displayed,
             // in a tooltip, when the mouse hovers over the systray icon.
-            notifyIcon1.Text = Properties.Resources.Title;
-            notifyIcon1.Visible = true;
+            notifyIcon.Text = Properties.Resources.Title;
+            notifyIcon.Visible = true;
 
             // Handle the DoubleClick event to activate the form.
-            notifyIcon1.DoubleClick += new EventHandler(notifyIcon1_DoubleClick);
+            notifyIcon.DoubleClick += new EventHandler(notifyIcon_DoubleClick);
+            notifyIcon.BalloonTipClicked += new EventHandler(notifyIcon_BalloonTipClicked);
         }
 
-        private void notifyIcon1_DoubleClick(object Sender, EventArgs e)
+        private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            notification = new Notification((sender as NotifyIcon).BalloonTipText, (sender as NotifyIcon).BalloonTipTitle);
+            notification.Show();
+        }
+
+        private void notifyIcon_DoubleClick(object Sender, EventArgs e)
         {
             // Show the form when the user double clicks on the notify icon.
 
@@ -102,12 +109,20 @@ namespace tspAuto
         {
             if (AramaTextbox.Text.Length >= 1)
             {
-                Properties.Settings.Default.SonArama = AramaTextbox.Text;
-                AramaTextbox.Text = string.Empty;
-                SolPanelListBox.SelectedIndex = 1;
+                foreach (PanelItem item in SolPanelListBox.Items)
+                {
+                    if (item.Content.GetType() == typeof(AramaYap))
+                    {
+                        SolPanelListBox.SelectedIndex = 1;
+                        (item.Content as AramaYap).AramaKutusu.Text = AramaTextbox.Text;
+                        AramaTextbox.Text = string.Empty;
+                        break;
+                    }
+                }
 
-                notification = new Notification("Arama yapıldı beybii");
-                notification.Show();
+                notifyIcon.BalloonTipTitle = DateTime.Now.ToString("yyyyMMddHHmmss");
+                notifyIcon.BalloonTipText = "Arama yapıldı beybii";
+                notifyIcon.ShowBalloonTip(5000);
             }
         }
 
@@ -128,9 +143,7 @@ namespace tspAuto
         {
             if (reallyClose)
             {
-                notifyIcon1.Visible = false;
-                Properties.Settings.Default.SonArama = string.Empty;
-                Properties.Settings.Default.Save();
+                notifyIcon.Visible = false;
             }
             else
             {

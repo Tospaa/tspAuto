@@ -26,7 +26,6 @@
                 Margin="8 0 0 0"
                 materialDesign:HintAssist.Hint="Arama yap"
                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                Text="{Binding Source={x:Static p:Settings.Default},Path=SonArama, Mode=TwoWay}"
                 TextChanged="AramaKutusu_TextChanged"/>
         </Grid>
         <DataGrid Name="MuvekkilSonuc" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 

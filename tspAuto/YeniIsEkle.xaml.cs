@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using tspAuto.Domain;
 
 namespace tspAuto
 {
@@ -25,6 +15,19 @@ namespace tspAuto
             InitializeComponent();
 
             TarihSec.Language = System.Windows.Markup.XmlLanguage.GetLanguage("tr-TR");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof(MainWindow))
+                {
+                    (window as MainWindow).notifyIcon.BalloonTipTitle = DateTime.Now.ToString("yyyyMMddHHmmss");
+                    (window as MainWindow).notifyIcon.BalloonTipText = "Ebesininkinden notification yolladım.";
+                    (window as MainWindow).notifyIcon.ShowBalloonTip(5000);
+                }
+            }
         }
     }
 }
