@@ -29,14 +29,18 @@ namespace tspAuto
         {
             if (new Regex("[ğĞüÜşŞıİöÖçÇ]").Match(AramaKutusu.Text).Success)
             {
+                // (?i) ignores case sensitivity
                 string arama = AramaKutusu.Text;
 
                 arama = new Regex("[ğĞ]").Replace(arama, "[ğĞ]");
                 arama = new Regex("[üÜ]").Replace(arama, "[üÜ]");
                 arama = new Regex("[şŞ]").Replace(arama, "[şŞ]");
-                arama = new Regex("[ıiIİ]").Replace(arama, "[ıiIİ]");
+                arama = new Regex("[ıI]").Replace(arama, "[ıI]");
+                arama = new Regex("[iİ]").Replace(arama, "[iİ]");
                 arama = new Regex("[öÖ]").Replace(arama, "[öÖ]");
                 arama = new Regex("[çÇ]").Replace(arama, "[çÇ]");
+
+                arama = "(?i)" + arama;
 
                 string queryString = $"SELECT * FROM {table} WHERE(";
 
@@ -106,6 +110,17 @@ namespace tspAuto
             {
                 MuvekkilSonuc.SelectedItem = null;
             }
+        }
+    }
+
+    // from https://stackoverflow.com/questions/172735/create-use-user-defined-functions-in-system-data-sqlite
+    // taken from http://sqlite.phxsoftware.com/forums/p/348/1457.aspx#1457
+    [SQLiteFunction(Name = "REGEXP", Arguments = 2, FuncType = FunctionType.Scalar)]
+    public class RegExSQLiteFunction : SQLiteFunction
+    {
+        public override object Invoke(object[] args)
+        {
+            return Regex.IsMatch(Convert.ToString(args[1]), Convert.ToString(args[0]));
         }
     }
 }
