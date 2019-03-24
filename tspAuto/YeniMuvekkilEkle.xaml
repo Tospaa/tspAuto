@@ -73,16 +73,7 @@
                                 Şirket
                             </ComboBoxItem>
                             <ComboBoxItem>
-                                Mirket
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                Anlamam
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                Anlasam da
-                            </ComboBoxItem>
-                            <ComboBoxItem>
-                                Anlamam
+                                Şahıs
                             </ComboBoxItem>
                         </ComboBox>
                         <TextBox Grid.Column="2" Grid.Row="2"
@@ -181,8 +172,14 @@
                         <TextBlock Grid.Column="0" Grid.Row="6">E-Mail</TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="7"></TextBlock>
                         <ComboBox Grid.Column="2" Grid.Row="0">
+                            <ComboBoxItem>
+                                Adi
+                            </ComboBoxItem>
                             <ComboBoxItem IsSelected="True">
-                                Özel
+                                Anonim
+                            </ComboBoxItem>
+                            <ComboBoxItem>
+                                Limited
                             </ComboBoxItem>
                             <ComboBoxItem>
                                 Kamu

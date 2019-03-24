@@ -29,7 +29,7 @@
                 TextChanged="AramaKutusu_TextChanged"/>
         </Grid>
         <DataGrid Name="MuvekkilSonuc" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 
-                  AlternatingRowBackground="Gainsboro" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True">
+                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Müvekkil Türü" Binding="{Binding MuvekkilTuru}"/>
                 <DataGridTextColumn Header="Noter İsmi" Binding="{Binding NoterIsmi}"/>
