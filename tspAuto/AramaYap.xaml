@@ -35,10 +35,10 @@
                 <DataGridTextColumn Header="Noter İsmi" Binding="{Binding NoterIsmi}"/>
                 <DataGridTextColumn Header="Vekalet Tarihi" Binding="{Binding VekaletTarihi}"/>
                 <DataGridTextColumn Header="Vek. Yevmiye No" Binding="{Binding VekYevmiyeNo}"/>
-                <DataGridCheckBoxColumn Header="Ahzu Kabza" AutomationProperties.ItemType="Boolean" Binding="{Binding AhzuKabza}"/>
-                <DataGridCheckBoxColumn Header="Feragat" Binding="{Binding Feragat}"/>
-                <DataGridCheckBoxColumn Header="İbra" Binding="{Binding Ibra}"/>
-                <DataGridCheckBoxColumn Header="Sulh" Binding="{Binding Sulh}"/>
+                <DataGridCheckBoxColumn Header="Ahzu Kabza" Binding="{Binding AhzuKabza}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                <DataGridCheckBoxColumn Header="Feragat" Binding="{Binding Feragat}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                <DataGridCheckBoxColumn Header="İbra" Binding="{Binding Ibra}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                <DataGridCheckBoxColumn Header="Sulh" Binding="{Binding Sulh}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
                 <DataGridTextColumn Header="Banka" Binding="{Binding Banka}"/>
                 <DataGridTextColumn Header="Şube" Binding="{Binding Sube}"/>
                 <DataGridTextColumn Header="IBAN No" Binding="{Binding IBANno}"/>

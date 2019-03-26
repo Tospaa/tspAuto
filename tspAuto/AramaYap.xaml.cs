@@ -46,14 +46,14 @@ namespace tspAuto
 
                 foreach (string i in columns)
                 {
-                    queryString += $"{i} REGEXP '{arama}' OR ";
+                    queryString += $"{i} REGEXP @arama OR ";
                 }
 
                 queryString = queryString.Substring(0, queryString.Length - 4) + ")";
 
                 SQLiteCommand command = new SQLiteCommand(queryString, con);
 
-                //command.Parameters.AddWithValue("arama", arama);
+                command.Parameters.AddWithValue("arama", arama);
 
                 return command;
             }
