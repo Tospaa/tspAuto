@@ -14,6 +14,7 @@ namespace tspAuto
     {
         private ContextMenu contextMenu = new ContextMenu();
         private MenuItem menuItem1 = new MenuItem();
+        private MenuItem seperator = new MenuItem();
         private MenuItem menuItem2 = new MenuItem();
         public NotifyIcon notifyIcon = new NotifyIcon();
         private static Notification notification;
@@ -29,16 +30,21 @@ namespace tspAuto
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Initialize contextMenu1
-            contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2 });
+            contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2, seperator });
 
             // Initialize menuItem1
             menuItem1.Index = 0;
-            menuItem1.Text = "Programı Aç";
+            menuItem1.Text = "Programı &Aç";
             menuItem1.Click += new EventHandler(notifyIcon_DoubleClick);
+            menuItem1.DefaultItem = true;
+
+            // Initialize seperator
+            seperator.Index = 1;
+            seperator.Text = "-";
 
             // Initialize menuItem2
-            menuItem2.Index = 1;
-            menuItem2.Text = "Kapat";
+            menuItem2.Index = 2;
+            menuItem2.Text = "&Kapat";
             menuItem2.Click += new EventHandler(menuItem1_Click);
 
             // Create the NotifyIcon.
