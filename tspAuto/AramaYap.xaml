@@ -5,45 +5,104 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:tspAuto"
-             xmlns:p="clr-namespace:tspAuto.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Vertical">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <materialDesign:PackIcon
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Kind="Magnify"
-                Opacity=".56"/>
-            <TextBox
-                Name="AramaKutusu"
-                FontSize="25"
-                Grid.Column="1"
-                Margin="8 0 0 0"
-                materialDesign:HintAssist.Hint="Arama yap"
-                materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                TextChanged="AramaKutusu_TextChanged"/>
-        </Grid>
-        <DataGrid Name="MuvekkilSonuc" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 
-                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Müvekkil Türü" Binding="{Binding MuvekkilTuru}"/>
-                <DataGridTextColumn Header="Noter İsmi" Binding="{Binding NoterIsmi}"/>
-                <DataGridTextColumn Header="Vekalet Tarihi" Binding="{Binding VekaletTarihi}"/>
-                <DataGridTextColumn Header="Vek. Yevmiye No" Binding="{Binding VekYevmiyeNo}"/>
-                <DataGridCheckBoxColumn Header="Ahzu Kabza" Binding="{Binding AhzuKabza}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
-                <DataGridCheckBoxColumn Header="Feragat" Binding="{Binding Feragat}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
-                <DataGridCheckBoxColumn Header="İbra" Binding="{Binding Ibra}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
-                <DataGridCheckBoxColumn Header="Sulh" Binding="{Binding Sulh}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
-                <DataGridTextColumn Header="Banka" Binding="{Binding Banka}"/>
-                <DataGridTextColumn Header="Şube" Binding="{Binding Sube}"/>
-                <DataGridTextColumn Header="IBAN No" Binding="{Binding IBANno}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-    </StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <materialDesign:Card
+            Background="{DynamicResource MaterialDesignBackground}">
+            <StackPanel Orientation="Vertical">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Kind="Magnify"
+                        Opacity=".56"/>
+                    <TextBox
+                        Name="AramaKutusu"
+                        FontSize="25"
+                        Grid.Column="1"
+                        Margin="8 0 0 0"
+                        materialDesign:HintAssist.Hint="Arama yap"
+                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                        TextChanged="AramaKutusu_TextChanged"/>
+                </Grid>
+                <Expander
+                    HorizontalAlignment="Stretch"
+                    IsExpanded="False"
+                    Name="MuvekkilSirketExpander"
+                    Header="Şirket Müvekkiller (0)">
+                    <DataGrid Name="MuvekkilSirketSonuc" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 
+                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Müvekkil No" Binding="{Binding MuvekkilNo}"/>
+                            <DataGridTextColumn Header="Müvekkil Türü" Binding="{Binding MuvekkilTuru}"/>
+                            <DataGridTextColumn Header="Noter İsmi" Binding="{Binding NoterIsmi}"/>
+                            <DataGridTextColumn Header="Vekalet Tarihi" Binding="{Binding VekaletTarihi}"/>
+                            <DataGridTextColumn Header="Vek. Yevmiye No" Binding="{Binding VekYevmiyeNo}"/>
+                            <DataGridCheckBoxColumn Header="Ahzu Kabza" Binding="{Binding AhzuKabza}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                            <DataGridCheckBoxColumn Header="Feragat" Binding="{Binding Feragat}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                            <DataGridCheckBoxColumn Header="İbra" Binding="{Binding Ibra}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                            <DataGridCheckBoxColumn Header="Sulh" Binding="{Binding Sulh}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                            <DataGridTextColumn Header="Banka" Binding="{Binding Banka}"/>
+                            <DataGridTextColumn Header="Şube" Binding="{Binding Sube}"/>
+                            <DataGridTextColumn Header="IBAN No" Binding="{Binding IBANno}"/>
+                            <DataGridTextColumn Header="Şirket Türü" Binding="{Binding SirketTuru}"/>
+                            <DataGridTextColumn Header="Şirket Unvan" Binding="{Binding SirketUnvan}"/>
+                            <DataGridTextColumn Header="Vergi Dairesi" Binding="{Binding VergiDairesi}"/>
+                            <DataGridTextColumn Header="Vergi Numarası" Binding="{Binding VergiNo}"/>
+                            <DataGridTextColumn Header="Mersis Numarası" Binding="{Binding MersisNo}"/>
+                            <DataGridTextColumn Header="Adres" Binding="{Binding Adres}"/>
+                            <DataGridTextColumn Header="Telefon" Binding="{Binding Telefon}"/>
+                            <DataGridTextColumn Header="Fax" Binding="{Binding Fax}"/>
+                            <DataGridTextColumn Header="E-Mail" Binding="{Binding Email}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Expander>
+                <Border
+                    Background="{DynamicResource MaterialDesignDivider}"
+                    Height="1"
+                    HorizontalAlignment="Stretch"
+                    SnapsToDevicePixels="True" />
+                <Expander
+                    HorizontalAlignment="Stretch"
+                    IsExpanded="False"
+                    Name="MuvekkilSahisExpander"
+                    Header="Şahıs Müvekkiller (0)">
+                    <DataGrid Name="MuvekkilSahisSonuc" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 
+                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Müvekkil No" Binding="{Binding MuvekkilNo}"/>
+                            <DataGridTextColumn Header="Müvekkil Türü" Binding="{Binding MuvekkilTuru}"/>
+                            <DataGridTextColumn Header="Noter İsmi" Binding="{Binding NoterIsmi}"/>
+                            <DataGridTextColumn Header="Vekalet Tarihi" Binding="{Binding VekaletTarihi}"/>
+                            <DataGridTextColumn Header="Vek. Yevmiye No" Binding="{Binding VekYevmiyeNo}"/>
+                            <DataGridCheckBoxColumn Header="Ahzu Kabza" Binding="{Binding AhzuKabza}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                            <DataGridCheckBoxColumn Header="Feragat" Binding="{Binding Feragat}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                            <DataGridCheckBoxColumn Header="İbra" Binding="{Binding Ibra}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                            <DataGridCheckBoxColumn Header="Sulh" Binding="{Binding Sulh}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
+                            <DataGridTextColumn Header="Banka" Binding="{Binding Banka}"/>
+                            <DataGridTextColumn Header="Şube" Binding="{Binding Sube}"/>
+                            <DataGridTextColumn Header="IBAN No" Binding="{Binding IBANno}"/>
+                            <DataGridTextColumn Header="İsim Soyisim" Binding="{Binding IsimSoyisim}"/>
+                            <DataGridTextColumn Header="TC Kimlik No" Binding="{Binding TCKimlik}"/>
+                            <DataGridTextColumn Header="Adres" Binding="{Binding Adres}"/>
+                            <DataGridTextColumn Header="Telefon" Binding="{Binding Telefon}"/>
+                            <DataGridTextColumn Header="Fax" Binding="{Binding Fax}"/>
+                            <DataGridTextColumn Header="E-Mail" Binding="{Binding Email}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Expander>
+                <Border
+                    Background="{DynamicResource MaterialDesignDivider}"
+                    Height="1"
+                    HorizontalAlignment="Stretch"
+                    SnapsToDevicePixels="True" />
+            </StackPanel>
+        </materialDesign:Card>
+    </ScrollViewer>
 </UserControl>
     

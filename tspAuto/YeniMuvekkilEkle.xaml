@@ -45,47 +45,62 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="50" />
                             <ColumnDefinition Width="350" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0">Müvekkil Türü</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="1"></TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="2">Noter İsmi</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="3">Vekalet Tarihi</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="4">Vekalet Yevmiye No</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="5"></TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="6">Ahzu Kabza</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="7">Feragat</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="8">İbra</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="9">Sulh</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="10"></TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="11">Banka</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="12">Şube</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="13">IBAN No</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="14"></TextBlock>
-                        <ComboBox Grid.Column="2" Grid.Row="0"
+                        <TextBlock Grid.Column="0" Grid.Row="0">Müvekkil Numarası</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="1">Müvekkil Türü</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="2"></TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="3">Noter İsmi</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="4">Vekalet Tarihi</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="5">Vekalet Yevmiye No</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="6"></TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="7">Ahzu Kabza</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="8">Feragat</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="9">İbra</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="10">Sulh</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="11"></TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="12">Banka</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="13">Şube</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="14">IBAN No</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="15"></TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="16">Adres</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="17">Telefon</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="18">Fax</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="19">E-Mail</TextBlock>
+                        <TextBox Grid.Column="2" Grid.Row="0"
+                                 Name="MuvekkilNo"
+                                 materialDesign:HintAssist.Hint="Müvekkil Numarası" />
+                        <ComboBox Grid.Column="2" Grid.Row="1"
                                   Name="MuvekkilTuru"
-                                  materialDesign:HintAssist.Hint="Müvekkil Türü">
-                            <ComboBoxItem>
-                                Şirket
-                            </ComboBoxItem>
+                                  materialDesign:HintAssist.Hint="Müvekkil Türü"
+                                  SelectionChanged="MuvekkilTuru_SelectionChanged">
                             <ComboBoxItem>
                                 Şahıs
                             </ComboBoxItem>
+                            <ComboBoxItem>
+                                Şirket
+                            </ComboBoxItem>
                         </ComboBox>
-                        <TextBox Grid.Column="2" Grid.Row="2"
+                        <TextBox Grid.Column="2" Grid.Row="3"
                                  Name="NoterIsmi"
                                  materialDesign:HintAssist.Hint="Noter İsmi" />
-                        <DatePicker Grid.Column="2" Grid.Row="3"
+                        <DatePicker Grid.Column="2" Grid.Row="4"
                                     Name="VekTarihi" FontSize="18" Margin="0 0 0 8"
                                     materialDesign:HintAssist.Hint="Tarih Seç" />
-                        <TextBox Grid.Column="2" Grid.Row="4"
+                        <TextBox Grid.Column="2" Grid.Row="5"
                                  Name="VekYevNo"
                                  materialDesign:HintAssist.Hint="Vekalet Yevmiye Numarası" />
-                        <ComboBox Grid.Column="2" Grid.Row="6"
+                        <ComboBox Grid.Column="2" Grid.Row="7"
                                   Name="AhzuKabza">
                             <ComboBoxItem>
                                 Hayır
@@ -94,7 +109,7 @@
                                 Evet
                             </ComboBoxItem>
                         </ComboBox>
-                        <ComboBox Grid.Column="2" Grid.Row="7"
+                        <ComboBox Grid.Column="2" Grid.Row="8"
                                   Name="Feragat">
                             <ComboBoxItem>
                                 Hayır
@@ -103,7 +118,7 @@
                                 Evet
                             </ComboBoxItem>
                         </ComboBox>
-                        <ComboBox Grid.Column="2" Grid.Row="8"
+                        <ComboBox Grid.Column="2" Grid.Row="9"
                                   Name="Ibra">
                             <ComboBoxItem>
                                 Hayır
@@ -112,7 +127,7 @@
                                 Evet
                             </ComboBoxItem>
                         </ComboBox>
-                        <ComboBox Grid.Column="2" Grid.Row="9"
+                        <ComboBox Grid.Column="2" Grid.Row="10"
                                   Name="Sulh">
                             <ComboBoxItem>
                                 Hayır
@@ -121,18 +136,61 @@
                                 Evet
                             </ComboBoxItem>
                         </ComboBox>
-                        <TextBox Grid.Column="2" Grid.Row="11"
+                        <TextBox Grid.Column="2" Grid.Row="12"
                                  Name="Banka"
                                  materialDesign:HintAssist.Hint="Banka İsmi" />
-                        <TextBox Grid.Column="2" Grid.Row="12"
+                        <TextBox Grid.Column="2" Grid.Row="13"
                                  Name="Sube"
                                  materialDesign:HintAssist.Hint="Banka Şubesi" />
-                        <TextBox Grid.Column="2" Grid.Row="13"
+                        <TextBox Grid.Column="2" Grid.Row="14"
                                  Name="IBANno"
                                  materialDesign:HintAssist.Hint="Hesap IBAN No" />
-                        <Button Grid.Column="2" Grid.Row="14" HorizontalAlignment="Right"
+                        <TextBox Grid.Column="2" Grid.Row="16"
+                                 Name="Adres"
+                                 materialDesign:HintAssist.Hint="Adres" />
+                        <TextBox Grid.Column="2" Grid.Row="17"
+                                 Name="Telefon"
+                                 materialDesign:HintAssist.Hint="Telefon" />
+                        <TextBox Grid.Column="2" Grid.Row="18"
+                                 Name="Fax"
+                                 materialDesign:HintAssist.Hint="Fax" />
+                        <TextBox Grid.Column="2" Grid.Row="19"
+                                 Name="Email"
+                                 materialDesign:HintAssist.Hint="E-Mail" />
+                    </Grid>
+                </Expander>
+                <Border
+                    Background="{DynamicResource MaterialDesignDivider}"
+                    Height="1"
+                    HorizontalAlignment="Stretch"
+                    SnapsToDevicePixels="True" />
+                <Expander
+                    HorizontalAlignment="Stretch"
+                    Header="Şahıs Bilgileri"
+                    Name="SahisExpander"
+                    IsExpanded="False"
+                    IsEnabled="False">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="16">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="350" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0">İsim Soyisim</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="1">TC Kimlik No</TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="2"></TextBlock>
+                        <TextBox Grid.Column="2" Grid.Row="0" Name="IsimSoyisim"
+                                 materialDesign:HintAssist.Hint="İsim Soyisim" />
+                        <TextBox Grid.Column="2" Grid.Row="1" Name="TCKimlik"
+                                 materialDesign:HintAssist.Hint="TC Kimlik No" />
+                        <Button Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right"
                                 Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                                Click="Muvekkil_Kaydet_Button_Click">
+                                Click="Sahis_Kaydet_Button_Click">
                             KAYDET
                         </Button>
                     </Grid>
@@ -145,12 +203,11 @@
                 <Expander
                     HorizontalAlignment="Stretch"
                     Header="Şirket Bilgileri"
-                    IsExpanded="True"
-                    Visibility="Visible">
+                    Name="SirketExpander"
+                    IsExpanded="False"
+                    IsEnabled="False">
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="16">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -168,10 +225,9 @@
                         <TextBlock Grid.Column="0" Grid.Row="2">Vergi Dairesi</TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="3">Vergi Numarası</TextBlock>
                         <TextBlock Grid.Column="0" Grid.Row="4">Mersis Numarası</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="5">Fax</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="6">E-Mail</TextBlock>
-                        <TextBlock Grid.Column="0" Grid.Row="7"></TextBlock>
-                        <ComboBox Grid.Column="2" Grid.Row="0">
+                        <TextBlock Grid.Column="0" Grid.Row="5"></TextBlock>
+                        <ComboBox Grid.Column="2" Grid.Row="0"
+                                  Name="SirketTuru">
                             <ComboBoxItem>
                                 Adi
                             </ComboBoxItem>
@@ -185,19 +241,15 @@
                                 Kamu
                             </ComboBoxItem>
                         </ComboBox>
-                        <TextBox Grid.Column="2" Grid.Row="1"
+                        <TextBox Grid.Column="2" Grid.Row="1" Name="SirketUnvan"
                                  materialDesign:HintAssist.Hint="Şirket Unvan" />
-                        <TextBox Grid.Column="2" Grid.Row="2"
+                        <TextBox Grid.Column="2" Grid.Row="2" Name="VergiDairesi"
                                  materialDesign:HintAssist.Hint="Vergi Dairesi" />
-                        <TextBox Grid.Column="2" Grid.Row="3"
+                        <TextBox Grid.Column="2" Grid.Row="3" Name="VergiNo"
                                  materialDesign:HintAssist.Hint="Vergi Numarası" />
-                        <TextBox Grid.Column="2" Grid.Row="4"
+                        <TextBox Grid.Column="2" Grid.Row="4" Name="MersisNo"
                                  materialDesign:HintAssist.Hint="Mersis Numarası" />
-                        <TextBox Grid.Column="2" Grid.Row="5"
-                                 materialDesign:HintAssist.Hint="Fax" />
-                        <TextBox Grid.Column="2" Grid.Row="6"
-                                 materialDesign:HintAssist.Hint="E-Mail" />
-                        <Button Grid.Column="2" Grid.Row="7" HorizontalAlignment="Right"
+                        <Button Grid.Column="2" Grid.Row="10" HorizontalAlignment="Right"
                                 Style="{StaticResource MaterialDesignRaisedAccentButton}"
                                 Click="Sirket_Kaydet_Button_Click">
                             KAYDET

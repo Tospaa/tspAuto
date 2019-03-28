@@ -84,23 +84,34 @@ namespace tspAuto
             {
                 string[] columns = new string[]
                 {
+                    "MuvekkilNo",
                     "MuvekkilTuru",
                     "NoterIsmi",
                     "VekaletTarihi",
                     "VekYevmiyeNo",
                     "Banka",
                     "Sube",
-                    "IBANno"
+                    "IBANno",
+                    "Adres",
+                    "Telefon",
+                    "Fax",
+                    "Email",
+                    "SirketTuru",
+                    "SirketUnvan",
+                    "VergiDairesi",
+                    "VergiNo",
+                    "MersisNo"
                 };
                 using (SQLiteConnection con = new SQLiteConnection($@"Data Source={Properties.Settings.Default.DatabaseFilePath}"))
                 {
-                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(Generate_Query_String("Muvekkil", columns, con)))
+                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(Generate_Query_String("MuvekkilSirket", columns, con)))
                     {
                         dataAdapter.Fill(dataSet);
                     }
                 }
 
-                MuvekkilSonuc.ItemsSource = dataSet.Tables[0].DefaultView;
+                MuvekkilSirketSonuc.ItemsSource = dataSet.Tables[0].DefaultView;
+                MuvekkilSirketExpander.Header = $"Şirket Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
             }
             catch (Exception ex)
             {
@@ -108,7 +119,52 @@ namespace tspAuto
             }
             finally
             {
-                MuvekkilSonuc.SelectedItem = null;
+                MuvekkilSirketSonuc.SelectedItem = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+
+            dataSet = new DataSet();
+
+            try
+            {
+                string[] columns = new string[]
+                {
+                    "MuvekkilNo",
+                    "MuvekkilTuru",
+                    "NoterIsmi",
+                    "VekaletTarihi",
+                    "VekYevmiyeNo",
+                    "Banka",
+                    "Sube",
+                    "IBANno",
+                    "Adres",
+                    "Telefon",
+                    "Fax",
+                    "Email",
+                    "IsimSoyisim",
+                    "TCKimlik"
+                };
+                using (SQLiteConnection con = new SQLiteConnection($@"Data Source={Properties.Settings.Default.DatabaseFilePath}"))
+                {
+                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(Generate_Query_String("MuvekkilSahis", columns, con)))
+                    {
+                        dataAdapter.Fill(dataSet);
+                    }
+                }
+
+                MuvekkilSahisSonuc.ItemsSource = dataSet.Tables[0].DefaultView;
+                MuvekkilSahisExpander.Header = $"Şahıs Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("kötü kötü olduk\n\n" + ex.ToString());
+            }
+            finally
+            {
+                MuvekkilSahisSonuc.SelectedItem = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
     }
