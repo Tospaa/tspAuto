@@ -104,7 +104,7 @@ namespace tspAuto
             }
             catch (Exception ex)
             {
-                MessageBox.Show("kötü kötü olduk\n\n" + ex.Message);
+                MessageBox.Show("kötü kötü olduk\n\n" + ex.ToString());
             }
             finally
             {

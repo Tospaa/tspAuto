@@ -125,10 +125,6 @@ namespace tspAuto
                         break;
                     }
                 }
-
-                notifyIcon.BalloonTipTitle = DateTime.Now.ToString("yyyyMMddHHmmss");
-                notifyIcon.BalloonTipText = "Arama yapıldı beybii";
-                notifyIcon.ShowBalloonTip(5000);
             }
         }
 
@@ -150,6 +146,16 @@ namespace tspAuto
             if (reallyClose)
             {
                 notifyIcon.Visible = false;
+
+                foreach (PanelItem item in SolPanelListBox.Items)
+                {
+                    if (item.Content.GetType() == typeof(Hatirlatici))
+                    {
+                        // and last shut down the scheduler when you are ready to close your program
+                        (item.Content as Hatirlatici).scheduler.Shutdown();
+                        break;
+                    }
+                }
             }
             else
             {

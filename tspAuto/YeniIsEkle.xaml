@@ -49,9 +49,10 @@
                 <TextBlock Grid.Column="0" Grid.Row="6">Doküman Ekle</TextBlock>
                 <TextBlock Grid.Column="0" Grid.Row="7">Hatırlatıcı Eklensin mi?</TextBlock>
                 <TextBlock Grid.Column="0" Grid.Row="8"></TextBlock>
-                <TextBox Grid.Column="2" Grid.Row="0"
+                <TextBox Grid.Column="2" Grid.Row="0" Name="Baslik"
                          materialDesign:HintAssist.Hint="Başlık" />
                 <TextBox Grid.Column="2" Grid.Row="1"
+                         Name="Aciklama"
                          TextWrapping="Wrap"
                          VerticalAlignment="Stretch"
                          FontSize="14"
@@ -79,7 +80,7 @@
                 <DatePicker Grid.Column="2" Grid.Row="3"
                             Name="TarihSec" FontSize="18" Margin="0 0 0 8"
                             materialDesign:HintAssist.Hint="Tarih Seç" />
-                <materialDesign:TimePicker Grid.Column="2" Grid.Row="4"
+                <materialDesign:TimePicker Grid.Column="2" Grid.Row="4" Name="SaatSec"
                                            Is24Hours="True" Margin="0 0 0 8"
                                            materialDesign:HintAssist.Hint="Saat Seç"/>
                 <ComboBox Grid.Column="2" Grid.Row="5"
@@ -101,8 +102,9 @@
                         Style="{StaticResource MaterialDesignRaisedDarkButton}">
                     DOSYA SEÇİNİZ
                 </Button>
-                <CheckBox Grid.Column="2" Grid.Row="7"
-                          Style="{StaticResource MaterialDesignCheckBox}" />
+                <CheckBox Grid.Column="2" Grid.Row="7" IsChecked="True"
+                          Style="{StaticResource MaterialDesignCheckBox}"
+                          Name="HatirlaticiEklensin"/>
                 <Button Grid.Column="2" Grid.Row="8" HorizontalAlignment="Right"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
                         Click="Button_Click">
