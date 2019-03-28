@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="tspAuto.Domain.VeritabaniDialog"
+﻿<UserControl x:Class="tspAuto.Domain.BenimDialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -23,7 +23,8 @@
             <Button IsDefault="True" Style="{DynamicResource MaterialDesignFlatButton}"
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                     Content="{Binding FirstOption}"
-                    ToolTip="{Binding FirstTooltip}">
+                    ToolTip="{Binding FirstTooltip}"
+                    ToolTipService.IsEnabled="{Binding FirstTooltipIsEnabled}">
                 <Button.CommandParameter>
                     <system:Boolean>True</system:Boolean>
                 </Button.CommandParameter>
@@ -31,7 +32,8 @@
             <Button IsCancel="True" Margin="8 0 0 0" Style="{DynamicResource MaterialDesignFlatButton}"
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                     Content="{Binding SecondOption}"
-                    ToolTip="{Binding SecondTooltip}">
+                    ToolTip="{Binding SecondTooltip}"
+                    ToolTipService.IsEnabled="{Binding SecondTooltipIsEnabled}">
                 <Button.CommandParameter>
                     <system:Boolean>False</system:Boolean>
                 </Button.CommandParameter>

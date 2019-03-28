@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using MaterialDesignThemes.Wpf;
+using Quartz;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,48 +20,60 @@ namespace tspAuto
             TarihSec.Language = System.Windows.Markup.XmlLanguage.GetLanguage("tr-TR");
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             if ((bool)HatirlaticiEklensin.IsChecked)
             {
-                if (TarihSec.Text != string.Empty && SaatSec.Text != string.Empty)
+                try
                 {
-                    foreach (Window window in Application.Current.Windows)
+                    DateTime trh = Convert.ToDateTime(TarihSec.SelectedDate);
+                    DateTime st = Convert.ToDateTime(SaatSec.SelectedTime);
+
+                    DateTime tarih = new DateTime(trh.Year, trh.Month, trh.Day, st.Hour, st.Minute, 0, DateTimeKind.Local);
+
+                    var view = new BenimDialog
                     {
-                        if (window.GetType() == typeof(MainWindow))
+                        DataContext = new BenimDialogViewModel($"Hatırlatıcı için seçilen zaman:\n{tarih.ToString("dd MMMM yyyy dddd HH:mm")}\nDevam etmek istiyor musunuz?",
+                        "EVET",
+                        "HAYIR")
+                    };
+
+                    var result = await DialogHost.Show(view, "RootDialog");
+
+                    if (Convert.ToBoolean(result))
+                    {
+                        foreach (Window window in Application.Current.Windows)
                         {
-                            foreach (PanelItem item in (window as MainWindow).SolPanelListBox.Items)
+                            if (window.GetType() == typeof(MainWindow))
                             {
-                                if (item.Content.GetType() == typeof(Hatirlatici))
+                                foreach (PanelItem item in (window as MainWindow).SolPanelListBox.Items)
                                 {
-                                    DateTime trh = Convert.ToDateTime(TarihSec.SelectedDate);
-                                    DateTime st = Convert.ToDateTime(SaatSec.SelectedTime);
+                                    if (item.Content.GetType() == typeof(Hatirlatici))
+                                    {
+                                        // define the job and tie it to our Gorev class
+                                        IJobDetail job = JobBuilder.Create<Gorev>()
+                                            .UsingJobData("Baslik", Baslik.Text)
+                                            .UsingJobData("Aciklama", Aciklama.Text)
+                                            .Build();
 
-                                    DateTime tarih = new DateTime(trh.Year, trh.Month, trh.Day, st.Hour, st.Minute, 0);
+                                        // trigger builder creates simple trigger by default, actually an ITrigger is returned
+                                        ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
+                                            .StartAt(tarih)
+                                            .Build();
 
-                                    // define the job and tie it to our Gorev class
-                                    IJobDetail job = JobBuilder.Create<Gorev>()
-                                        .UsingJobData("Baslik", Baslik.Text)
-                                        .UsingJobData("Aciklama", Aciklama.Text)
-                                        .Build();
-
-                                    // trigger builder creates simple trigger by default, actually an ITrigger is returned
-                                    ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
-                                        .StartAt(new DateTimeOffset(tarih, new TimeSpan(+3, 0, 0)))
-                                        .Build();
-
-                                    // Tell quartz to schedule the job using our trigger
-                                    (item.Content as Hatirlatici).scheduler.ScheduleJob(job, trigger);
-                                    break;
+                                        // Tell quartz to schedule the job using our trigger
+                                        (item.Content as Hatirlatici).scheduler.ScheduleJob(job, trigger);
+                                        break;
+                                    }
                                 }
+                                break;
                             }
-                            break;
                         }
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Tarih ve saat seçmelisiniz.");
+                    MessageBox.Show(ex.ToString());
                 }
             }
         }

@@ -1,13 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace tspAuto.Domain
 {
-    class VeritabaniDialogViewModel : INotifyPropertyChanged
+    class BenimDialogViewModel : INotifyPropertyChanged
     {
         private string _name;
         private string _first_option;
@@ -15,7 +11,7 @@ namespace tspAuto.Domain
         private string _first_tooltip;
         private string _second_tooltip;
 
-        public VeritabaniDialogViewModel(string name, string first_option, string second_option, string first_tooltip = "", string second_tooltip = "")
+        public BenimDialogViewModel(string name, string first_option, string second_option, string first_tooltip = "", string second_tooltip = "")
         {
             _name = name;
             _first_option = first_option;
@@ -67,6 +63,16 @@ namespace tspAuto.Domain
             {
                 this.MutateVerbose(ref _second_tooltip, value, RaisePropertyChanged());
             }
+        }
+
+        public bool FirstTooltipIsEnabled
+        {
+            get { return FirstTooltip != ""; }
+        }
+
+        public bool SecondTooltipIsEnabled
+        {
+            get { return SecondTooltip != ""; }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

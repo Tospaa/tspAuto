@@ -123,10 +123,10 @@
     <Compile Include="Domain\MainWindowViewModel.cs" />
     <Compile Include="Domain\NotifyPropertyChangedExtension.cs" />
     <Compile Include="Domain\PanelItem.cs" />
-    <Compile Include="Domain\VeritabaniDialog.xaml.cs">
-      <DependentUpon>VeritabaniDialog.xaml</DependentUpon>
+    <Compile Include="Domain\BenimDialog.xaml.cs">
+      <DependentUpon>BenimDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Domain\VeritabaniDialogViewModel.cs" />
+    <Compile Include="Domain\BenimDialogViewModel.cs" />
     <Compile Include="Hatirlatici.xaml.cs">
       <DependentUpon>Hatirlatici.xaml</DependentUpon>
     </Compile>
@@ -148,7 +148,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Domain\VeritabaniDialog.xaml">
+    <Page Include="Domain\BenimDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

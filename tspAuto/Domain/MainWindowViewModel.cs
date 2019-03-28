@@ -32,9 +32,9 @@ namespace tspAuto.Domain
                 //Bir veritabanı halihazırda seçili demektir.
 
                 //let's set up a little MVVM, cos that's what the cool kids are doing:
-                var view = new VeritabaniDialog
+                var view = new BenimDialog
                 {
-                    DataContext = new VeritabaniDialogViewModel($"Zaten bir veritabanı seçilmiş. Bu veritabanı yerine başka bir veritabanı seçmek istiyor musunuz?\n{Properties.Settings.Default.DatabaseFilePath}","EVET","HAYIR","Mevcut veritabanının otomatik bir yedeği oluşturulacaktır.","Mevcut veritabanını kullanmaya devam et.")
+                    DataContext = new BenimDialogViewModel($"Zaten bir veritabanı seçilmiş. Bu veritabanı yerine başka bir veritabanı seçmek istiyor musunuz?\n{Properties.Settings.Default.DatabaseFilePath}","EVET","HAYIR","Mevcut veritabanının otomatik bir yedeği oluşturulacaktır.","Mevcut veritabanını kullanmaya devam et.")
                 };
 
                 //show the dialog
@@ -54,9 +54,9 @@ namespace tspAuto.Domain
                     }
 
                     //let's set up a little MVVM, cos that's what the cool kids are doing:
-                    view = new VeritabaniDialog
+                    view = new BenimDialog
                     {
-                        DataContext = new VeritabaniDialogViewModel("Yeni bir veritabanı oluşturmak mı yoksa var olan bir veritabanını yüklemek mi istersiniz?", "YENİ", "VAR OLAN", "Sıfırdan yeni bir veri tabanı oluşturur.", "Daha önce oluşturulmuş bir veritabanını yüklemenizi sağlar.")
+                        DataContext = new BenimDialogViewModel("Yeni bir veritabanı oluşturmak mı yoksa var olan bir veritabanını yüklemek mi istersiniz?", "YENİ", "VAR OLAN", "Sıfırdan yeni bir veri tabanı oluşturur.", "Daha önce oluşturulmuş bir veritabanını yüklemenizi sağlar.")
                     };
 
                     //show the dialog
@@ -100,9 +100,9 @@ namespace tspAuto.Domain
                 }
 
                 //let's set up a little MVVM, cos that's what the cool kids are doing:
-                var view = new VeritabaniDialog
+                var view = new BenimDialog
                 {
-                    DataContext = new VeritabaniDialogViewModel("Yeni bir veritabanı oluşturmak mı yoksa var olan bir veritabanını yüklemek mi istersiniz?", "YENİ", "VAR OLAN", "Sıfırdan yeni bir veri tabanı oluşturur.", "Daha önce oluşturulmuş bir veritabanını yüklemenizi sağlar.")
+                    DataContext = new BenimDialogViewModel("Yeni bir veritabanı oluşturmak mı yoksa var olan bir veritabanını yüklemek mi istersiniz?", "YENİ", "VAR OLAN", "Sıfırdan yeni bir veri tabanı oluşturur.", "Daha önce oluşturulmuş bir veritabanını yüklemenizi sağlar.")
                 };
 
                 //show the dialog

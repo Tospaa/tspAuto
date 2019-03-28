@@ -20,11 +20,11 @@
                 Width="24" />
         </Button>
         <DataGrid Name="HatirlaticiTablosu" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 
-                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True">
+                  CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True"
+                  MouseDoubleClick="HatirlaticiTablosu_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Hatırlatıcı Adı" Binding="{Binding HatirlaticiAdi}"/>
                 <DataGridTextColumn Header="Hatırlatıcı Zamanı" Binding="{Binding HatirlaticiZamani}"/>
-                <DataGridTextColumn Binding="{Binding HatirlaticiKey}" Visibility="Hidden"/>
             </DataGrid.Columns>
         </DataGrid>
     </StackPanel>
