@@ -149,6 +149,15 @@ namespace tspAuto.Domain
                             TCKimlik            TEXT      NOT NULL
                             );";
 
+            string sql3 = @"CREATE TABLE IF NOT EXISTS Hatirlaticilar(
+                            ID   INTEGER PRIMARY KEY AUTOINCREMENT,
+                            Baslik              TEXT      NOT NULL,
+                            Aciklama            TEXT      NOT NULL,
+                            Zaman               TEXT      NOT NULL,
+                            HatirlaticiTablo    TEXT      NOT NULL,
+                            HatirlaticiID       INTEGER   NOT NULL
+                            );";
+
             bool basarili = false;
 
             try
@@ -156,7 +165,7 @@ namespace tspAuto.Domain
                 using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
                 {
                     con.Open();
-                    new SQLiteCommand(sql1 + sql2, con).ExecuteNonQuery();
+                    new SQLiteCommand(sql1 + sql2 + sql3, con).ExecuteNonQuery();
 
                     basarili = true;
                 }

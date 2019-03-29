@@ -18,34 +18,6 @@ namespace tspAuto
             VekTarihi.Language = System.Windows.Markup.XmlLanguage.GetLanguage("tr-TR");
         }
 
-        private SQLiteCommand Generate_Insert_Command(string table, string[] columns, object[] values, SQLiteConnection con)
-        {
-            string insertString = $"INSERT INTO {table}(";
-
-            foreach (string i in columns)
-            {
-                insertString += i + ",";
-            }
-
-            insertString = insertString.Substring(0, insertString.Length - 1) + ") VALUES(";
-
-            foreach (string i in columns)
-            {
-                insertString += "@" + i + ",";
-            }
-
-            insertString = insertString.Substring(0, insertString.Length - 1) + ");";
-
-            SQLiteCommand command = new SQLiteCommand(insertString, con);
-            
-            for (int i = 0; i < columns.Length; i++)
-            {
-                command.Parameters.AddWithValue(columns[i], values[i]);
-            }
-
-            return command;
-        }
-
         private void Sahis_Kaydet_Button_Click(object sender, RoutedEventArgs e)
         {
             if (MuvekkilTuru.SelectedIndex == 0)
@@ -105,7 +77,7 @@ namespace tspAuto
                             using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
                             {
                                 con.Open();
-                                Generate_Insert_Command("MuvekkilSahis", columns, values, con).ExecuteNonQuery();
+                                Domain.MethodPack.Generate_Insert_Command("MuvekkilSahis", columns, values, con).ExecuteNonQuery();
 
                                 basarili = true;
                             }
@@ -210,7 +182,7 @@ namespace tspAuto
                             using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
                             {
                                 con.Open();
-                                Generate_Insert_Command("MuvekkilSirket", columns, values, con).ExecuteNonQuery();
+                                Domain.MethodPack.Generate_Insert_Command("MuvekkilSirket", columns, values, con).ExecuteNonQuery();
 
                                 basarili = true;
                             }

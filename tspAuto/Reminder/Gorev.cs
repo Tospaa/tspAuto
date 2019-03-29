@@ -11,6 +11,8 @@ namespace tspAuto.Reminder
             JobDataMap dataMap = context.JobDetail.JobDataMap;
             string baslik = dataMap.GetString("Baslik");
             string aciklama = dataMap.GetString("Aciklama");
+            string tablo = dataMap.GetString("Tablo");
+            int id = dataMap.GetInt("ID");
 
             try
             {

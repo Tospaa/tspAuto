@@ -98,8 +98,8 @@
                         Aş.Yük.Müh. Yeşillerin Fevzi
                     </ComboBoxItem>
                 </ComboBox>
-                <Button Grid.Column="2" Grid.Row="6" HorizontalAlignment="Center"
-                        Style="{StaticResource MaterialDesignRaisedDarkButton}">
+                <Button Grid.Column="2" Grid.Row="6" HorizontalAlignment="Stretch"
+                        Style="{StaticResource MaterialDesignFlatButton}">
                     DOSYA SEÇİNİZ
                 </Button>
                 <CheckBox Grid.Column="2" Grid.Row="7" IsChecked="True"

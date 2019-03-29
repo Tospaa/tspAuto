@@ -40,7 +40,7 @@ namespace tspAuto
 
                     var result = await DialogHost.Show(view, "RootDialog");
 
-                    if (Convert.ToBoolean(result))
+                    if (Convert.ToBoolean(result) && Baslik.Text != string.Empty && Aciklama.Text != string.Empty)
                     {
                         foreach (Window window in Application.Current.Windows)
                         {
@@ -54,6 +54,8 @@ namespace tspAuto
                                         IJobDetail job = JobBuilder.Create<Gorev>()
                                             .UsingJobData("Baslik", Baslik.Text)
                                             .UsingJobData("Aciklama", Aciklama.Text)
+                                            .UsingJobData("Tablo", "Tablosuz")
+                                            .UsingJobData("ID", 0)
                                             .Build();
 
                                         // trigger builder creates simple trigger by default, actually an ITrigger is returned
@@ -62,13 +64,17 @@ namespace tspAuto
                                             .Build();
 
                                         // Tell quartz to schedule the job using our trigger
-                                        (item.Content as Hatirlatici).scheduler.ScheduleJob(job, trigger);
+                                        await (item.Content as Hatirlatici).scheduler.ScheduleJob(job, trigger);
                                         break;
                                     }
                                 }
                                 break;
                             }
                         }
+                    }
+                    else if (Baslik.Text == string.Empty || Aciklama.Text == string.Empty)
+                    {
+                        MessageBox.Show("Başlık ve açıklama kısımları boş olamaz.");
                     }
                 }
                 catch (Exception ex)

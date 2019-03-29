@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="Domain\AnotherCommandImplementation.cs" />
     <Compile Include="Domain\MainWindowViewModel.cs" />
+    <Compile Include="Domain\MethodPack.cs" />
     <Compile Include="Domain\NotifyPropertyChangedExtension.cs" />
     <Compile Include="Domain\PanelItem.cs" />
     <Compile Include="Domain\BenimDialog.xaml.cs">

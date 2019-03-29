@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Quartz;
+using Quartz.Impl.Matchers;
+using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -151,6 +155,77 @@ namespace tspAuto
                 {
                     if (item.Content.GetType() == typeof(Hatirlatici))
                     {
+                        try
+                        {
+                            if (Properties.Settings.Default.DatabaseFilePath != "" && System.IO.File.Exists(Properties.Settings.Default.DatabaseFilePath))
+                            {
+                                string[] columns = new string[]
+                                {
+                                    "Baslik",
+                                    "Aciklama",
+                                    "Zaman",
+                                    "HatirlaticiTablo",
+                                    "HatirlaticiID"
+                                };
+
+                                bool basarili = false;
+
+                                IReadOnlyCollection<TriggerKey> allTriggerKeys = (item.Content as Hatirlatici).scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup()).GetAwaiter().GetResult();
+
+                                try
+                                {
+                                    using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
+                                    {
+                                        con.Open();
+                                        new SQLiteCommand("DELETE FROM Hatirlaticilar;", con).ExecuteNonQuery();
+                                        foreach (TriggerKey triggerKey in allTriggerKeys)
+                                        {
+                                            ITrigger triggerdetails = (item.Content as Hatirlatici).scheduler.GetTrigger(triggerKey).GetAwaiter().GetResult();
+                                            IJobDetail jobDetail = (item.Content as Hatirlatici).scheduler.GetJobDetail(triggerdetails.JobKey).GetAwaiter().GetResult();
+
+                                            object[] values = new object[]
+                                            {
+                                                jobDetail.JobDataMap.GetString("Baslik"),
+                                                jobDetail.JobDataMap.GetString("Aciklama"),
+                                                triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
+                                                jobDetail.JobDataMap.GetString("Tablo"),
+                                                jobDetail.JobDataMap.GetInt("ID")
+                                            };
+
+                                            MethodPack.Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();
+                                        }
+
+                                        basarili = true;
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    System.Windows.MessageBox.Show("Veritabanı işlemi sırasında bir hata oluştu.\n\n" + ex.Message);
+                                }
+                                finally
+                                {
+                                    GC.Collect();
+                                    GC.WaitForPendingFinalizers();
+                                    if (!basarili)
+                                    {
+                                        System.Windows.MessageBox.Show("Veritabanı girdisi yapılamadı.");
+                                    }
+                                }
+                            }
+                            else if (Properties.Settings.Default.DatabaseFilePath == "")
+                            {
+                                System.Windows.MessageBox.Show("Veritabanı seçilmemiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                            }
+                            else if (!System.IO.File.Exists(Properties.Settings.Default.DatabaseFilePath))
+                            {
+                                System.Windows.MessageBox.Show("Veritabanı silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                            }
+                        }
+                        catch (System.IO.DirectoryNotFoundException)
+                        {
+                            System.Windows.MessageBox.Show("Bazı dosyalar silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                        }
+
                         // and last shut down the scheduler when you are ready to close your program
                         (item.Content as Hatirlatici).scheduler.Shutdown();
                         break;

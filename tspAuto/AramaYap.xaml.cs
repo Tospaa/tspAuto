@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Data.SQLite;
 using System.Data;
 using System.Text.RegularExpressions;
+using tspAuto.Domain;
 
 namespace tspAuto
 {
@@ -22,57 +23,6 @@ namespace tspAuto
             if (AramaKutusu.Text.Length >= 1)
             {
                 Arama();
-            }
-        }
-
-        private SQLiteCommand Generate_Query_String(string table, string[] columns, SQLiteConnection con)
-        {
-            if (new Regex("[ğĞüÜşŞıİöÖçÇ]").Match(AramaKutusu.Text).Success)
-            {
-                // (?i) ignores case sensitivity
-                string arama = AramaKutusu.Text;
-
-                arama = new Regex("[ğĞ]").Replace(arama, "[ğĞ]");
-                arama = new Regex("[üÜ]").Replace(arama, "[üÜ]");
-                arama = new Regex("[şŞ]").Replace(arama, "[şŞ]");
-                arama = new Regex("[ıI]").Replace(arama, "[ıI]");
-                arama = new Regex("[iİ]").Replace(arama, "[iİ]");
-                arama = new Regex("[öÖ]").Replace(arama, "[öÖ]");
-                arama = new Regex("[çÇ]").Replace(arama, "[çÇ]");
-
-                arama = "(?i)" + arama;
-
-                string queryString = $"SELECT * FROM {table} WHERE(";
-
-                foreach (string i in columns)
-                {
-                    queryString += $"{i} REGEXP @arama OR ";
-                }
-
-                queryString = queryString.Substring(0, queryString.Length - 4) + ")";
-
-                SQLiteCommand command = new SQLiteCommand(queryString, con);
-
-                command.Parameters.AddWithValue("arama", arama);
-
-                return command;
-            }
-            else
-            {
-                string queryString = $"SELECT * FROM {table} WHERE(";
-
-                foreach (string i in columns)
-                {
-                    queryString += $"{i} LIKE @arama OR ";
-                }
-
-                queryString = queryString.Substring(0, queryString.Length - 4) + ")";
-
-                SQLiteCommand command = new SQLiteCommand(queryString, con);
-
-                command.Parameters.AddWithValue("arama", "%" + AramaKutusu.Text + "%");
-
-                return command;
             }
         }
 
@@ -104,7 +54,7 @@ namespace tspAuto
                 };
                 using (SQLiteConnection con = new SQLiteConnection($@"Data Source={Properties.Settings.Default.DatabaseFilePath}"))
                 {
-                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(Generate_Query_String("MuvekkilSirket", columns, con)))
+                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSirket", columns, con)))
                     {
                         dataAdapter.Fill(dataSet);
                     }
@@ -147,7 +97,7 @@ namespace tspAuto
                 };
                 using (SQLiteConnection con = new SQLiteConnection($@"Data Source={Properties.Settings.Default.DatabaseFilePath}"))
                 {
-                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(Generate_Query_String("MuvekkilSahis", columns, con)))
+                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSahis", columns, con)))
                     {
                         dataAdapter.Fill(dataSet);
                     }
