@@ -29,8 +29,6 @@ namespace tspAuto
             scheduler = RunProgram().GetAwaiter().GetResult();
 
             VeritabaniOku().GetAwaiter().GetResult();
-
-            Yenile_Button_Click(new object(), new System.Windows.RoutedEventArgs());
         }
 
         private static async Task<IScheduler> RunProgram()
@@ -140,11 +138,11 @@ namespace tspAuto
                     {
                         string[] columns = new string[]
                         {
-                                    "Baslik",
-                                    "Aciklama",
-                                    "Zaman",
-                                    "HatirlaticiTablo",
-                                    "HatirlaticiID"
+                            "Baslik",
+                            "Aciklama",
+                            "Zaman",
+                            "HatirlaticiTablo",
+                            "HatirlaticiID"
                         };
 
                         bool basarili = false;
@@ -162,11 +160,11 @@ namespace tspAuto
 
                                     object[] values = new object[]
                                     {
-                                                jobDetail.JobDataMap.GetString("Baslik"),
-                                                jobDetail.JobDataMap.GetString("Aciklama"),
-                                                triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
-                                                jobDetail.JobDataMap.GetString("Tablo"),
-                                                jobDetail.JobDataMap.GetInt("ID")
+                                        jobDetail.JobDataMap.GetString("Baslik"),
+                                        jobDetail.JobDataMap.GetString("Aciklama"),
+                                        triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
+                                        jobDetail.JobDataMap.GetString("Tablo"),
+                                        jobDetail.JobDataMap.GetInt("ID")
                                     };
 
                                     MethodPack.Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();

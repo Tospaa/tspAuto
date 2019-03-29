@@ -248,32 +248,33 @@ namespace tspAuto
             VergiNo.Text = string.Empty;
             MersisNo.Text = string.Empty;
         }
+    }
 
-        private void MuvekkilTuru_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    public class BooleanInverseConverter : System.Windows.Data.IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (MuvekkilTuru.SelectedIndex == 0)
+            try
             {
-                //Şahıs seçili demektir
-                SirketExpander.IsExpanded = false;
-                SirketExpander.IsEnabled = false;
-                SahisExpander.IsExpanded = true;
-                SahisExpander.IsEnabled = true;
+                var newVal = System.Convert.ToBoolean(value);
+                return !newVal;
             }
-            else if (MuvekkilTuru.SelectedIndex == 1)
+            catch
             {
-                //Şirket seçili demektir
-                SahisExpander.IsExpanded = false;
-                SahisExpander.IsEnabled = false;
-                SirketExpander.IsExpanded = true;
-                SirketExpander.IsEnabled = true;
+                throw new InvalidCastException("Value can't be converted to boolean.");
             }
-            else
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            try
             {
-                //Boş demektir
-                SahisExpander.IsExpanded = false;
-                SahisExpander.IsEnabled = false;
-                SirketExpander.IsExpanded = false;
-                SirketExpander.IsEnabled = false;
+                var newVal = System.Convert.ToBoolean(value);
+                return !newVal;
+            }
+            catch
+            {
+                throw new InvalidCastException("Value can't be converted to boolean.");
             }
         }
     }

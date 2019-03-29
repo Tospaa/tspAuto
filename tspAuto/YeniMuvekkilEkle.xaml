@@ -19,6 +19,7 @@
             <Setter Property="Margin" Value="0 0 0 8" />
             <Setter Property="FontSize" Value="18" />
         </Style>
+        <local:BooleanInverseConverter x:Key="BooleanInverseConverter"/>
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <materialDesign:Card
@@ -82,8 +83,7 @@
                                  materialDesign:HintAssist.Hint="Müvekkil Numarası" />
                         <ComboBox Grid.Column="2" Grid.Row="1"
                                   Name="MuvekkilTuru"
-                                  materialDesign:HintAssist.Hint="Müvekkil Türü"
-                                  SelectionChanged="MuvekkilTuru_SelectionChanged">
+                                  materialDesign:HintAssist.Hint="Müvekkil Türü">
                             <ComboBoxItem>
                                 Şahıs
                             </ComboBoxItem>
@@ -168,8 +168,7 @@
                     HorizontalAlignment="Stretch"
                     Header="Şahıs Bilgileri"
                     Name="SahisExpander"
-                    IsExpanded="False"
-                    IsEnabled="False">
+                    IsExpanded="{Binding ElementName=MuvekkilTuru, Path=SelectedIndex, Converter={StaticResource BooleanInverseConverter}}">
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="16">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -204,8 +203,7 @@
                     HorizontalAlignment="Stretch"
                     Header="Şirket Bilgileri"
                     Name="SirketExpander"
-                    IsExpanded="False"
-                    IsEnabled="False">
+                    IsExpanded="{Binding ElementName=MuvekkilTuru, Path=SelectedIndex}">
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="16">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
