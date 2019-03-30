@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Data.SQLite;
-using System.IO;
+using tspAuto.Domain;
 
 namespace tspAuto
 {
@@ -22,97 +21,67 @@ namespace tspAuto
         {
             if (MuvekkilTuru.SelectedIndex == 0)
             {
-                try
+                string[] columns = new string[]
                 {
-                    if (Properties.Settings.Default.DatabaseFilePath != "" && File.Exists(Properties.Settings.Default.DatabaseFilePath))
-                    {
-                        string[] columns = new string[]
-                        {
-                            "MuvekkilNo",
-                            "MuvekkilTuru",
-                            "NoterIsmi",
-                            "VekaletTarihi",
-                            "VekYevmiyeNo",
-                            "AhzuKabza",
-                            "Feragat",
-                            "Ibra",
-                            "Sulh",
-                            "Banka",
-                            "Sube",
-                            "IBANno",
-                            "Adres",
-                            "Telefon",
-                            "Fax",
-                            "Email",
-                            "IsimSoyisim",
-                            "TCKimlik"
-                        };
+                    "MuvekkilNo",
+                    "MuvekkilTuru",
+                    "NoterIsmi",
+                    "VekaletTarihi",
+                    "VekYevmiyeNo",
+                    "AhzuKabza",
+                    "Feragat",
+                    "Ibra",
+                    "Sulh",
+                    "Banka",
+                    "Sube",
+                    "IBANno",
+                    "Adres",
+                    "Telefon",
+                    "Fax",
+                    "Email",
+                    "IsimSoyisim",
+                    "TCKimlik"
+                };
 
-                        object[] values = new object[]
-                        {
-                            MuvekkilNo.Text,
-                            MuvekkilTuru.Text,
-                            NoterIsmi.Text,
-                            string.Format("{0:dd.MM.yyyy}", VekTarihi.SelectedDate),
-                            VekYevNo.Text,
-                            AhzuKabza.SelectedIndex,
-                            Feragat.SelectedIndex,
-                            Ibra.SelectedIndex,
-                            Sulh.SelectedIndex,
-                            Banka.Text,
-                            Sube.Text,
-                            IBANno.Text,
-                            Adres.Text,
-                            Telefon.Text,
-                            Fax.Text,
-                            Email.Text,
-                            IsimSoyisim.Text,
-                            TCKimlik.Text
-                        };
+                object[] values = new object[]
+                {
+                    MuvekkilNo.Text,
+                    MuvekkilTuru.Text,
+                    NoterIsmi.Text,
+                    string.Format("{0:dd.MM.yyyy}", VekTarihi.SelectedDate),
+                    VekYevNo.Text,
+                    AhzuKabza.SelectedIndex,
+                    Feragat.SelectedIndex,
+                    Ibra.SelectedIndex,
+                    Sulh.SelectedIndex,
+                    Banka.Text,
+                    Sube.Text,
+                    IBANno.Text,
+                    Adres.Text,
+                    Telefon.Text,
+                    Fax.Text,
+                    Email.Text,
+                    IsimSoyisim.Text,
+                    TCKimlik.Text
+                };
 
-                        bool basarili = false;
+                bool basarili = false;
 
-                        try
-                        {
-                            using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
-                            {
-                                con.Open();
-                                Domain.MethodPack.Generate_Insert_Command("MuvekkilSahis", columns, values, con).ExecuteNonQuery();
+                MethodPack.VeritabaniKodBlogu((con) => {
+                    con.Open();
+                    MethodPack.Generate_Insert_Command("MuvekkilSahis", columns, values, con).ExecuteNonQuery();
 
-                                basarili = true;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Veritabanı işlemi sırasında bir hata oluştu.\n\n" + ex.Message);
-                        }
-                        finally
-                        {
-                            GC.Collect();
-                            GC.WaitForPendingFinalizers();
-                            if (basarili)
-                            {
-                                MessageBox.Show("Veritabanı girdisi başarılı.");
-                                Temizle();
-                            }
-                            else
-                            {
-                                MessageBox.Show("Veritabanı girdisi yapılamadı.");
-                            }
-                        }
-                    }
-                    else if (Properties.Settings.Default.DatabaseFilePath == "")
-                    {
-                        MessageBox.Show("Veritabanı seçilmemiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
-                    }
-                    else if (!File.Exists(Properties.Settings.Default.DatabaseFilePath))
-                    {
-                        MessageBox.Show("Veritabanı silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
-                    }
+                    basarili = true;
+                });
+
+                if (basarili)
+                {
+                    MessageBox.Show("Veritabanı girdisi başarılı.");
+                    Temizle();
                 }
-                catch (DirectoryNotFoundException)
+                else
                 {
-                    MessageBox.Show("Bazı dosyalar silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                    MessageBox.Show("Veritabanı girdisi yapılamadı.");
                 }
             }
         }
@@ -121,103 +90,73 @@ namespace tspAuto
         {
             if (MuvekkilTuru.SelectedIndex == 1)
             {
-                try
+                string[] columns = new string[]
                 {
-                    if (Properties.Settings.Default.DatabaseFilePath != "" && File.Exists(Properties.Settings.Default.DatabaseFilePath))
-                    {
-                        string[] columns = new string[]
-                        {
-                            "MuvekkilNo",
-                            "MuvekkilTuru",
-                            "NoterIsmi",
-                            "VekaletTarihi",
-                            "VekYevmiyeNo",
-                            "AhzuKabza",
-                            "Feragat",
-                            "Ibra",
-                            "Sulh",
-                            "Banka",
-                            "Sube",
-                            "IBANno",
-                            "Adres",
-                            "Telefon",
-                            "Fax",
-                            "Email",
-                            "SirketTuru",
-                            "SirketUnvan",
-                            "VergiDairesi",
-                            "VergiNo",
-                            "MersisNo"
-                        };
+                    "MuvekkilNo",
+                    "MuvekkilTuru",
+                    "NoterIsmi",
+                    "VekaletTarihi",
+                    "VekYevmiyeNo",
+                    "AhzuKabza",
+                    "Feragat",
+                    "Ibra",
+                    "Sulh",
+                    "Banka",
+                    "Sube",
+                    "IBANno",
+                    "Adres",
+                    "Telefon",
+                    "Fax",
+                    "Email",
+                    "SirketTuru",
+                    "SirketUnvan",
+                    "VergiDairesi",
+                    "VergiNo",
+                    "MersisNo"
+                };
 
-                        object[] values = new object[]
-                        {
-                            MuvekkilNo.Text,
-                            MuvekkilTuru.Text,
-                            NoterIsmi.Text,
-                            string.Format("{0:dd.MM.yyyy}", VekTarihi.SelectedDate),
-                            VekYevNo.Text,
-                            AhzuKabza.SelectedIndex,
-                            Feragat.SelectedIndex,
-                            Ibra.SelectedIndex,
-                            Sulh.SelectedIndex,
-                            Banka.Text,
-                            Sube.Text,
-                            IBANno.Text,
-                            Adres.Text,
-                            Telefon.Text,
-                            Fax.Text,
-                            Email.Text,
-                            SirketTuru.Text,
-                            SirketUnvan.Text,
-                            VergiDairesi.Text,
-                            VergiNo.Text,
-                            MersisNo.Text
-                        };
+                object[] values = new object[]
+                {
+                    MuvekkilNo.Text,
+                    MuvekkilTuru.Text,
+                    NoterIsmi.Text,
+                    string.Format("{0:dd.MM.yyyy}", VekTarihi.SelectedDate),
+                    VekYevNo.Text,
+                    AhzuKabza.SelectedIndex,
+                    Feragat.SelectedIndex,
+                    Ibra.SelectedIndex,
+                    Sulh.SelectedIndex,
+                    Banka.Text,
+                    Sube.Text,
+                    IBANno.Text,
+                    Adres.Text,
+                    Telefon.Text,
+                    Fax.Text,
+                    Email.Text,
+                    SirketTuru.Text,
+                    SirketUnvan.Text,
+                    VergiDairesi.Text,
+                    VergiNo.Text,
+                    MersisNo.Text
+                };
 
-                        bool basarili = false;
+                bool basarili = false;
 
-                        try
-                        {
-                            using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
-                            {
-                                con.Open();
-                                Domain.MethodPack.Generate_Insert_Command("MuvekkilSirket", columns, values, con).ExecuteNonQuery();
+                MethodPack.VeritabaniKodBlogu((con) => {
+                    con.Open();
+                    MethodPack.Generate_Insert_Command("MuvekkilSirket", columns, values, con).ExecuteNonQuery();
 
-                                basarili = true;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Veritabanı işlemi sırasında bir hata oluştu.\n\n" + ex.Message);
-                        }
-                        finally
-                        {
-                            GC.Collect();
-                            GC.WaitForPendingFinalizers();
-                            if (basarili)
-                            {
-                                MessageBox.Show("Veritabanı girdisi başarılı.");
-                                Temizle();
-                            }
-                            else
-                            {
-                                MessageBox.Show("Veritabanı girdisi yapılamadı.");
-                            }
-                        }
-                    }
-                    else if (Properties.Settings.Default.DatabaseFilePath == "")
-                    {
-                        MessageBox.Show("Veritabanı seçilmemiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
-                    }
-                    else if (!File.Exists(Properties.Settings.Default.DatabaseFilePath))
-                    {
-                        MessageBox.Show("Veritabanı silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
-                    }
+                    basarili = true;
+                });
+
+                if (basarili)
+                {
+                    MessageBox.Show("Veritabanı girdisi başarılı.");
+                    Temizle();
                 }
-                catch (DirectoryNotFoundException)
+                else
                 {
-                    MessageBox.Show("Bazı dosyalar silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                    MessageBox.Show("Veritabanı girdisi yapılamadı.");
                 }
             }
         }
@@ -225,7 +164,7 @@ namespace tspAuto
         private void Temizle()
         {
             MuvekkilNo.Text = string.Empty;
-            MuvekkilTuru.Text = null;
+            MuvekkilTuru.SelectedIndex = 0;
             NoterIsmi.Text = string.Empty;
             VekTarihi.Text = string.Empty;
             VekYevNo.Text = string.Empty;

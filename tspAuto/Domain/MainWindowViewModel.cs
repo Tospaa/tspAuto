@@ -150,7 +150,6 @@ namespace tspAuto.Domain
                             );";
 
             string sql3 = @"CREATE TABLE IF NOT EXISTS Hatirlaticilar(
-                            ID   INTEGER PRIMARY KEY AUTOINCREMENT,
                             Baslik              TEXT      NOT NULL,
                             Aciklama            TEXT      NOT NULL,
                             Zaman               TEXT      NOT NULL,

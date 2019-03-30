@@ -5,6 +5,7 @@ using System.Data.SQLite;
 using System.Data;
 using System.Text.RegularExpressions;
 using tspAuto.Domain;
+using MaterialDesignThemes.Wpf;
 
 namespace tspAuto
 {
@@ -30,91 +31,114 @@ namespace tspAuto
         {
             DataSet dataSet = new DataSet();
 
-            try
+            string[] columns = new string[]
             {
-                string[] columns = new string[]
+                "MuvekkilNo",
+                "MuvekkilTuru",
+                "NoterIsmi",
+                "VekaletTarihi",
+                "VekYevmiyeNo",
+                "Banka",
+                "Sube",
+                "IBANno",
+                "Adres",
+                "Telefon",
+                "Fax",
+                "Email",
+                "SirketTuru",
+                "SirketUnvan",
+                "VergiDairesi",
+                "VergiNo",
+                "MersisNo"
+            };
+
+            MethodPack.VeritabaniKodBlogu((con) => {
+                using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSirket", columns, con)))
                 {
-                    "MuvekkilNo",
-                    "MuvekkilTuru",
-                    "NoterIsmi",
-                    "VekaletTarihi",
-                    "VekYevmiyeNo",
-                    "Banka",
-                    "Sube",
-                    "IBANno",
-                    "Adres",
-                    "Telefon",
-                    "Fax",
-                    "Email",
-                    "SirketTuru",
-                    "SirketUnvan",
-                    "VergiDairesi",
-                    "VergiNo",
-                    "MersisNo"
-                };
-                using (SQLiteConnection con = new SQLiteConnection($@"Data Source={Properties.Settings.Default.DatabaseFilePath}"))
-                {
-                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSirket", columns, con)))
-                    {
-                        dataAdapter.Fill(dataSet);
-                    }
+                    dataAdapter.Fill(dataSet);
                 }
 
-                MuvekkilSirketSonuc.ItemsSource = dataSet.Tables[0].DefaultView;
+                MuvekkilSirket.ItemsSource = dataSet.Tables[0].DefaultView;
                 MuvekkilSirketExpander.Header = $"Şirket Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("kötü kötü olduk\n\n" + ex.ToString());
-            }
-            finally
-            {
-                MuvekkilSirketSonuc.SelectedItem = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
+            });
 
             dataSet = new DataSet();
 
-            try
+            columns = new string[]
             {
-                string[] columns = new string[]
+                "MuvekkilNo",
+                "MuvekkilTuru",
+                "NoterIsmi",
+                "VekaletTarihi",
+                "VekYevmiyeNo",
+                "Banka",
+                "Sube",
+                "IBANno",
+                "Adres",
+                "Telefon",
+                "Fax",
+                "Email",
+                "IsimSoyisim",
+                "TCKimlik"
+            };
+
+            MethodPack.VeritabaniKodBlogu((con) => {
+                using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSahis", columns, con)))
                 {
-                    "MuvekkilNo",
-                    "MuvekkilTuru",
-                    "NoterIsmi",
-                    "VekaletTarihi",
-                    "VekYevmiyeNo",
-                    "Banka",
-                    "Sube",
-                    "IBANno",
-                    "Adres",
-                    "Telefon",
-                    "Fax",
-                    "Email",
-                    "IsimSoyisim",
-                    "TCKimlik"
-                };
-                using (SQLiteConnection con = new SQLiteConnection($@"Data Source={Properties.Settings.Default.DatabaseFilePath}"))
-                {
-                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSahis", columns, con)))
-                    {
-                        dataAdapter.Fill(dataSet);
-                    }
+                    dataAdapter.Fill(dataSet);
                 }
 
-                MuvekkilSahisSonuc.ItemsSource = dataSet.Tables[0].DefaultView;
+                MuvekkilSahis.ItemsSource = dataSet.Tables[0].DefaultView;
                 MuvekkilSahisExpander.Header = $"Şahıs Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
+            });
+        }
+
+        private async void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            try
+            {
+                DataRowView rowView = (DataRowView)(sender as DataGrid).SelectedItem;
+                string tablo = (sender as DataGrid).Name;
+
+                if (rowView != null)
+                {
+                    int girdiID = Convert.ToInt32(rowView["ID"]);
+
+                    var view = new AramaYapDialog
+                    {
+                        DataContext = new AramaYapDialogViewModel(tablo, girdiID)
+                    };
+
+                    var result = await DialogHost.Show(view, "RootDialog");
+
+                    if (Convert.ToInt32(result) == 1)
+                    {
+                        MessageBox.Show("güncelleyi seçtin");
+                    }
+                    else if (Convert.ToInt32(result) == 2)
+                    {
+                        var view_ = new BenimDialog
+                        {
+                            DataContext = new BenimDialogViewModel("Bu veritabanı girdisini silmek istediğinize emin misiniz?\n\nBu işlem geri alınamaz.",
+                            "EVET",
+                            "HAYIR")
+                        };
+
+                        result = await DialogHost.Show(view_, "RootDialog");
+
+                        if (Convert.ToBoolean(result))
+                        {
+                            MethodPack.VeritabaniKodBlogu((con) => {
+                                con.Open();
+                                new SQLiteCommand($"DELETE FROM {tablo} WHERE ID={girdiID};", con).ExecuteNonQuery();
+                            });
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("kötü kötü olduk\n\n" + ex.ToString());
-            }
-            finally
-            {
-                MuvekkilSahisSonuc.SelectedItem = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                MessageBox.Show(ex.ToString());
             }
         }
     }

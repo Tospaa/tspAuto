@@ -83,5 +83,50 @@ namespace tspAuto.Domain
                 return command;
             }
         }
+
+        public delegate void CodeBlock(SQLiteConnection con);
+
+        public static void VeritabaniKodBlogu(CodeBlock codeBlock)
+        {
+            try
+            {
+                if (Properties.Settings.Default.DatabaseFilePath != "" && System.IO.File.Exists(Properties.Settings.Default.DatabaseFilePath))
+                {
+                    try
+                    {
+                        using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
+                        {
+                            //code goes here
+                            codeBlock.Invoke(con);
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        System.Windows.MessageBox.Show("Veritabanı işlemi sırasında bir hata oluştu.\n\n" + ex.Message);
+                        return;
+                    }
+                    finally
+                    {
+                        System.GC.Collect();
+                        System.GC.WaitForPendingFinalizers();
+                    }
+                }
+                else if (Properties.Settings.Default.DatabaseFilePath == "")
+                {
+                    System.Windows.MessageBox.Show("Veritabanı seçilmemiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                    return;
+                }
+                else if (!System.IO.File.Exists(Properties.Settings.Default.DatabaseFilePath))
+                {
+                    System.Windows.MessageBox.Show("Veritabanı silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                    return;
+                }
+            }
+            catch (System.IO.DirectoryNotFoundException)
+            {
+                System.Windows.MessageBox.Show("Bazı dosyalar silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                return;
+            }
+        }
     }
 }

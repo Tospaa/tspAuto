@@ -9,6 +9,7 @@ using System.Collections.Specialized;
 using System.Data;
 using System.Data.SQLite;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using tspAuto.Domain;
 using tspAuto.Reminder;
@@ -60,25 +61,24 @@ namespace tspAuto
         {
             DataSet dataSet = new DataSet();
 
+            MethodPack.VeritabaniKodBlogu((con) => {
+                using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter("SELECT * FROM Hatirlaticilar", con))
+                {
+                    dataAdapter.Fill(dataSet);
+                }
+            });
+
             try
             {
-                using (SQLiteConnection con = new SQLiteConnection($@"Data Source={Properties.Settings.Default.DatabaseFilePath}"))
-                {
-                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter("SELECT * FROM Hatirlaticilar", con))
-                    {
-                        dataAdapter.Fill(dataSet);
-                    }
-                }
-
                 foreach (DataRowView i in dataSet.Tables[0].DefaultView)
                 {
-                    string baslik = i[1].ToString();
-                    string aciklama = i[2].ToString();
-                    string[] strzmn = i[3].ToString().Split(new char[] { '.' });
+                    string baslik = i["Baslik"].ToString();
+                    string aciklama = i["Aciklama"].ToString();
+                    string[] strzmn = i["Zaman"].ToString().Split(new char[] { '.' });
                     int[] zmn = Array.ConvertAll(strzmn, int.Parse);
                     DateTime tarih = new DateTime(zmn[0], zmn[1], zmn[2], zmn[3], zmn[4], 0, DateTimeKind.Local);
-                    string tablo = i[4].ToString();
-                    int id = Convert.ToInt32(i[5]);
+                    string tablo = i["HatirlaticiTablo"].ToString();
+                    int id = Convert.ToInt32(i["HatirlaticiID"]);
 
                     // define the job and tie it to our Gorev class
                     IJobDetail job = JobBuilder.Create<Gorev>()
@@ -99,16 +99,11 @@ namespace tspAuto
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString());
-            }
-            finally
-            {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                MessageBox.Show(ex.ToString());
             }
         }
 
-        private async void Yenile_Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private async void Yenile_Button_Click(object sender, RoutedEventArgs e)
         {
             if (scheduler != null)
             {
@@ -132,73 +127,43 @@ namespace tspAuto
                 HatirlaticiTablosu.SelectedItem = null;
                 #endregion
                 #region veritabanı kısmı
-                try
+                string[] columns = new string[]
                 {
-                    if (Properties.Settings.Default.DatabaseFilePath != "" && System.IO.File.Exists(Properties.Settings.Default.DatabaseFilePath))
+                    "Baslik",
+                    "Aciklama",
+                    "Zaman",
+                    "HatirlaticiTablo",
+                    "HatirlaticiID"
+                };
+
+                bool basarili = false;
+
+                MethodPack.VeritabaniKodBlogu(async (con) => {
+                    con.Open();
+                    new SQLiteCommand("DELETE FROM Hatirlaticilar;", con).ExecuteNonQuery();
+                    foreach (TriggerKey triggerKey in allTriggerKeys)
                     {
-                        string[] columns = new string[]
+                        ITrigger triggerdetails = await scheduler.GetTrigger(triggerKey);
+                        IJobDetail jobDetail = await scheduler.GetJobDetail(triggerdetails.JobKey);
+
+                        object[] values = new object[]
                         {
-                            "Baslik",
-                            "Aciklama",
-                            "Zaman",
-                            "HatirlaticiTablo",
-                            "HatirlaticiID"
+                            jobDetail.JobDataMap.GetString("Baslik"),
+                            jobDetail.JobDataMap.GetString("Aciklama"),
+                            triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
+                            jobDetail.JobDataMap.GetString("Tablo"),
+                            jobDetail.JobDataMap.GetInt("ID")
                         };
 
-                        bool basarili = false;
-
-                        try
-                        {
-                            using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
-                            {
-                                con.Open();
-                                new SQLiteCommand("DELETE FROM Hatirlaticilar;", con).ExecuteNonQuery();
-                                foreach (TriggerKey triggerKey in allTriggerKeys)
-                                {
-                                    ITrigger triggerdetails = await scheduler.GetTrigger(triggerKey);
-                                    IJobDetail jobDetail = await scheduler.GetJobDetail(triggerdetails.JobKey);
-
-                                    object[] values = new object[]
-                                    {
-                                        jobDetail.JobDataMap.GetString("Baslik"),
-                                        jobDetail.JobDataMap.GetString("Aciklama"),
-                                        triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
-                                        jobDetail.JobDataMap.GetString("Tablo"),
-                                        jobDetail.JobDataMap.GetInt("ID")
-                                    };
-
-                                    MethodPack.Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();
-                                }
-
-                                basarili = true;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            System.Windows.MessageBox.Show("Veritabanı işlemi sırasında bir hata oluştu.\n\n" + ex.Message);
-                        }
-                        finally
-                        {
-                            GC.Collect();
-                            GC.WaitForPendingFinalizers();
-                            if (!basarili)
-                            {
-                                System.Windows.MessageBox.Show("Veritabanı girdisi yapılamadı.");
-                            }
-                        }
+                        MethodPack.Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();
                     }
-                    else if (Properties.Settings.Default.DatabaseFilePath == "")
-                    {
-                        System.Windows.MessageBox.Show("Veritabanı seçilmemiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
-                    }
-                    else if (!System.IO.File.Exists(Properties.Settings.Default.DatabaseFilePath))
-                    {
-                        System.Windows.MessageBox.Show("Veritabanı silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
-                    }
-                }
-                catch (System.IO.DirectoryNotFoundException)
+
+                    basarili = true;
+                });
+
+                if (!basarili)
                 {
-                    System.Windows.MessageBox.Show("Bazı dosyalar silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
+                    MessageBox.Show("Veritabanı girdisi yapılamadı.");
                 }
                 #endregion
             }
@@ -230,7 +195,7 @@ namespace tspAuto
                     await scheduler.DeleteJob(item.HatirlaticiKey);
                 }
 
-                Yenile_Button_Click(new object(), new System.Windows.RoutedEventArgs());
+                Yenile_Button_Click(new object(), new RoutedEventArgs());
             }
         }
 
@@ -265,16 +230,16 @@ namespace tspAuto
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.MessageBox.Show(ex.ToString());
+                    MessageBox.Show(ex.ToString());
                 }
                 finally
                 {
-                    Yenile_Button_Click(new object(), new System.Windows.RoutedEventArgs());
+                    Yenile_Button_Click(new object(), new RoutedEventArgs());
                 }
             }
             else if (Baslik.Text == string.Empty || Aciklama.Text == string.Empty)
             {
-                System.Windows.MessageBox.Show("Başlık ve Açıklama kısımları boş olamaz.");
+                MessageBox.Show("Başlık ve Açıklama kısımları boş olamaz.");
             }
         }
     }

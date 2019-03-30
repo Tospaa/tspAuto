@@ -84,7 +84,7 @@
                         <ComboBox Grid.Column="2" Grid.Row="1"
                                   Name="MuvekkilTuru"
                                   materialDesign:HintAssist.Hint="Müvekkil Türü">
-                            <ComboBoxItem>
+                            <ComboBoxItem IsSelected="True">
                                 Şahıs
                             </ComboBoxItem>
                             <ComboBoxItem>

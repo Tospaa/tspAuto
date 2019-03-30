@@ -120,6 +120,10 @@
       <DependentUpon>AramaYap.xaml</DependentUpon>
     </Compile>
     <Compile Include="Domain\AnotherCommandImplementation.cs" />
+    <Compile Include="Domain\AramaYapDialog.xaml.cs">
+      <DependentUpon>AramaYapDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Domain\AramaYapDialogViewModel.cs" />
     <Compile Include="Domain\MainWindowViewModel.cs" />
     <Compile Include="Domain\MethodPack.cs" />
     <Compile Include="Domain\NotifyPropertyChangedExtension.cs" />
@@ -146,6 +150,10 @@
       <DependentUpon>YeniMuvekkilEkle.xaml</DependentUpon>
     </Compile>
     <Page Include="AramaYap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Domain\AramaYapDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
