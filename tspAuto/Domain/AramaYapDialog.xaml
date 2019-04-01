@@ -23,27 +23,19 @@
         </DataGrid>
         <StackPanel Orientation="Horizontal" Grid.Row="3"
                     Margin="0 16 0 0">
-            <Button IsDefault="True" Style="{DynamicResource MaterialDesignFlatButton}"
-                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
-                    Content="GÜNCELLE"
-                    ToolTip="Bu girdiyi yeni değerlerle güncelle">
-                <Button.CommandParameter>
-                    <system:Int32>1</system:Int32>
-                </Button.CommandParameter>
-            </Button>
-            <Button Style="{DynamicResource MaterialDesignFlatButton}" Margin="8 0 0 0"
+            <Button Style="{DynamicResource MaterialDesignFlatButton}" IsDefault="True"
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                     Content="SİL"
                     ToolTip="Bu girdiyi veritabanından sil">
                 <Button.CommandParameter>
-                    <system:Int32>2</system:Int32>
+                    <system:Boolean>True</system:Boolean>
                 </Button.CommandParameter>
             </Button>
             <Button IsCancel="True" Margin="8 0 0 0" Style="{DynamicResource MaterialDesignFlatButton}"
                     Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"
                     Content="KAPAT">
                 <Button.CommandParameter>
-                    <system:Int32>0</system:Int32>
+                    <system:Boolean>False</system:Boolean>
                 </Button.CommandParameter>
             </Button>
         </StackPanel>

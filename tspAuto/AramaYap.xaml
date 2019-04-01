@@ -7,6 +7,9 @@
              xmlns:local="clr-namespace:tspAuto"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local:DateToStringConverter x:Key="DateToStringConverter"/>
+    </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <materialDesign:Card
             Background="{DynamicResource MaterialDesignBackground}">
@@ -36,13 +39,24 @@
                     Name="MuvekkilSahisExpander"
                     Header="Şahıs Müvekkiller (0)">
                     <DataGrid Name="MuvekkilSahis" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 
-                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True"
-                              MouseDoubleClick="DataGrid_MouseDoubleClick">
+                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="False" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True"
+                              PreviewMouseRightButtonUp="DataGrid_PreviewMouseRightButtonUp" CellEditEnding="DataGrid_CellEditEnding">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Müvekkil No" Binding="{Binding MuvekkilNo}"/>
                             <DataGridTextColumn Header="Müvekkil Türü" Binding="{Binding MuvekkilTuru}"/>
                             <DataGridTextColumn Header="Noter İsmi" Binding="{Binding NoterIsmi}"/>
-                            <DataGridTextColumn Header="Vekalet Tarihi" Binding="{Binding VekaletTarihi}"/>
+                            <DataGridTemplateColumn Header="Vekalet Tarihi">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding VekaletTarihi}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding VekaletTarihi, Converter={StaticResource DateToStringConverter}}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Vek. Yevmiye No" Binding="{Binding VekYevmiyeNo}"/>
                             <DataGridCheckBoxColumn Header="Ahzu Kabza" Binding="{Binding AhzuKabza}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
                             <DataGridCheckBoxColumn Header="Feragat" Binding="{Binding Feragat}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
@@ -72,7 +86,7 @@
                     Header="Şirket Müvekkiller (0)">
                     <DataGrid Name="MuvekkilSirket" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 
                               CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True"
-                              MouseDoubleClick="DataGrid_MouseDoubleClick">
+                              PreviewMouseRightButtonUp="DataGrid_PreviewMouseRightButtonUp" CellEditEnding="DataGrid_CellEditEnding">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Müvekkil No" Binding="{Binding MuvekkilNo}"/>
                             <DataGridTextColumn Header="Müvekkil Türü" Binding="{Binding MuvekkilTuru}"/>

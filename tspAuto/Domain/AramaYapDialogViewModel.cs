@@ -9,7 +9,7 @@ namespace tspAuto.Domain
     {
         private DataView _dataView;
 
-        public AramaYapDialogViewModel(string tablo, int id)
+        public AramaYapDialogViewModel(string tablo, long id)
         {
             DataSet dataSet = new DataSet();
 

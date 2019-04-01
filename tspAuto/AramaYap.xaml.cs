@@ -93,7 +93,7 @@ namespace tspAuto
             });
         }
 
-        private async void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private async void DataGrid_PreviewMouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace tspAuto
 
                 if (rowView != null)
                 {
-                    int girdiID = Convert.ToInt32(rowView["ID"]);
+                    long girdiID = Convert.ToInt64(rowView["ID"]);
 
                     var view = new AramaYapDialog
                     {
@@ -111,12 +111,9 @@ namespace tspAuto
 
                     var result = await DialogHost.Show(view, "RootDialog");
 
-                    if (Convert.ToInt32(result) == 1)
+                    if (Convert.ToBoolean(result))
                     {
-                        MessageBox.Show("güncelleyi seçtin");
-                    }
-                    else if (Convert.ToInt32(result) == 2)
-                    {
+                        //sil butonuna basılmış
                         var view_ = new BenimDialog
                         {
                             DataContext = new BenimDialogViewModel("Bu veritabanı girdisini silmek istediğinize emin misiniz?\n\nBu işlem geri alınamaz.",
@@ -132,6 +129,7 @@ namespace tspAuto
                                 con.Open();
                                 new SQLiteCommand($"DELETE FROM {tablo} WHERE ID={girdiID};", con).ExecuteNonQuery();
                             });
+                            Arama();
                         }
                     }
                 }
@@ -139,6 +137,52 @@ namespace tspAuto
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private async void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                string table = (sender as DataGrid).Name;
+                string column = e.Column.SortMemberPath;
+                long girdiID = Convert.ToInt64((e.Row.Item as DataRowView)["ID"]);
+
+                var view = new BenimDialog
+                {
+                    DataContext = new BenimDialogViewModel("Bu değeri güncellemek istediğinizden emin misiniz?", "EVET", "HAYIR")
+                };
+
+                var result = await DialogHost.Show(view, "RootDialog");
+
+                if (Convert.ToBoolean(result))
+                {
+                    if (e.EditingElement.GetType() == typeof(TextBox))
+                    {
+                        string newVal = (e.EditingElement as TextBox).Text;
+                        string command = $"UPDATE {table} SET {column}='{newVal}' WHERE ID={girdiID}";
+
+                        MethodPack.VeritabaniKodBlogu((con) => {
+                            con.Open();
+                            new SQLiteCommand(command, con).ExecuteNonQuery();
+                        });
+                    }
+                    else if (e.EditingElement.GetType() == typeof(CheckBox))
+                    {
+                        bool newVal = (bool)(e.EditingElement as CheckBox).IsChecked;
+                        string command = $"UPDATE {table} SET {column}={newVal} WHERE ID={girdiID}";
+
+                        MethodPack.VeritabaniKodBlogu((con) => {
+                            con.Open();
+                            new SQLiteCommand(command, con).ExecuteNonQuery();
+                        });
+                    }
+                }
+                else
+                {
+                    e.Cancel = true;
+                    Arama();
+                }
             }
         }
     }
@@ -151,6 +195,35 @@ namespace tspAuto
         public override object Invoke(object[] args)
         {
             return Regex.IsMatch(Convert.ToString(args[1]), Convert.ToString(args[0]));
+        }
+    }
+
+    public class DateToStringConverter : System.Windows.Data.IValueConverter
+    {
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            try
+            {
+                string newVal = string.Format("{0:dd.MM.yyyy}", value);
+                return newVal;
+            }
+            catch
+            {
+                throw new InvalidCastException("Value can't be converted to string.");
+            }
+        }
+
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            try
+            {
+                DateTime? newVal = System.Convert.ToDateTime(value);
+                return newVal;
+            }
+            catch
+            {
+                return DateTime.Now;
+            }
         }
     }
 }
