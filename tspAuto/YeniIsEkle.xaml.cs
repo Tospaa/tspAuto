@@ -40,41 +40,9 @@ namespace tspAuto
 
                     var result = await DialogHost.Show(view, "RootDialog");
 
-                    if (Convert.ToBoolean(result) && Baslik.Text != string.Empty && Aciklama.Text != string.Empty)
+                    if (Convert.ToBoolean(result))
                     {
-                        foreach (Window window in Application.Current.Windows)
-                        {
-                            if (window.GetType() == typeof(MainWindow))
-                            {
-                                foreach (PanelItem item in (window as MainWindow).SolPanelListBox.Items)
-                                {
-                                    if (item.Content.GetType() == typeof(Hatirlatici))
-                                    {
-                                        // define the job and tie it to our Gorev class
-                                        IJobDetail job = JobBuilder.Create<Gorev>()
-                                            .UsingJobData("Baslik", Baslik.Text)
-                                            .UsingJobData("Aciklama", Aciklama.Text)
-                                            .UsingJobData("Tablo", "Tablosuz")
-                                            .UsingJobData("ID", 0)
-                                            .Build();
-
-                                        // trigger builder creates simple trigger by default, actually an ITrigger is returned
-                                        ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
-                                            .StartAt(tarih)
-                                            .Build();
-
-                                        // Tell quartz to schedule the job using our trigger
-                                        await (item.Content as Hatirlatici).scheduler.ScheduleJob(job, trigger);
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    else if (Baslik.Text == string.Empty || Aciklama.Text == string.Empty)
-                    {
-                        MessageBox.Show("Başlık ve açıklama kısımları boş olamaz.");
+                        MethodPack.YeniHatirlatici(Baslik.Text, Aciklama.Text, tarih);
                     }
                 }
                 catch (Exception ex)

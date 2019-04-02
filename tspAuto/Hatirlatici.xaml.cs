@@ -173,16 +173,17 @@ namespace tspAuto
         {
             Girdi item = (Girdi)HatirlaticiTablosu.SelectedItem;
 
-            if (item != null)
+            try
             {
                 IJobDetail jobDetail = await scheduler.GetJobDetail(item.HatirlaticiKey);
 
                 string baslik = jobDetail.JobDataMap.GetString("Baslik");
                 string aciklama = jobDetail.JobDataMap.GetString("Aciklama");
+                string zaman = item.HatirlaticiZamani;
 
                 var view = new BenimDialog
                 {
-                    DataContext = new BenimDialogViewModel($"{baslik}\n\n{aciklama}",
+                    DataContext = new BenimDialogViewModel($"{baslik}\n{zaman}\n{aciklama}",
                     "İPTAL ET",
                     "KAPAT",
                     "Hatırlatıcıyı iptal eder")
@@ -197,11 +198,13 @@ namespace tspAuto
 
                 Yenile_Button_Click(new object(), new RoutedEventArgs());
             }
+            catch (NullReferenceException) { Yenile_Button_Click(new object(), new RoutedEventArgs()); }
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
         }
 
         private void Hatirlatici_DialogHost_DialogClosing(object sender, DialogClosingEventArgs eventArgs)
         {
-            if (!Equals(eventArgs.Parameter, true)) return;
+            if (!Equals(eventArgs.Parameter, true)) return; // çok coolum ya mk xD
 
             if (Baslik.Text != string.Empty && Aciklama.Text != string.Empty)
             {

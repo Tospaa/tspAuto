@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <local:DateToStringConverter x:Key="DateToStringConverter"/>
+        <local:BooleanInverseConverter x:Key="BooleanInverseConverter"/>
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <materialDesign:Card
@@ -18,45 +18,44 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50"/>
                     </Grid.ColumnDefinitions>
-                    <materialDesign:PackIcon
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Kind="Magnify"
-                        Opacity=".56"/>
-                    <TextBox
-                        Name="AramaKutusu"
-                        FontSize="25"
-                        Grid.Column="1"
-                        Margin="8 0 0 0"
-                        materialDesign:HintAssist.Hint="Arama yap"
-                        materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                        TextChanged="AramaKutusu_TextChanged"/>
+                    <materialDesign:PackIcon HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             Kind="Magnify"
+                                             Opacity=".56"/>
+                    <TextBox Name="AramaKutusu"
+                             FontSize="25"
+                             Grid.Column="1"
+                             Margin="8 0 8 0"
+                             materialDesign:HintAssist.Hint="Arama yap"
+                             materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                             TextChanged="AramaKutusu_TextChanged" />
+                    <Menu Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <MenuItem>
+                            <MenuItem.Icon>
+                                <materialDesign:PackIcon Kind="Settings" />
+                            </MenuItem.Icon>
+                            <MenuItem Header="Güncelleme Modu"
+                                      Name="GuncellemeModuAcik"
+                                      IsCheckable="True"
+                                      IsChecked="False"
+                                      ToolTip="Bu seçeneği aktif ederek veritabanınızda güncellemeler yapabilirsiniz"/>
+                        </MenuItem>
+                    </Menu>
                 </Grid>
-                <Expander
-                    HorizontalAlignment="Stretch"
-                    IsExpanded="False"
-                    Name="MuvekkilSahisExpander"
-                    Header="Şahıs Müvekkiller (0)">
+                <Expander HorizontalAlignment="Stretch"
+                          IsExpanded="False"
+                          Name="MuvekkilSahisExpander"
+                          Header="Şahıs Müvekkiller (0)">
                     <DataGrid Name="MuvekkilSahis" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 
-                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="False" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True"
-                              PreviewMouseRightButtonUp="DataGrid_PreviewMouseRightButtonUp" CellEditEnding="DataGrid_CellEditEnding">
+                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="{Binding ElementName=GuncellemeModuAcik, Path=IsChecked, Converter={StaticResource BooleanInverseConverter}}" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True"
+                              CellEditEnding="DataGrid_CellEditEnding">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Müvekkil No" Binding="{Binding MuvekkilNo}"/>
                             <DataGridTextColumn Header="Müvekkil Türü" Binding="{Binding MuvekkilTuru}"/>
                             <DataGridTextColumn Header="Noter İsmi" Binding="{Binding NoterIsmi}"/>
-                            <DataGridTemplateColumn Header="Vekalet Tarihi">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding VekaletTarihi}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                                <DataGridTemplateColumn.CellEditingTemplate>
-                                    <DataTemplate>
-                                        <DatePicker SelectedDate="{Binding VekaletTarihi, Converter={StaticResource DateToStringConverter}}" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellEditingTemplate>
-                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Vekalet Tarihi" Binding="{Binding VekaletTarihi}"/>
                             <DataGridTextColumn Header="Vek. Yevmiye No" Binding="{Binding VekYevmiyeNo}"/>
                             <DataGridCheckBoxColumn Header="Ahzu Kabza" Binding="{Binding AhzuKabza}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
                             <DataGridCheckBoxColumn Header="Feragat" Binding="{Binding Feragat}" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"/>
@@ -72,21 +71,24 @@
                             <DataGridTextColumn Header="Fax" Binding="{Binding Fax}"/>
                             <DataGridTextColumn Header="E-Mail" Binding="{Binding Email}"/>
                         </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Sil" Click="DataGrid_RightClick"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                     </DataGrid>
                 </Expander>
-                <Border
-                    Background="{DynamicResource MaterialDesignDivider}"
-                    Height="1"
-                    HorizontalAlignment="Stretch"
-                    SnapsToDevicePixels="True" />
-                <Expander
-                    HorizontalAlignment="Stretch"
-                    IsExpanded="False"
-                    Name="MuvekkilSirketExpander"
-                    Header="Şirket Müvekkiller (0)">
+                <Border Background="{DynamicResource MaterialDesignDivider}"
+                        Height="1"
+                        HorizontalAlignment="Stretch"
+                        SnapsToDevicePixels="True" />
+                <Expander HorizontalAlignment="Stretch"
+                          IsExpanded="False"
+                          Name="MuvekkilSirketExpander"
+                          Header="Şirket Müvekkiller (0)">
                     <DataGrid Name="MuvekkilSirket" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" 
-                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True"
-                              PreviewMouseRightButtonUp="DataGrid_PreviewMouseRightButtonUp" CellEditEnding="DataGrid_CellEditEnding">
+                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="{Binding ElementName=GuncellemeModuAcik, Path=IsChecked, Converter={StaticResource BooleanInverseConverter}}" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True"
+                              CellEditEnding="DataGrid_CellEditEnding">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Müvekkil No" Binding="{Binding MuvekkilNo}"/>
                             <DataGridTextColumn Header="Müvekkil Türü" Binding="{Binding MuvekkilTuru}"/>
@@ -110,13 +112,17 @@
                             <DataGridTextColumn Header="Fax" Binding="{Binding Fax}"/>
                             <DataGridTextColumn Header="E-Mail" Binding="{Binding Email}"/>
                         </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Sil" Click="DataGrid_RightClick"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                     </DataGrid>
                 </Expander>
-                <Border
-                    Background="{DynamicResource MaterialDesignDivider}"
-                    Height="1"
-                    HorizontalAlignment="Stretch"
-                    SnapsToDevicePixels="True" />
+                <Border Background="{DynamicResource MaterialDesignDivider}"
+                        Height="1"
+                        HorizontalAlignment="Stretch"
+                        SnapsToDevicePixels="True" />
             </StackPanel>
         </materialDesign:Card>
     </ScrollViewer>

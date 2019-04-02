@@ -151,54 +151,12 @@ namespace tspAuto
             {
                 notifyIcon.Visible = false;
 
+                MethodPack.HatirlaticilarVeritabanina();
+
                 foreach (PanelItem item in SolPanelListBox.Items)
                 {
                     if (item.Content.GetType() == typeof(Hatirlatici))
                     {
-                        // TODO: Bunu ayrı metot yap, metotpeke at.
-                        string[] columns = new string[]
-                        {
-                            "Baslik",
-                            "Aciklama",
-                            "Zaman",
-                            "HatirlaticiTablo",
-                            "HatirlaticiID"
-                        };
-
-                        bool basarili = false;
-
-                        IReadOnlyCollection<TriggerKey> allTriggerKeys = (item.Content as Hatirlatici).scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup()).GetAwaiter().GetResult();
-
-                        MethodPack.VeritabaniKodBlogu((con) => {
-                            con.Open();
-
-                            new SQLiteCommand("DELETE FROM Hatirlaticilar;", con).ExecuteNonQuery();
-
-                            foreach (TriggerKey triggerKey in allTriggerKeys)
-                            {
-                                ITrigger triggerdetails = (item.Content as Hatirlatici).scheduler.GetTrigger(triggerKey).GetAwaiter().GetResult();
-                                IJobDetail jobDetail = (item.Content as Hatirlatici).scheduler.GetJobDetail(triggerdetails.JobKey).GetAwaiter().GetResult();
-
-                                object[] values = new object[]
-                                {
-                                    jobDetail.JobDataMap.GetString("Baslik"),
-                                    jobDetail.JobDataMap.GetString("Aciklama"),
-                                    triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
-                                    jobDetail.JobDataMap.GetString("Tablo"),
-                                    jobDetail.JobDataMap.GetInt("ID")
-                                };
-
-                                MethodPack.Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();
-                            }
-
-                            basarili = true;
-                        });
-
-                        if (!basarili)
-                        {
-                            System.Windows.MessageBox.Show("Veritabanı girdisi yapılamadı.");
-                        }
-
                         // and last shut down the scheduler when you are ready to close your program
                         (item.Content as Hatirlatici).scheduler.Shutdown();
                         break;

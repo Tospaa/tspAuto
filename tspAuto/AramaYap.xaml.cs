@@ -93,12 +93,13 @@ namespace tspAuto
             });
         }
 
-        private async void DataGrid_PreviewMouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private async void DataGrid_RightClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                DataRowView rowView = (DataRowView)(sender as DataGrid).SelectedItem;
-                string tablo = (sender as DataGrid).Name;
+                DataGrid dataGrid = ((ContextMenu)(sender as MenuItem).Parent).PlacementTarget as DataGrid;
+                DataRowView rowView = (DataRowView)dataGrid.SelectedItem;
+                string tablo = dataGrid.Name;
 
                 if (rowView != null)
                 {
@@ -142,47 +143,55 @@ namespace tspAuto
 
         private async void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            if (e.EditAction == DataGridEditAction.Commit)
+            try
             {
-                string table = (sender as DataGrid).Name;
-                string column = e.Column.SortMemberPath;
-                long girdiID = Convert.ToInt64((e.Row.Item as DataRowView)["ID"]);
-
-                var view = new BenimDialog
+                if (e.EditAction == DataGridEditAction.Commit)
                 {
-                    DataContext = new BenimDialogViewModel("Bu değeri güncellemek istediğinizden emin misiniz?", "EVET", "HAYIR")
-                };
+                    string table = (sender as DataGrid).Name;
+                    string column = e.Column.SortMemberPath;
+                    long girdiID = Convert.ToInt64((e.Row.Item as DataRowView)["ID"]);
 
-                var result = await DialogHost.Show(view, "RootDialog");
-
-                if (Convert.ToBoolean(result))
-                {
-                    if (e.EditingElement.GetType() == typeof(TextBox))
+                    var view = new BenimDialog
                     {
-                        string newVal = (e.EditingElement as TextBox).Text;
-                        string command = $"UPDATE {table} SET {column}='{newVal}' WHERE ID={girdiID}";
+                        DataContext = new BenimDialogViewModel("Bu değeri güncellemek istediğinizden emin misiniz?", "EVET", "HAYIR")
+                    };
 
-                        MethodPack.VeritabaniKodBlogu((con) => {
-                            con.Open();
-                            new SQLiteCommand(command, con).ExecuteNonQuery();
-                        });
+                    var result = await DialogHost.Show(view, "RootDialog");
+
+                    if (Convert.ToBoolean(result))
+                    {
+                        if (e.EditingElement.GetType() == typeof(TextBox))
+                        {
+                            string newVal = (e.EditingElement as TextBox).Text;
+                            string command = $"UPDATE {table} SET {column}='{newVal}' WHERE ID={girdiID}";
+
+                            MethodPack.VeritabaniKodBlogu((con) => {
+                                con.Open();
+                                new SQLiteCommand(command, con).ExecuteNonQuery();
+                            });
+                        }
+                        else if (e.EditingElement.GetType() == typeof(CheckBox))
+                        {
+                            bool newVal = (bool)(e.EditingElement as CheckBox).IsChecked;
+                            string command = $"UPDATE {table} SET {column}={newVal} WHERE ID={girdiID}";
+
+                            MethodPack.VeritabaniKodBlogu((con) => {
+                                con.Open();
+                                new SQLiteCommand(command, con).ExecuteNonQuery();
+                            });
+                        }
                     }
-                    else if (e.EditingElement.GetType() == typeof(CheckBox))
+                    else
                     {
-                        bool newVal = (bool)(e.EditingElement as CheckBox).IsChecked;
-                        string command = $"UPDATE {table} SET {column}={newVal} WHERE ID={girdiID}";
-
-                        MethodPack.VeritabaniKodBlogu((con) => {
-                            con.Open();
-                            new SQLiteCommand(command, con).ExecuteNonQuery();
-                        });
+                        // TODO: Şurda tekrar arama yaptırma. Eski değere ulaş. Çöz.
+                        e.Cancel = true;
+                        Arama();
                     }
                 }
-                else
-                {
-                    e.Cancel = true;
-                    Arama();
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
             }
         }
     }
