@@ -74,6 +74,26 @@
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
+                                <MenuItem Header="Şunlarda ara..." Name="MuvekkilSahisContextMenu">
+                                    <MenuItem Header="Müvekkil No" IsCheckable="True" IsChecked="True" Tag="MuvekkilNo"/>
+                                    <MenuItem Header="Müvekkil Türü" IsCheckable="True" IsChecked="True" Tag="MuvekkilTuru"/>
+                                    <MenuItem Header="Noter İsmi" IsCheckable="True" IsChecked="True" Tag="NoterIsmi"/>
+                                    <MenuItem Header="Vekalet Tarihi" IsCheckable="True" IsChecked="True" Tag="VekaletTarihi"/>
+                                    <MenuItem Header="Vek. Yevmiye No" IsCheckable="True" IsChecked="True" Tag="VekYevmiyeNo"/>
+                                    <MenuItem Header="Banka" IsCheckable="True" IsChecked="True" Tag="Banka"/>
+                                    <MenuItem Header="Şube" IsCheckable="True" IsChecked="True" Tag="Sube"/>
+                                    <MenuItem Header="IBAN No" IsCheckable="True" IsChecked="True" Tag="IBANno"/>
+                                    <MenuItem Header="İsim Soyisim" IsCheckable="True" IsChecked="True" Tag="IsimSoyisim"/>
+                                    <MenuItem Header="TC Kimlik No" IsCheckable="True" IsChecked="True" Tag="TCKimlik"/>
+                                    <MenuItem Header="Adres" IsCheckable="True" IsChecked="True" Tag="Adres"/>
+                                    <MenuItem Header="Telefon" IsCheckable="True" IsChecked="True" Tag="Telefon"/>
+                                    <MenuItem Header="Fax" IsCheckable="True" IsChecked="True" Tag="Fax"/>
+                                    <MenuItem Header="E-Mail" IsCheckable="True" IsChecked="True" Tag="Email"/>
+                                    <Separator/>
+                                    <MenuItem Header="Tümünü seç" Click="ContextMenu_TumunuSec_Click"/>
+                                    <MenuItem Header="Seçimleri kaldır" Click="ContextMenu_SecimleriKaldir_Click"/>
+                                </MenuItem>
+                                <Separator/>
                                 <MenuItem Header="Sil" Click="DataGrid_RightClick"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>
@@ -115,6 +135,29 @@
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
+                                <MenuItem Header="Şunlarda ara..." Name="MuvekkilSirketContextMenu">
+                                    <MenuItem Header="Müvekkil No" IsCheckable="True" IsChecked="True" Tag="MuvekkilNo"/>
+                                    <MenuItem Header="Müvekkil Türü" IsCheckable="True" IsChecked="True" Tag="MuvekkilTuru"/>
+                                    <MenuItem Header="Noter İsmi" IsCheckable="True" IsChecked="True" Tag="NoterIsmi"/>
+                                    <MenuItem Header="Vekalet Tarihi" IsCheckable="True" IsChecked="True" Tag="VekaletTarihi"/>
+                                    <MenuItem Header="Vek. Yevmiye No" IsCheckable="True" IsChecked="True" Tag="VekYevmiyeNo"/>
+                                    <MenuItem Header="Banka" IsCheckable="True" IsChecked="True" Tag="Banka"/>
+                                    <MenuItem Header="Şube" IsCheckable="True" IsChecked="True" Tag="Sube"/>
+                                    <MenuItem Header="IBAN No" IsCheckable="True" IsChecked="True" Tag="IBANno"/>
+                                    <MenuItem Header="Şirket Türü" IsCheckable="True" IsChecked="True" Tag="SirketTuru"/>
+                                    <MenuItem Header="Şirket Unvan" IsCheckable="True" IsChecked="True" Tag="SirketUnvan"/>
+                                    <MenuItem Header="Vergi Dairesi" IsCheckable="True" IsChecked="True" Tag="VergiDairesi"/>
+                                    <MenuItem Header="Vergi Numarası" IsCheckable="True" IsChecked="True" Tag="VergiNo"/>
+                                    <MenuItem Header="Mersis Numarası" IsCheckable="True" IsChecked="True" Tag="MersisNo"/>
+                                    <MenuItem Header="Adres" IsCheckable="True" IsChecked="True" Tag="Adres"/>
+                                    <MenuItem Header="Telefon" IsCheckable="True" IsChecked="True" Tag="Telefon"/>
+                                    <MenuItem Header="Fax" IsCheckable="True" IsChecked="True" Tag="Fax"/>
+                                    <MenuItem Header="E-Mail" IsCheckable="True" IsChecked="True" Tag="Email"/>
+                                    <Separator/>
+                                    <MenuItem Header="Tümünü seç" Click="ContextMenu_TumunuSec_Click"/>
+                                    <MenuItem Header="Seçimleri kaldır" Click="ContextMenu_SecimleriKaldir_Click"/>
+                                </MenuItem>
+                                <Separator/>
                                 <MenuItem Header="Sil" Click="DataGrid_RightClick"/>
                             </ContextMenu>
                         </DataGrid.ContextMenu>

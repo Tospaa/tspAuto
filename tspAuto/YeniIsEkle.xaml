@@ -22,7 +22,6 @@
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
-            <TextBlock HorizontalAlignment="Center">ANAN ZAA XD</TextBlock>
             <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

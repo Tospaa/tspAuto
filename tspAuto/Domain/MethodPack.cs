@@ -45,7 +45,6 @@ namespace tspAuto.Domain
         {
             if (new Regex("[ğĞüÜşŞıİöÖçÇ]").Match(word).Success)
             {
-                // (?i) ignores case sensitivity
                 string arama = word;
 
                 arama = new Regex("[ğĞ]").Replace(arama, "[ğĞ]");
@@ -56,6 +55,7 @@ namespace tspAuto.Domain
                 arama = new Regex("[öÖ]").Replace(arama, "[öÖ]");
                 arama = new Regex("[çÇ]").Replace(arama, "[çÇ]");
 
+                // (?i) ignores case sensitivity
                 arama = "(?i)" + arama;
 
                 string queryString = $"SELECT * FROM {table} WHERE(";

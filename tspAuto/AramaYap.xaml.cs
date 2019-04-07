@@ -6,6 +6,7 @@ using System.Data;
 using System.Text.RegularExpressions;
 using tspAuto.Domain;
 using MaterialDesignThemes.Wpf;
+using System.Collections.Generic;
 
 namespace tspAuto
 {
@@ -27,70 +28,58 @@ namespace tspAuto
             }
         }
 
+        private string[] SecilenKolonlar(ItemCollection items)
+        {
+            List<string> columnList = new List<string>();
+
+            foreach (var item in items)
+            {
+                if (item.GetType() == typeof(MenuItem))
+                {
+                    if ((item as MenuItem).IsCheckable)
+                    {
+                        if ((item as MenuItem).IsChecked)
+                        {
+                            columnList.Add((item as MenuItem).Tag.ToString());
+                        }
+                    }
+                }
+            }
+
+            return columnList.ToArray();
+        }
+
         public void Arama()
         {
             DataSet dataSet = new DataSet();
-
-            string[] columns = new string[]
+            string[] columns = SecilenKolonlar(MuvekkilSirketContextMenu.Items);
+            if (columns.Length > 0)
             {
-                "MuvekkilNo",
-                "MuvekkilTuru",
-                "NoterIsmi",
-                "VekaletTarihi",
-                "VekYevmiyeNo",
-                "Banka",
-                "Sube",
-                "IBANno",
-                "Adres",
-                "Telefon",
-                "Fax",
-                "Email",
-                "SirketTuru",
-                "SirketUnvan",
-                "VergiDairesi",
-                "VergiNo",
-                "MersisNo"
-            };
+                MethodPack.VeritabaniKodBlogu((con) => {
+                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSirket", columns, con)))
+                    {
+                        dataAdapter.Fill(dataSet);
+                    }
 
-            MethodPack.VeritabaniKodBlogu((con) => {
-                using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSirket", columns, con)))
-                {
-                    dataAdapter.Fill(dataSet);
-                }
-
-                MuvekkilSirket.ItemsSource = dataSet.Tables[0].DefaultView;
-                MuvekkilSirketExpander.Header = $"Şirket Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
-            });
+                    MuvekkilSirket.ItemsSource = dataSet.Tables[0].DefaultView;
+                    MuvekkilSirketExpander.Header = $"Şirket Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
+                });
+            }
 
             dataSet = new DataSet();
-
-            columns = new string[]
+            columns = SecilenKolonlar(MuvekkilSahisContextMenu.Items);
+            if (columns.Length > 0)
             {
-                "MuvekkilNo",
-                "MuvekkilTuru",
-                "NoterIsmi",
-                "VekaletTarihi",
-                "VekYevmiyeNo",
-                "Banka",
-                "Sube",
-                "IBANno",
-                "Adres",
-                "Telefon",
-                "Fax",
-                "Email",
-                "IsimSoyisim",
-                "TCKimlik"
-            };
+                MethodPack.VeritabaniKodBlogu((con) => {
+                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSahis", columns, con)))
+                    {
+                        dataAdapter.Fill(dataSet);
+                    }
 
-            MethodPack.VeritabaniKodBlogu((con) => {
-                using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSahis", columns, con)))
-                {
-                    dataAdapter.Fill(dataSet);
-                }
-
-                MuvekkilSahis.ItemsSource = dataSet.Tables[0].DefaultView;
-                MuvekkilSahisExpander.Header = $"Şahıs Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
-            });
+                    MuvekkilSahis.ItemsSource = dataSet.Tables[0].DefaultView;
+                    MuvekkilSahisExpander.Header = $"Şahıs Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
+                });
+            }
         }
 
         private async void DataGrid_RightClick(object sender, RoutedEventArgs e)
@@ -200,6 +189,38 @@ namespace tspAuto
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             GuncellemeModuAcik.IsChecked = false;
+        }
+
+        private void ContextMenu_TumunuSec_Click(object sender, RoutedEventArgs e)
+        {
+            ItemCollection items = ((MenuItem)(sender as MenuItem).Parent).Items;
+
+            foreach (var item in items)
+            {
+                if (item.GetType() == typeof(MenuItem))
+                {
+                    if ((item as MenuItem).IsCheckable)
+                    {
+                        (item as MenuItem).IsChecked = true;
+                    }
+                }
+            }
+        }
+
+        private void ContextMenu_SecimleriKaldir_Click(object sender, RoutedEventArgs e)
+        {
+            ItemCollection items = ((MenuItem)(sender as MenuItem).Parent).Items;
+
+            foreach (var item in items)
+            {
+                if (item.GetType() == typeof(MenuItem))
+                {
+                    if ((item as MenuItem).IsCheckable)
+                    {
+                        (item as MenuItem).IsChecked = false;
+                    }
+                }
+            }
         }
     }
 
