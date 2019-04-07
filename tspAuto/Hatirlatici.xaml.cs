@@ -30,6 +30,8 @@ namespace tspAuto
             scheduler = RunProgram().GetAwaiter().GetResult();
 
             VeritabaniOku().GetAwaiter().GetResult();
+
+            TarihSec.Language = System.Windows.Markup.XmlLanguage.GetLanguage("tr-TR");
         }
 
         private static async Task<IScheduler> RunProgram()
@@ -52,7 +54,7 @@ namespace tspAuto
             }
             catch (SchedulerException se)
             {
-                System.Windows.MessageBox.Show(se.ToString());
+                MessageBox.Show(se.ToString());
                 return null;
             }
         }
@@ -107,7 +109,6 @@ namespace tspAuto
         {
             if (scheduler != null)
             {
-                #region asıl yenileme
                 IReadOnlyCollection<TriggerKey> allTriggerKeys = await scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup());
                 ObservableCollection<Girdi> girdiler = new ObservableCollection<Girdi>();
 
@@ -125,47 +126,6 @@ namespace tspAuto
 
                 HatirlaticiTablosu.ItemsSource = girdiler;
                 HatirlaticiTablosu.SelectedItem = null;
-                #endregion
-                #region veritabanı kısmı
-                string[] columns = new string[]
-                {
-                    "Baslik",
-                    "Aciklama",
-                    "Zaman",
-                    "HatirlaticiTablo",
-                    "HatirlaticiID"
-                };
-
-                bool basarili = false;
-
-                MethodPack.VeritabaniKodBlogu(async (con) => {
-                    con.Open();
-                    new SQLiteCommand("DELETE FROM Hatirlaticilar;", con).ExecuteNonQuery();
-                    foreach (TriggerKey triggerKey in allTriggerKeys)
-                    {
-                        ITrigger triggerdetails = await scheduler.GetTrigger(triggerKey);
-                        IJobDetail jobDetail = await scheduler.GetJobDetail(triggerdetails.JobKey);
-
-                        object[] values = new object[]
-                        {
-                            jobDetail.JobDataMap.GetString("Baslik"),
-                            jobDetail.JobDataMap.GetString("Aciklama"),
-                            triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
-                            jobDetail.JobDataMap.GetString("Tablo"),
-                            jobDetail.JobDataMap.GetInt("ID")
-                        };
-
-                        MethodPack.Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();
-                    }
-
-                    basarili = true;
-                });
-
-                if (!basarili)
-                {
-                    MessageBox.Show("Veritabanı girdisi yapılamadı.");
-                }
-                #endregion
             }
         }
 
@@ -194,11 +154,12 @@ namespace tspAuto
                 if (Convert.ToBoolean(result))
                 {
                     await scheduler.DeleteJob(item.HatirlaticiKey);
+                    MethodPack.HatirlaticilarVeritabanina(this);
                 }
 
-                Yenile_Button_Click(new object(), new RoutedEventArgs());
+                Yenile_Button_Click(sender, e);
             }
-            catch (NullReferenceException) { Yenile_Button_Click(new object(), new RoutedEventArgs()); }
+            catch (NullReferenceException) { Yenile_Button_Click(sender, e); }
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }
         }
 
@@ -206,44 +167,26 @@ namespace tspAuto
         {
             if (!Equals(eventArgs.Parameter, true)) return; // çok coolum ya mk xD
 
-            if (Baslik.Text != string.Empty && Aciklama.Text != string.Empty)
+            try
             {
-                try
-                {
-                    DateTime trh = Convert.ToDateTime(TarihSec.SelectedDate);
-                    DateTime st = Convert.ToDateTime(SaatSec.SelectedTime);
+                DateTime trh = Convert.ToDateTime(TarihSec.SelectedDate);
+                DateTime st = Convert.ToDateTime(SaatSec.SelectedTime);
 
-                    DateTime tarih = new DateTime(trh.Year, trh.Month, trh.Day, st.Hour, st.Minute, 0, DateTimeKind.Local);
+                DateTime tarih = new DateTime(trh.Year, trh.Month, trh.Day, st.Hour, st.Minute, 0, DateTimeKind.Local);
 
-                    // define the job and tie it to our Gorev class
-                    IJobDetail job = JobBuilder.Create<Gorev>()
-                        .UsingJobData("Baslik", Baslik.Text)
-                        .UsingJobData("Aciklama", Aciklama.Text)
-                        .UsingJobData("Tablo", "Tablosuz")
-                        .UsingJobData("ID", 0)
-                        .Build();
+                bool basarili = MethodPack.YeniHatirlatici(Baslik.Text, Aciklama.Text, tarih);
 
-                    // trigger builder creates simple trigger by default, actually an ITrigger is returned
-                    ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
-                        .StartAt(tarih)
-                        .Build();
-
-                    // Tell quartz to schedule the job using our trigger
-                    scheduler.ScheduleJob(job, trigger);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                finally
-                {
-                    Yenile_Button_Click(new object(), new RoutedEventArgs());
-                }
+                if (basarili) { Yenile_Button_Click(sender, eventArgs); }
             }
-            else if (Baslik.Text == string.Empty || Aciklama.Text == string.Empty)
+            catch (Exception ex)
             {
-                MessageBox.Show("Başlık ve Açıklama kısımları boş olamaz.");
+                MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            Yenile_Button_Click(sender, e);
         }
     }
 

@@ -163,11 +163,13 @@ namespace tspAuto
                         if (e.EditingElement.GetType() == typeof(TextBox))
                         {
                             string newVal = (e.EditingElement as TextBox).Text;
-                            string command = $"UPDATE {table} SET {column}='{newVal}' WHERE ID={girdiID}";
+                            string commandString = $"UPDATE {table} SET {column}=@newVal WHERE ID={girdiID}";
 
                             MethodPack.VeritabaniKodBlogu((con) => {
                                 con.Open();
-                                new SQLiteCommand(command, con).ExecuteNonQuery();
+                                SQLiteCommand command = new SQLiteCommand(commandString, con);
+                                command.Parameters.AddWithValue("newVal", newVal);
+                                command.ExecuteNonQuery();
                             });
                         }
                         else if (e.EditingElement.GetType() == typeof(CheckBox))
@@ -193,6 +195,11 @@ namespace tspAuto
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            GuncellemeModuAcik.IsChecked = false;
         }
     }
 

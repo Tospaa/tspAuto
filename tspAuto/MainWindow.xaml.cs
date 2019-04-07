@@ -145,13 +145,16 @@ namespace tspAuto
             AramaTextbox.Text = string.Empty;
         }
 
+        private void CikisYap_Button_Click(object sender, RoutedEventArgs e)
+        {
+            menuItem1_Click(sender, e);
+        }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (reallyClose)
             {
                 notifyIcon.Visible = false;
-
-                MethodPack.HatirlaticilarVeritabanina();
 
                 foreach (PanelItem item in SolPanelListBox.Items)
                 {

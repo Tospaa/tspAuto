@@ -105,7 +105,7 @@
                                     <Button Content="Nice Popup"/>
                                     <Button Content="Can't Touch This" IsEnabled="False" />
                                     <Separator/>
-                                    <Button Content="Çıkış Yap"/>
+                                    <Button Content="Çıkış Yap" Click="CikisYap_Button_Click"/>
                                 </StackPanel>
                             </materialDesign:PopupBox>
                         </StackPanel>

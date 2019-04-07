@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using tspAuto.Reminder;
 
 namespace tspAuto.Domain
@@ -136,63 +137,49 @@ namespace tspAuto.Domain
             }
         }
 
-        public static void HatirlaticilarVeritabanina()
+        public static void HatirlaticilarVeritabanina(Hatirlatici hatirlaticiInstance)
         {
-            foreach (Window window in Application.Current.Windows)
+            string[] columns = new string[]
             {
-                if (window.GetType() == typeof(MainWindow))
+                "Baslik",
+                "Aciklama",
+                "Zaman",
+                "HatirlaticiTablo",
+                "HatirlaticiID"
+            };
+
+            bool basarili = false;
+
+            IReadOnlyCollection<TriggerKey> allTriggerKeys = hatirlaticiInstance.scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup()).GetAwaiter().GetResult();
+
+            VeritabaniKodBlogu((con) => {
+                con.Open();
+
+                new SQLiteCommand("DELETE FROM Hatirlaticilar;", con).ExecuteNonQuery();
+
+                foreach (TriggerKey triggerKey in allTriggerKeys)
                 {
-                    foreach (PanelItem item in (window as MainWindow).SolPanelListBox.Items)
+                    ITrigger triggerdetails = hatirlaticiInstance.scheduler.GetTrigger(triggerKey).GetAwaiter().GetResult();
+                    IJobDetail jobDetail = hatirlaticiInstance.scheduler.GetJobDetail(triggerdetails.JobKey).GetAwaiter().GetResult();
+
+                    object[] values = new object[]
                     {
-                        if (item.Content.GetType() == typeof(Hatirlatici))
-                        {
-                            string[] columns = new string[]
-                            {
-                                "Baslik",
-                                "Aciklama",
-                                "Zaman",
-                                "HatirlaticiTablo",
-                                "HatirlaticiID"
-                            };
+                        jobDetail.JobDataMap.GetString("Baslik"),
+                        jobDetail.JobDataMap.GetString("Aciklama"),
+                        triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
+                        jobDetail.JobDataMap.GetString("Tablo"),
+                        jobDetail.JobDataMap.GetInt("ID")
+                    };
 
-                            bool basarili = false;
-
-                            IReadOnlyCollection<TriggerKey> allTriggerKeys = (item.Content as Hatirlatici).scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup()).GetAwaiter().GetResult();
-
-                            VeritabaniKodBlogu((con) => {
-                                con.Open();
-
-                                new SQLiteCommand("DELETE FROM Hatirlaticilar;", con).ExecuteNonQuery();
-
-                                foreach (TriggerKey triggerKey in allTriggerKeys)
-                                {
-                                    ITrigger triggerdetails = (item.Content as Hatirlatici).scheduler.GetTrigger(triggerKey).GetAwaiter().GetResult();
-                                    IJobDetail jobDetail = (item.Content as Hatirlatici).scheduler.GetJobDetail(triggerdetails.JobKey).GetAwaiter().GetResult();
-
-                                    object[] values = new object[]
-                                    {
-                                        jobDetail.JobDataMap.GetString("Baslik"),
-                                        jobDetail.JobDataMap.GetString("Aciklama"),
-                                        triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
-                                        jobDetail.JobDataMap.GetString("Tablo"),
-                                        jobDetail.JobDataMap.GetInt("ID")
-                                    };
-
-                                    Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();
-                                }
-
-                                basarili = true;
-                            });
-
-                            if (!basarili)
-                            {
-                                MessageBox.Show("Veritabanı girdisi yapılamadı.");
-                            }
-                            break;
-                        }
-                    }
-                    break;
+                    Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();
                 }
+
+                basarili = true;
+            });
+
+            if (!basarili)
+            {
+                MessageBox.Show("Veritabanı girdisi yapılamadı.");
             }
         }
 
@@ -208,22 +195,27 @@ namespace tspAuto.Domain
                         {
                             if (item.Content.GetType() == typeof(Hatirlatici))
                             {
-                                // define the job and tie it to our Gorev class
-                                IJobDetail job = JobBuilder.Create<Gorev>()
-                                    .UsingJobData("Baslik", baslik)
-                                    .UsingJobData("Aciklama", aciklama)
-                                    .UsingJobData("Tablo", tablo)
-                                    .UsingJobData("ID", id)
-                                    .Build();
+                                try
+                                {
+                                    // define the job and tie it to our Gorev class
+                                    IJobDetail job = JobBuilder.Create<Gorev>()
+                                        .UsingJobData("Baslik", baslik)
+                                        .UsingJobData("Aciklama", aciklama)
+                                        .UsingJobData("Tablo", tablo)
+                                        .UsingJobData("ID", id)
+                                        .Build();
 
-                                // trigger builder creates simple trigger by default, actually an ITrigger is returned
-                                ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
-                                    .StartAt(tarih)
-                                    .Build();
+                                    // trigger builder creates simple trigger by default, actually an ITrigger is returned
+                                    ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
+                                        .StartAt(tarih)
+                                        .Build();
 
-                                // Tell quartz to schedule the job using our trigger
-                                (item.Content as Hatirlatici).scheduler.ScheduleJob(job, trigger);
-                                return true;
+                                    // Tell quartz to schedule the job using our trigger
+                                    (item.Content as Hatirlatici).scheduler.ScheduleJob(job, trigger);
+                                    HatirlaticilarVeritabanina(item.Content as Hatirlatici);
+                                    return true;
+                                }
+                                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
                             }
                         }
                     }
