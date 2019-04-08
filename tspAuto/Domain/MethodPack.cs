@@ -162,16 +162,19 @@ namespace tspAuto.Domain
                     ITrigger triggerdetails = hatirlaticiInstance.scheduler.GetTrigger(triggerKey).GetAwaiter().GetResult();
                     IJobDetail jobDetail = hatirlaticiInstance.scheduler.GetJobDetail(triggerdetails.JobKey).GetAwaiter().GetResult();
 
-                    object[] values = new object[]
+                    if ((triggerdetails as Quartz.Impl.Triggers.SimpleTriggerImpl).TimesTriggered == 0)
                     {
-                        jobDetail.JobDataMap.GetString("Baslik"),
-                        jobDetail.JobDataMap.GetString("Aciklama"),
-                        triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
-                        jobDetail.JobDataMap.GetString("Tablo"),
-                        jobDetail.JobDataMap.GetInt("ID")
-                    };
+                        object[] values = new object[]
+                        {
+                            jobDetail.JobDataMap.GetString("Baslik"),
+                            jobDetail.JobDataMap.GetString("Aciklama"),
+                            triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
+                            jobDetail.JobDataMap.GetString("Tablo"),
+                            jobDetail.JobDataMap.GetInt("ID")
+                        };
 
-                    Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();
+                        Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();
+                    }
                 }
 
                 basarili = true;
