@@ -75,6 +75,7 @@
                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
                                     BorderThickness="0"
                                     MinWidth="200"
+                                    MaxWidth="250"
                                     VerticalAlignment="Center"
                                     KeyDown="AramaTextbox_KeyDown"/>
                                 <Button

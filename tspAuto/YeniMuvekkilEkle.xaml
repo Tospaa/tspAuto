@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:tspAuto"
+             xmlns:domain="clr-namespace:tspAuto.Domain"
              mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
@@ -19,7 +20,7 @@
             <Setter Property="Margin" Value="0 0 0 8" />
             <Setter Property="FontSize" Value="18" />
         </Style>
-        <local:BooleanInverseConverter x:Key="BooleanInverseConverter"/>
+        <domain:BooleanInverseConverter x:Key="BooleanInverseConverter"/>
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <materialDesign:Card
@@ -147,7 +148,13 @@
                                  materialDesign:HintAssist.Hint="Hesap IBAN No" />
                         <TextBox Grid.Column="2" Grid.Row="16"
                                  Name="Adres"
-                                 materialDesign:HintAssist.Hint="Adres" />
+                                 TextWrapping="Wrap"
+                                 VerticalAlignment="Stretch"
+                                 AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"
+                                 SpellCheck.IsEnabled="False"
+                                 materialDesign:HintAssist.Hint="Adres"
+                                 Height="80"/>
                         <TextBox Grid.Column="2" Grid.Row="17"
                                  Name="Telefon"
                                  materialDesign:HintAssist.Hint="Telefon" />

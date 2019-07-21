@@ -55,7 +55,8 @@ namespace tspAuto
             string[] columns = SecilenKolonlar(MuvekkilSirketContextMenu.Items);
             if (columns.Length > 0)
             {
-                MethodPack.VeritabaniKodBlogu((con) => {
+                MethodPack.VeritabaniKodBlogu((con) =>
+                {
                     using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSirket", columns, con)))
                     {
                         dataAdapter.Fill(dataSet);
@@ -66,11 +67,14 @@ namespace tspAuto
                 });
             }
 
+            MuvekkilSirket.SelectedItem = null;
+
             dataSet = new DataSet();
             columns = SecilenKolonlar(MuvekkilSahisContextMenu.Items);
             if (columns.Length > 0)
             {
-                MethodPack.VeritabaniKodBlogu((con) => {
+                MethodPack.VeritabaniKodBlogu((con) =>
+                {
                     using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSahis", columns, con)))
                     {
                         dataAdapter.Fill(dataSet);
@@ -80,6 +84,8 @@ namespace tspAuto
                     MuvekkilSahisExpander.Header = $"Şahıs Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
                 });
             }
+
+            MuvekkilSahis.SelectedItem = null;
         }
 
         private async void DataGrid_RightClick(object sender, RoutedEventArgs e)
@@ -115,7 +121,8 @@ namespace tspAuto
 
                         if (Convert.ToBoolean(result))
                         {
-                            MethodPack.VeritabaniKodBlogu((con) => {
+                            MethodPack.VeritabaniKodBlogu((con) =>
+                            {
                                 con.Open();
                                 new SQLiteCommand($"DELETE FROM {tablo} WHERE ID={girdiID};", con).ExecuteNonQuery();
                             });
@@ -154,7 +161,8 @@ namespace tspAuto
                             string newVal = (e.EditingElement as TextBox).Text;
                             string commandString = $"UPDATE {table} SET {column}=@newVal WHERE ID={girdiID}";
 
-                            MethodPack.VeritabaniKodBlogu((con) => {
+                            MethodPack.VeritabaniKodBlogu((con) =>
+                            {
                                 con.Open();
                                 SQLiteCommand command = new SQLiteCommand(commandString, con);
                                 command.Parameters.AddWithValue("newVal", newVal);
@@ -166,7 +174,8 @@ namespace tspAuto
                             bool newVal = (bool)(e.EditingElement as CheckBox).IsChecked;
                             string command = $"UPDATE {table} SET {column}={newVal} WHERE ID={girdiID}";
 
-                            MethodPack.VeritabaniKodBlogu((con) => {
+                            MethodPack.VeritabaniKodBlogu((con) =>
+                            {
                                 con.Open();
                                 new SQLiteCommand(command, con).ExecuteNonQuery();
                             });

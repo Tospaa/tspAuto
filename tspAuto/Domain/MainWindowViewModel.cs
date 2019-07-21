@@ -16,8 +16,9 @@ namespace tspAuto.Domain
                 {
                     new PanelItem("Ana Sayfa", new Home(), "HomeVariant"),
                     new PanelItem("Arama Yap", new AramaYap(), "Magnify"),
-                    new PanelItem("Yeni Müvekkil Ekle", new YeniMuvekkilEkle(), "Add"),
-                    new PanelItem("Yeni İş Ekle", new YeniIsEkle(), "Add"),
+                    new PanelItem("Yeni Müvekkil Ekle", new YeniMuvekkilEkle(), "UserPlus"),
+                    new PanelItem("Yeni Dosya Ekle", new YeniDosyaEkle(), "NotePlus"),
+                    new PanelItem("Yeni İş Ekle", new YeniIsEkle(), "BooksPlus"),
                     new PanelItem("Hatırlatıcı", new Hatirlatici(), "Bell")
                 };
         }

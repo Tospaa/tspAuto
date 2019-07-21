@@ -33,6 +33,9 @@ namespace tspAuto
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // Add the hotkeys
+            AddHotKeys();
+
             // Initialize contextMenu1
             contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2, seperator });
 
@@ -102,6 +105,48 @@ namespace tspAuto
             Close();
         }
 
+        // from: https://stackoverflow.com/a/37943526
+        private void AddHotKeys()
+        {
+            try
+            {
+                RoutedCommand settings = new RoutedCommand();
+                settings.InputGestures.Add(new KeyGesture(Key.E, ModifierKeys.Control));
+                CommandBindings.Add(new CommandBinding(settings, Goto_Home));
+
+                settings = new RoutedCommand();
+                settings.InputGestures.Add(new KeyGesture(Key.D2, ModifierKeys.Control));
+                CommandBindings.Add(new CommandBinding(settings, Goto_Search));
+
+                settings = new RoutedCommand();
+                settings.InputGestures.Add(new KeyGesture(Key.F1));
+                CommandBindings.Add(new CommandBinding(settings, ShowNotification));
+            }
+            catch (Exception e)
+            {
+                //handle exception error
+                System.Windows.MessageBox.Show(e.ToString());
+            }
+        }
+
+        private void Goto_Home(object sender, RoutedEventArgs e)
+        {
+            //handler code goes here.
+            SolPanelListBox.SelectedIndex = 0;
+        }
+
+        private void Goto_Search(object sender, RoutedEventArgs e)
+        {
+            //handler code goes here. 
+            SolPanelListBox.SelectedIndex = 1;
+        }
+
+        private void ShowNotification(object sender, RoutedEventArgs e)
+        {
+            Notification notification = new Notification("F1'e basıldı hocam...");
+            notification.Show();
+        }
+
         private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //until we had a StaysOpen glag to Drawer, this will help with scroll bars
@@ -136,7 +181,7 @@ namespace tspAuto
         {
             if (e.Key == Key.Return)
             {
-                AramaKomutu(new object(), new RoutedEventArgs());
+                AramaKomutu(sender, e);
             }
         }
 
