@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Data.SQLite;
 using System.Data;
 using System.Text.RegularExpressions;
 using tspAuto.Domain;
 using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
+using System.Linq;
+using tspAuto.Model;
 
 namespace tspAuto
 {
@@ -51,41 +52,31 @@ namespace tspAuto
 
         public void Arama()
         {
-            DataSet dataSet = new DataSet();
-            string[] columns = SecilenKolonlar(MuvekkilSirketContextMenu.Items);
+            string[]  columns = SecilenKolonlar(MuvekkilSahisContextMenu.Items);
             if (columns.Length > 0)
             {
-                MethodPack.VeritabaniKodBlogu((con) =>
+                using (var db = new DbConnection())
                 {
-                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSirket", columns, con)))
-                    {
-                        dataAdapter.Fill(dataSet);
-                    }
-
-                    MuvekkilSirket.ItemsSource = dataSet.Tables[0].DefaultView;
-                    MuvekkilSirketExpander.Header = $"Şirket Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
-                });
+                    List<MuvekkilSahis> queryResult = db.MuvekkilSahis_tt.ToList();
+                    MuvekkilSahis_tt.ItemsSource = queryResult;
+                    MuvekkilSahisExpander.Header = $"Şahıs Müvekkiller ({queryResult.Count.ToString()})";
+                }
             }
 
-            MuvekkilSirket.SelectedItem = null;
+            MuvekkilSahis_tt.SelectedItem = null;
 
-            dataSet = new DataSet();
-            columns = SecilenKolonlar(MuvekkilSahisContextMenu.Items);
+            columns = SecilenKolonlar(MuvekkilSirketContextMenu.Items);
             if (columns.Length > 0)
             {
-                MethodPack.VeritabaniKodBlogu((con) =>
+                using (var db = new DbConnection())
                 {
-                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(MethodPack.Generate_Query_Command(AramaKutusu.Text, "MuvekkilSahis", columns, con)))
-                    {
-                        dataAdapter.Fill(dataSet);
-                    }
-
-                    MuvekkilSahis.ItemsSource = dataSet.Tables[0].DefaultView;
-                    MuvekkilSahisExpander.Header = $"Şahıs Müvekkiller ({dataSet.Tables[0].DefaultView.Count.ToString()})";
-                });
+                    List<MuvekkilSirket> queryResult = db.MuvekkilSirket_tt.ToList();
+                    MuvekkilSirket_tt.ItemsSource = queryResult;
+                    MuvekkilSirketExpander.Header = $"Şirket Müvekkiller ({queryResult.Count.ToString()})";
+                }
             }
 
-            MuvekkilSahis.SelectedItem = null;
+            MuvekkilSirket_tt.SelectedItem = null;
         }
 
         private async void DataGrid_RightClick(object sender, RoutedEventArgs e)
@@ -93,16 +84,14 @@ namespace tspAuto
             try
             {
                 DataGrid dataGrid = ((ContextMenu)(sender as MenuItem).Parent).PlacementTarget as DataGrid;
-                DataRowView rowView = (DataRowView)dataGrid.SelectedItem;
+                IDataModel_tspAuto item = (IDataModel_tspAuto)dataGrid.SelectedItem;
                 string tablo = dataGrid.Name;
 
-                if (rowView != null)
+                if (item != null)
                 {
-                    long girdiID = Convert.ToInt64(rowView["ID"]);
-
                     var view = new AramaYapDialog
                     {
-                        DataContext = new AramaYapDialogViewModel(tablo, girdiID)
+                        DataContext = new AramaYapDialogViewModel(item)
                     };
 
                     var result = await DialogHost.Show(view, "RootDialog");
@@ -121,11 +110,11 @@ namespace tspAuto
 
                         if (Convert.ToBoolean(result))
                         {
-                            MethodPack.VeritabaniKodBlogu((con) =>
+                            using (var db = new DbConnection())
                             {
-                                con.Open();
-                                new SQLiteCommand($"DELETE FROM {tablo} WHERE ID={girdiID};", con).ExecuteNonQuery();
-                            });
+                                db.Database.ExecuteSqlCommand("DELETE FROM dbo." + tablo + " WHERE ID={0}", item.ID);
+                                db.SaveChanges();
+                            }
                             Arama();
                         }
                     }
@@ -143,9 +132,9 @@ namespace tspAuto
             {
                 if (e.EditAction == DataGridEditAction.Commit)
                 {
-                    string table = (sender as DataGrid).Name;
-                    string column = e.Column.SortMemberPath;
-                    long girdiID = Convert.ToInt64((e.Row.Item as DataRowView)["ID"]);
+                    string tablo = (sender as DataGrid).Name;
+                    string kolon = e.Column.SortMemberPath;
+                    int girdiID = ((sender as DataGrid).SelectedItem as IDataModel_tspAuto).ID;
 
                     var view = new BenimDialog
                     {
@@ -156,30 +145,11 @@ namespace tspAuto
 
                     if (Convert.ToBoolean(result))
                     {
-                        if (e.EditingElement.GetType() == typeof(TextBox))
-                        {
-                            string newVal = (e.EditingElement as TextBox).Text;
-                            string commandString = $"UPDATE {table} SET {column}=@newVal WHERE ID={girdiID}";
-
-                            MethodPack.VeritabaniKodBlogu((con) =>
-                            {
-                                con.Open();
-                                SQLiteCommand command = new SQLiteCommand(commandString, con);
-                                command.Parameters.AddWithValue("newVal", newVal);
-                                command.ExecuteNonQuery();
-                            });
-                        }
-                        else if (e.EditingElement.GetType() == typeof(CheckBox))
-                        {
-                            bool newVal = (bool)(e.EditingElement as CheckBox).IsChecked;
-                            string command = $"UPDATE {table} SET {column}={newVal} WHERE ID={girdiID}";
-
-                            MethodPack.VeritabaniKodBlogu((con) =>
-                            {
-                                con.Open();
-                                new SQLiteCommand(command, con).ExecuteNonQuery();
-                            });
-                        }
+                        //using (var db = new DbConnection())
+                        //{
+                        //    db.Database.ExecuteSqlCommand("UPDATE " + tablo + " SET " + kolon + "={0} WHERE ID={1}", newVal, girdiID);
+                        //    db.SaveChanges();
+                        //}
                     }
                     else
                     {
@@ -230,17 +200,6 @@ namespace tspAuto
                     }
                 }
             }
-        }
-    }
-
-    // from https://stackoverflow.com/questions/172735/create-use-user-defined-functions-in-system-data-sqlite
-    // taken from http://sqlite.phxsoftware.com/forums/p/348/1457.aspx#1457
-    [SQLiteFunction(Name = "REGEXP", Arguments = 2, FuncType = FunctionType.Scalar)]
-    public class RegExSQLiteFunction : SQLiteFunction
-    {
-        public override object Invoke(object[] args)
-        {
-            return Regex.IsMatch(Convert.ToString(args[1]), Convert.ToString(args[0]));
         }
     }
 

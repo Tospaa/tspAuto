@@ -51,7 +51,7 @@
                           IsExpanded="False"
                           Name="MuvekkilSahisExpander"
                           Header="Şahıs Müvekkiller (0)">
-                    <DataGrid Name="MuvekkilSahis"
+                    <DataGrid Name="MuvekkilSahis_tt"
                               EnableRowVirtualization="False"
                               CanUserReorderColumns="True"
                               CanUserResizeColumns="True"
@@ -68,10 +68,14 @@
                                                 Binding="{Binding MuvekkilNo}" />
                             <DataGridTextColumn Header="Müvekkil Türü"
                                                 Binding="{Binding MuvekkilTuru}" />
+                            <DataGridTextColumn Header="İsim Soyisim"
+                                                Binding="{Binding IsimSoyisim}" />
+                            <DataGridTextColumn Header="TC Kimlik No"
+                                                Binding="{Binding TCKimlik}" />
                             <DataGridTextColumn Header="Noter İsmi"
                                                 Binding="{Binding NoterIsmi}" />
                             <DataGridTextColumn Header="Vekalet Tarihi"
-                                                Binding="{Binding VekaletTarihi}" />
+                                                Binding="{Binding VekaletTarihi, StringFormat=\{0:dd/MM/yyyy\}}" />
                             <DataGridTextColumn Header="Vek. Yevmiye No"
                                                 Binding="{Binding VekYevmiyeNo}" />
                             <DataGridCheckBoxColumn Header="Ahzu Kabza"
@@ -92,10 +96,6 @@
                                                 Binding="{Binding Sube}" />
                             <DataGridTextColumn Header="IBAN No"
                                                 Binding="{Binding IBANno}" />
-                            <DataGridTextColumn Header="İsim Soyisim"
-                                                Binding="{Binding IsimSoyisim}" />
-                            <DataGridTextColumn Header="TC Kimlik No"
-                                                Binding="{Binding TCKimlik}" />
                             <DataGridTextColumn Header="Adres"
                                                 Binding="{Binding Adres}" />
                             <DataGridTextColumn Header="Telefon"
@@ -186,7 +186,7 @@
                           IsExpanded="False"
                           Name="MuvekkilSirketExpander"
                           Header="Şirket Müvekkiller (0)">
-                    <DataGrid Name="MuvekkilSirket"
+                    <DataGrid Name="MuvekkilSirket_tt"
                               EnableRowVirtualization="False"
                               CanUserReorderColumns="True"
                               CanUserResizeColumns="True"
@@ -206,7 +206,7 @@
                             <DataGridTextColumn Header="Noter İsmi"
                                                 Binding="{Binding NoterIsmi}" />
                             <DataGridTextColumn Header="Vekalet Tarihi"
-                                                Binding="{Binding VekaletTarihi}" />
+                                                Binding="{Binding VekaletTarihi, StringFormat=\{0:dd/MM/yyyy\}}" />
                             <DataGridTextColumn Header="Vek. Yevmiye No"
                                                 Binding="{Binding VekYevmiyeNo}" />
                             <DataGridCheckBoxColumn Header="Ahzu Kabza"

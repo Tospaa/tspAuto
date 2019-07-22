@@ -32,7 +32,7 @@ namespace tspAuto
         {
             if (!Equals(eventArgs.Parameter, true)) return; // çok coolum ya mk xD
 
-            DataRowView row = (Icerik.Content as AramaYap).MuvekkilSahis.SelectedItem as DataRowView;
+            DataRowView row = (Icerik.Content as AramaYap).MuvekkilSahis_tt.SelectedItem as DataRowView;
 
             try
             {

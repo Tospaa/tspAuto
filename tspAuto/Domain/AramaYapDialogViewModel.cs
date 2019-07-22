@@ -1,34 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
 
 namespace tspAuto.Domain
 {
     class AramaYapDialogViewModel : INotifyPropertyChanged
     {
-        private DataView _dataView;
+        private List<object> _item = new List<object>();
 
-        public AramaYapDialogViewModel(string tablo, long id)
+        public AramaYapDialogViewModel(object item)
         {
-            DataSet dataSet = new DataSet();
-
-            MethodPack.VeritabaniKodBlogu((con) => {
-                using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter($"SELECT * FROM {tablo} WHERE ID={id}", con))
-                {
-                    dataAdapter.Fill(dataSet);
-                }
-
-                _dataView = dataSet.Tables[0].DefaultView;
-            });
+            _item.Add(item);
         }
 
-        public DataView DataView
+        public List<object> Item
         {
-            get { return _dataView; }
+            get { return _item; }
             set
             {
-                this.MutateVerbose(ref _dataView, value, RaisePropertyChanged());
+                this.MutateVerbose(ref _item, value, RaisePropertyChanged());
             }
         }
 

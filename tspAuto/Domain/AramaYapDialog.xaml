@@ -18,7 +18,7 @@
         <TextBlock Text="Seçilen Veritabanı Girdisi" Style="{StaticResource MaterialDesignTitleTextBlock}"
                    VerticalAlignment="Center" HorizontalAlignment="Left"
                    TextWrapping="Wrap" MaxWidth="400"/>
-        <DataGrid ItemsSource="{Binding DataView}" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" Grid.Row="1"
+        <DataGrid ItemsSource="{Binding Item}" EnableRowVirtualization="False" CanUserReorderColumns="True" CanUserResizeColumns="True"  CanUserResizeRows="True" CanUserSortColumns="True" Grid.Row="1"
                   CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="True" IsSynchronizedWithCurrentItem="True" MaxWidth="400">
         </DataGrid>
         <StackPanel Orientation="Horizontal" Grid.Row="3"

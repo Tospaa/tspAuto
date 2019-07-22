@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using tspAuto.Domain;
+using tspAuto.Model;
 
 namespace tspAuto
 {
@@ -19,145 +20,86 @@ namespace tspAuto
 
         private void Sahis_Kaydet_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (MuvekkilTuru.SelectedIndex == 0)
+            if (MuvekkilTuru.SelectedIndex == 0 && IsimSoyisim.Text != string.Empty)
             {
-                string[] columns = new string[]
+                try
                 {
-                    "MuvekkilNo",
-                    "MuvekkilTuru",
-                    "NoterIsmi",
-                    "VekaletTarihi",
-                    "VekYevmiyeNo",
-                    "AhzuKabza",
-                    "Feragat",
-                    "Ibra",
-                    "Sulh",
-                    "Banka",
-                    "Sube",
-                    "IBANno",
-                    "Adres",
-                    "Telefon",
-                    "Fax",
-                    "Email",
-                    "IsimSoyisim",
-                    "TCKimlik"
-                };
+                    using (var db = new DbConnection())
+                    {
+                        var muvekkilsahis = new MuvekkilSahis
+                        {
+                            MuvekkilNo = MuvekkilNo.Text,
+                            MuvekkilTuru = MuvekkilTuru.Text,
+                            NoterIsmi = NoterIsmi.Text,
+                            VekaletTarihi = VekTarihi_Duzeltme(),
+                            VekYevmiyeNo = VekYevNo.Text,
+                            AhzuKabza = Convert.ToBoolean(AhzuKabza.SelectedIndex),
+                            Feragat = Convert.ToBoolean(Feragat.SelectedIndex),
+                            Ibra = Convert.ToBoolean(Ibra.SelectedIndex),
+                            Sulh = Convert.ToBoolean(Sulh.SelectedIndex),
+                            Banka = Banka.Text,
+                            Sube = Sube.Text,
+                            IBANno = IBANno.Text,
+                            Adres = Adres.Text,
+                            Telefon = Telefon.Text,
+                            Fax = Fax.Text,
+                            Email = Email.Text,
+                            IsimSoyisim = IsimSoyisim.Text,
+                            TCKimlik = TCKimlik.Text
+                        };
 
-                object[] values = new object[]
-                {
-                    MuvekkilNo.Text,
-                    MuvekkilTuru.Text,
-                    NoterIsmi.Text,
-                    string.Format("{0:dd.MM.yyyy}", VekTarihi.SelectedDate),
-                    VekYevNo.Text,
-                    AhzuKabza.SelectedIndex,
-                    Feragat.SelectedIndex,
-                    Ibra.SelectedIndex,
-                    Sulh.SelectedIndex,
-                    Banka.Text,
-                    Sube.Text,
-                    IBANno.Text,
-                    Adres.Text,
-                    Telefon.Text,
-                    Fax.Text,
-                    Email.Text,
-                    IsimSoyisim.Text,
-                    TCKimlik.Text
-                };
+                        db.MuvekkilSahis_tt.Add(muvekkilsahis);
+                        db.SaveChanges();
+                    }
 
-                bool basarili = false;
-
-                MethodPack.VeritabaniKodBlogu((con) => {
-                    con.Open();
-                    MethodPack.Generate_Insert_Command("MuvekkilSahis", columns, values, con).ExecuteNonQuery();
-
-                    basarili = true;
-                });
-
-                if (basarili)
-                {
                     MessageBox.Show("Veritabanı girdisi başarılı.");
                     Temizle();
                 }
-                else
-                {
-                    MessageBox.Show("Veritabanı girdisi yapılamadı.");
-                }
+                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
             }
         }
 
         private void Sirket_Kaydet_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (MuvekkilTuru.SelectedIndex == 1)
+            if (MuvekkilTuru.SelectedIndex == 1 && SirketUnvan.Text != string.Empty)
             {
-                string[] columns = new string[]
+                try
                 {
-                    "MuvekkilNo",
-                    "MuvekkilTuru",
-                    "NoterIsmi",
-                    "VekaletTarihi",
-                    "VekYevmiyeNo",
-                    "AhzuKabza",
-                    "Feragat",
-                    "Ibra",
-                    "Sulh",
-                    "Banka",
-                    "Sube",
-                    "IBANno",
-                    "Adres",
-                    "Telefon",
-                    "Fax",
-                    "Email",
-                    "SirketTuru",
-                    "SirketUnvan",
-                    "VergiDairesi",
-                    "VergiNo",
-                    "MersisNo"
-                };
+                    using (var db = new DbConnection())
+                    {
+                        var muvekkilsirket = new MuvekkilSirket
+                        {
+                            MuvekkilNo = MuvekkilNo.Text,
+                            MuvekkilTuru = MuvekkilTuru.Text,
+                            NoterIsmi = NoterIsmi.Text,
+                            VekaletTarihi = VekTarihi_Duzeltme(),
+                            VekYevmiyeNo = VekYevNo.Text,
+                            AhzuKabza = Convert.ToBoolean(AhzuKabza.SelectedIndex),
+                            Feragat = Convert.ToBoolean(Feragat.SelectedIndex),
+                            Ibra = Convert.ToBoolean(Ibra.SelectedIndex),
+                            Sulh = Convert.ToBoolean(Sulh.SelectedIndex),
+                            Banka = Banka.Text,
+                            Sube = Sube.Text,
+                            IBANno = IBANno.Text,
+                            Adres = Adres.Text,
+                            Telefon = Telefon.Text,
+                            Fax = Fax.Text,
+                            Email = Email.Text,
+                            SirketTuru = SirketTuru.Text,
+                            SirketUnvan = SirketUnvan.Text,
+                            VergiDairesi = VergiDairesi.Text,
+                            VergiNo = VergiNo.Text,
+                            MersisNo = MersisNo.Text
+                        };
 
-                object[] values = new object[]
-                {
-                    MuvekkilNo.Text,
-                    MuvekkilTuru.Text,
-                    NoterIsmi.Text,
-                    string.Format("{0:dd.MM.yyyy}", VekTarihi.SelectedDate),
-                    VekYevNo.Text,
-                    AhzuKabza.SelectedIndex,
-                    Feragat.SelectedIndex,
-                    Ibra.SelectedIndex,
-                    Sulh.SelectedIndex,
-                    Banka.Text,
-                    Sube.Text,
-                    IBANno.Text,
-                    Adres.Text,
-                    Telefon.Text,
-                    Fax.Text,
-                    Email.Text,
-                    SirketTuru.Text,
-                    SirketUnvan.Text,
-                    VergiDairesi.Text,
-                    VergiNo.Text,
-                    MersisNo.Text
-                };
+                        db.MuvekkilSirket_tt.Add(muvekkilsirket);
+                        db.SaveChanges();
+                    }
 
-                bool basarili = false;
-
-                MethodPack.VeritabaniKodBlogu((con) => {
-                    con.Open();
-                    MethodPack.Generate_Insert_Command("MuvekkilSirket", columns, values, con).ExecuteNonQuery();
-
-                    basarili = true;
-                });
-
-                if (basarili)
-                {
                     MessageBox.Show("Veritabanı girdisi başarılı.");
                     Temizle();
                 }
-                else
-                {
-                    MessageBox.Show("Veritabanı girdisi yapılamadı.");
-                }
+                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
             }
         }
 
@@ -186,6 +128,18 @@ namespace tspAuto
             VergiDairesi.Text = string.Empty;
             VergiNo.Text = string.Empty;
             MersisNo.Text = string.Empty;
+        }
+
+        private DateTime VekTarihi_Duzeltme()
+        {
+            try
+            {
+                return (DateTime)VekTarihi.SelectedDate;
+            }
+            catch
+            {
+                return DateTime.Now;
+            }
         }
     }
 }

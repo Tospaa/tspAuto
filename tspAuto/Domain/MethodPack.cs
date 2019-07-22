@@ -2,160 +2,25 @@
 using Quartz.Impl.Matchers;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using tspAuto.Reminder;
+using tspAuto.Model;
+using System.Linq;
 
 namespace tspAuto.Domain
 {
     public static class MethodPack
     {
-        public static SQLiteCommand Generate_Insert_Command(string table, string[] columns, object[] values, SQLiteConnection con)
-        {
-            string insertString = $"INSERT INTO {table}(";
-
-            foreach (string i in columns)
-            {
-                insertString += i + ",";
-            }
-
-            insertString = insertString.Substring(0, insertString.Length - 1) + ") VALUES(";
-
-            foreach (string i in columns)
-            {
-                insertString += "@" + i + ",";
-            }
-
-            insertString = insertString.Substring(0, insertString.Length - 1) + ");";
-
-            SQLiteCommand command = new SQLiteCommand(insertString, con);
-
-            for (int i = 0; i < columns.Length; i++)
-            {
-                command.Parameters.AddWithValue(columns[i], values[i]);
-            }
-
-            return command;
-        }
-
-        public static SQLiteCommand Generate_Query_Command(string word, string table, string[] columns, SQLiteConnection con)
-        {
-            if (new Regex("[ğĞüÜşŞıİöÖçÇ]").Match(word).Success)
-            {
-                string arama = word;
-
-                arama = new Regex("[ğĞ]").Replace(arama, "[ğĞ]");
-                arama = new Regex("[üÜ]").Replace(arama, "[üÜ]");
-                arama = new Regex("[şŞ]").Replace(arama, "[şŞ]");
-                arama = new Regex("[ıI]").Replace(arama, "[ıI]");
-                arama = new Regex("[iİ]").Replace(arama, "[iİ]");
-                arama = new Regex("[öÖ]").Replace(arama, "[öÖ]");
-                arama = new Regex("[çÇ]").Replace(arama, "[çÇ]");
-
-                // (?i) ignores case sensitivity
-                arama = "(?i)" + arama;
-
-                string queryString = $"SELECT * FROM {table} WHERE(";
-
-                foreach (string i in columns)
-                {
-                    queryString += $"{i} REGEXP @arama OR ";
-                }
-
-                queryString = queryString.Substring(0, queryString.Length - 4) + ")";
-
-                SQLiteCommand command = new SQLiteCommand(queryString, con);
-
-                command.Parameters.AddWithValue("arama", arama);
-
-                return command;
-            }
-            else
-            {
-                string queryString = $"SELECT * FROM {table} WHERE(";
-
-                foreach (string i in columns)
-                {
-                    queryString += $"{i} LIKE @arama OR ";
-                }
-
-                queryString = queryString.Substring(0, queryString.Length - 4) + ")";
-
-                SQLiteCommand command = new SQLiteCommand(queryString, con);
-
-                command.Parameters.AddWithValue("arama", "%" + word + "%");
-
-                return command;
-            }
-        }
-
-        public delegate void CodeBlock(SQLiteConnection con);
-
-        public static void VeritabaniKodBlogu(CodeBlock codeBlock)
-        {
-            try
-            {
-                if (Properties.Settings.Default.DatabaseFilePath != "" && System.IO.File.Exists(Properties.Settings.Default.DatabaseFilePath))
-                {
-                    try
-                    {
-                        using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
-                        {
-                            //code goes here
-                            codeBlock.Invoke(con);
-                        }
-                    }
-                    catch (System.Exception ex)
-                    {
-                        MessageBox.Show("Veritabanı işlemi sırasında bir hata oluştu.\n\n" + ex.Message);
-                        return;
-                    }
-                    finally
-                    {
-                        System.GC.Collect();
-                        System.GC.WaitForPendingFinalizers();
-                    }
-                }
-                else if (Properties.Settings.Default.DatabaseFilePath == "")
-                {
-                    MessageBox.Show("Veritabanı seçilmemiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
-                    return;
-                }
-                else if (!System.IO.File.Exists(Properties.Settings.Default.DatabaseFilePath))
-                {
-                    MessageBox.Show("Veritabanı silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
-                    return;
-                }
-            }
-            catch (System.IO.DirectoryNotFoundException)
-            {
-                MessageBox.Show("Bazı dosyalar silinmiş ya da erişim engellenmiş. Yeni bir veritabanı oluşturun ya da var olan bir veritabanı seçin.");
-                return;
-            }
-        }
-
         public static void HatirlaticilarVeritabanina(Hatirlatici hatirlaticiInstance)
         {
-            string[] columns = new string[]
-            {
-                "Baslik",
-                "Aciklama",
-                "Zaman",
-                "HatirlaticiTablo",
-                "HatirlaticiID"
-            };
-
             bool basarili = false;
 
             IReadOnlyCollection<TriggerKey> allTriggerKeys = hatirlaticiInstance.scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup()).GetAwaiter().GetResult();
 
-            VeritabaniKodBlogu((con) => {
-                con.Open();
-
-                new SQLiteCommand("DELETE FROM Hatirlaticilar;", con).ExecuteNonQuery();
+            using (var db = new DbConnection())
+            {
+                db.Database.ExecuteSqlCommand("DELETE FROM dbo.Hatirlaticilar");
 
                 foreach (TriggerKey triggerKey in allTriggerKeys)
                 {
@@ -164,25 +29,25 @@ namespace tspAuto.Domain
 
                     if ((triggerdetails as Quartz.Impl.Triggers.SimpleTriggerImpl).TimesTriggered == 0)
                     {
-                        object[] values = new object[]
+                        var hatirlaticimodel = new HatirlaticiModel
                         {
-                            jobDetail.JobDataMap.GetString("Baslik"),
-                            jobDetail.JobDataMap.GetString("Aciklama"),
-                            triggerdetails.StartTimeUtc.DateTime.ToString("yyyy.MM.dd.HH.mm"),
-                            jobDetail.JobDataMap.GetString("Tablo"),
-                            jobDetail.JobDataMap.GetInt("ID")
+                            Baslik = jobDetail.JobDataMap.GetString("Baslik"),
+                            Aciklama = jobDetail.JobDataMap.GetString("Aciklama"),
+                            Zaman = triggerdetails.StartTimeUtc.DateTime,
+                            HatirlaticiTablo = jobDetail.JobDataMap.GetString("Tablo"),
+                            HatirlaticiID = jobDetail.JobDataMap.GetInt("ID")
                         };
 
-                        Generate_Insert_Command("Hatirlaticilar", columns, values, con).ExecuteNonQuery();
+                        db.Hatirlaticilar.Add(hatirlaticimodel);
                     }
                 }
-
+                db.SaveChanges();
                 basarili = true;
-            });
+            }
 
             if (!basarili)
             {
-                MessageBox.Show("Veritabanı girdisi yapılamadı.");
+                MessageBox.Show("Hatırlatıcıların veritabanına girdisi yapılamadı.");
             }
         }
 

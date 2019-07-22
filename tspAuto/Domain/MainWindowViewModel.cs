@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SQLite;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -98,95 +97,95 @@ namespace tspAuto.Domain
 
         private void VeritabaniYarat()
         {
-            Properties.Settings.Default.DatabaseFilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\{Properties.Resources.Title}\\veri_{DateTime.Now.ToString("yyyyMMddHHmmss")}.db";
-            Properties.Settings.Default.Save();
+            //Properties.Settings.Default.DatabaseFilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\{Properties.Resources.Title}\\veri_{DateTime.Now.ToString("yyyyMMddHHmmss")}.db";
+            //Properties.Settings.Default.Save();
 
-            SQLiteConnection.CreateFile(Properties.Settings.Default.DatabaseFilePath);
+            //SQLiteConnection.CreateFile(Properties.Settings.Default.DatabaseFilePath);
 
-            string sql1 = @"CREATE TABLE IF NOT EXISTS MuvekkilSirket(
-                            ID   INTEGER PRIMARY KEY AUTOINCREMENT,
-                            MuvekkilNo          TEXT      NOT NULL,
-                            MuvekkilTuru        TEXT      NOT NULL,
-                            NoterIsmi           TEXT      NOT NULL,
-                            VekaletTarihi       TEXT      NOT NULL,
-                            VekYevmiyeNo        TEXT      NOT NULL,
-                            AhzuKabza           BOOLEAN   NOT NULL,
-                            Feragat             BOOLEAN   NOT NULL,
-                            Ibra                BOOLEAN   NOT NULL,
-                            Sulh                BOOLEAN   NOT NULL,
-                            Banka               TEXT      NOT NULL,
-                            Sube                TEXT      NOT NULL,
-                            IBANno              TEXT      NOT NULL,
-                            Adres               TEXT      NOT NULL,
-                            Telefon             TEXT      NOT NULL,
-                            Fax                 TEXT      NOT NULL,
-                            Email               TEXT      NOT NULL,
-                            SirketTuru          TEXT      NOT NULL,
-                            SirketUnvan         TEXT      NOT NULL,
-                            VergiDairesi        TEXT      NOT NULL,
-                            VergiNo             TEXT      NOT NULL,
-                            MersisNo            TEXT      NOT NULL
-                            );";
+            //string sql1 = @"CREATE TABLE IF NOT EXISTS MuvekkilSirket(
+            //                ID   INTEGER PRIMARY KEY AUTOINCREMENT,
+            //                MuvekkilNo          TEXT      NOT NULL,
+            //                MuvekkilTuru        TEXT      NOT NULL,
+            //                NoterIsmi           TEXT      NOT NULL,
+            //                VekaletTarihi       TEXT      NOT NULL,
+            //                VekYevmiyeNo        TEXT      NOT NULL,
+            //                AhzuKabza           BOOLEAN   NOT NULL,
+            //                Feragat             BOOLEAN   NOT NULL,
+            //                Ibra                BOOLEAN   NOT NULL,
+            //                Sulh                BOOLEAN   NOT NULL,
+            //                Banka               TEXT      NOT NULL,
+            //                Sube                TEXT      NOT NULL,
+            //                IBANno              TEXT      NOT NULL,
+            //                Adres               TEXT      NOT NULL,
+            //                Telefon             TEXT      NOT NULL,
+            //                Fax                 TEXT      NOT NULL,
+            //                Email               TEXT      NOT NULL,
+            //                SirketTuru          TEXT      NOT NULL,
+            //                SirketUnvan         TEXT      NOT NULL,
+            //                VergiDairesi        TEXT      NOT NULL,
+            //                VergiNo             TEXT      NOT NULL,
+            //                MersisNo            TEXT      NOT NULL
+            //                );";
 
-            string sql2 = @"CREATE TABLE IF NOT EXISTS MuvekkilSahis(
-                            ID   INTEGER PRIMARY KEY AUTOINCREMENT,
-                            MuvekkilNo          TEXT      NOT NULL,
-                            MuvekkilTuru        TEXT      NOT NULL,
-                            NoterIsmi           TEXT      NOT NULL,
-                            VekaletTarihi       TEXT      NOT NULL,
-                            VekYevmiyeNo        TEXT      NOT NULL,
-                            AhzuKabza           BOOLEAN   NOT NULL,
-                            Feragat             BOOLEAN   NOT NULL,
-                            Ibra                BOOLEAN   NOT NULL,
-                            Sulh                BOOLEAN   NOT NULL,
-                            Banka               TEXT      NOT NULL,
-                            Sube                TEXT      NOT NULL,
-                            IBANno              TEXT      NOT NULL,
-                            Adres               TEXT      NOT NULL,
-                            Telefon             TEXT      NOT NULL,
-                            Fax                 TEXT      NOT NULL,
-                            Email               TEXT      NOT NULL,
-                            IsimSoyisim         TEXT      NOT NULL,
-                            TCKimlik            TEXT      NOT NULL
-                            );";
+            //string sql2 = @"CREATE TABLE IF NOT EXISTS MuvekkilSahis(
+            //                ID   INTEGER PRIMARY KEY AUTOINCREMENT,
+            //                MuvekkilNo          TEXT      NOT NULL,
+            //                MuvekkilTuru        TEXT      NOT NULL,
+            //                NoterIsmi           TEXT      NOT NULL,
+            //                VekaletTarihi       TEXT      NOT NULL,
+            //                VekYevmiyeNo        TEXT      NOT NULL,
+            //                AhzuKabza           BOOLEAN   NOT NULL,
+            //                Feragat             BOOLEAN   NOT NULL,
+            //                Ibra                BOOLEAN   NOT NULL,
+            //                Sulh                BOOLEAN   NOT NULL,
+            //                Banka               TEXT      NOT NULL,
+            //                Sube                TEXT      NOT NULL,
+            //                IBANno              TEXT      NOT NULL,
+            //                Adres               TEXT      NOT NULL,
+            //                Telefon             TEXT      NOT NULL,
+            //                Fax                 TEXT      NOT NULL,
+            //                Email               TEXT      NOT NULL,
+            //                IsimSoyisim         TEXT      NOT NULL,
+            //                TCKimlik            TEXT      NOT NULL
+            //                );";
 
-            string sql3 = @"CREATE TABLE IF NOT EXISTS Hatirlaticilar(
-                            Baslik              TEXT      NOT NULL,
-                            Aciklama            TEXT      NOT NULL,
-                            Zaman               TEXT      NOT NULL,
-                            HatirlaticiTablo    TEXT      NOT NULL,
-                            HatirlaticiID       INTEGER   NOT NULL
-                            );";
+            //string sql3 = @"CREATE TABLE IF NOT EXISTS Hatirlaticilar(
+            //                Baslik              TEXT      NOT NULL,
+            //                Aciklama            TEXT      NOT NULL,
+            //                Zaman               TEXT      NOT NULL,
+            //                HatirlaticiTablo    TEXT      NOT NULL,
+            //                HatirlaticiID       INTEGER   NOT NULL
+            //                );";
 
-            bool basarili = false;
+            //bool basarili = false;
 
-            try
-            {
-                using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
-                {
-                    con.Open();
-                    new SQLiteCommand(sql1 + sql2 + sql3, con).ExecuteNonQuery();
+            //try
+            //{
+            //    using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
+            //    {
+            //        con.Open();
+            //        new SQLiteCommand(sql1 + sql2 + sql3, con).ExecuteNonQuery();
 
-                    basarili = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Veritabanı oluşturma işlemi sırasında bir hata oluştu.\n\n" + ex.Message);
-            }
-            finally
-            {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                if (basarili)
-                {
-                    MessageBox.Show("Veritabanı oluşturma başarılı.");
-                }
-                else
-                {
-                    MessageBox.Show("Veritabanı oluşturması yapılamadı.");
-                }
-            }
+            //        basarili = true;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Veritabanı oluşturma işlemi sırasında bir hata oluştu.\n\n" + ex.Message);
+            //}
+            //finally
+            //{
+            //    GC.Collect();
+            //    GC.WaitForPendingFinalizers();
+            //    if (basarili)
+            //    {
+            //        MessageBox.Show("Veritabanı oluşturma başarılı.");
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Veritabanı oluşturması yapılamadı.");
+            //    }
+            //}
         }
 
         private void VeritabaniSec()

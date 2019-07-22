@@ -7,11 +7,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Data;
-using System.Data.SQLite;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using tspAuto.Domain;
+using tspAuto.Model;
 using tspAuto.Reminder;
 
 namespace tspAuto
@@ -61,26 +62,22 @@ namespace tspAuto
 
         private async Task VeritabaniOku()
         {
-            DataSet dataSet = new DataSet();
+            List<HatirlaticiModel> queryResult = new List<HatirlaticiModel>();
 
-            MethodPack.VeritabaniKodBlogu((con) => {
-                using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter("SELECT * FROM Hatirlaticilar", con))
-                {
-                    dataAdapter.Fill(dataSet);
-                }
-            });
+            using (var db = new DbConnection())
+            {
+                queryResult = db.Hatirlaticilar.ToList();
+            }
 
             try
             {
-                foreach (DataRowView i in dataSet.Tables[0].DefaultView)
+                foreach (HatirlaticiModel i in queryResult)
                 {
-                    string baslik = i["Baslik"].ToString();
-                    string aciklama = i["Aciklama"].ToString();
-                    string[] strzmn = i["Zaman"].ToString().Split(new char[] { '.' });
-                    int[] zmn = Array.ConvertAll(strzmn, int.Parse);
-                    DateTime tarih = new DateTime(zmn[0], zmn[1], zmn[2], zmn[3], zmn[4], 0, DateTimeKind.Local);
-                    string tablo = i["HatirlaticiTablo"].ToString();
-                    int id = Convert.ToInt32(i["HatirlaticiID"]);
+                    string baslik = i.Baslik;
+                    string aciklama = i.Aciklama;
+                    DateTime tarih = i.Zaman;
+                    string tablo = i.HatirlaticiTablo;
+                    int id = Convert.ToInt32(i.HatirlaticiID);
 
                     // define the job and tie it to our Gorev class
                     IJobDetail job = JobBuilder.Create<Gorev>()
