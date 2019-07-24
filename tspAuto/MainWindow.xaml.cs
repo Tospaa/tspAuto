@@ -23,8 +23,6 @@ namespace tspAuto
         public MainWindow()
         {
             InitializeComponent();
-
-            DataContext = new MainWindowViewModel();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

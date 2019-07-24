@@ -2,11 +2,9 @@
 using Quartz.Impl.Matchers;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Windows;
 using tspAuto.Reminder;
 using tspAuto.Model;
-using System.Linq;
 
 namespace tspAuto.Domain
 {
@@ -94,6 +92,16 @@ namespace tspAuto.Domain
                 MessageBox.Show("Başlık ve açıklama kısımları boş olamaz.");
             }
             return false;
+        }
+
+        public static string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password, 12);
+        }
+
+        public static bool ValidatePassword(string password, string correctHash)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, correctHash);
         }
     }
 }

@@ -8,32 +8,43 @@
         xmlns:local="clr-namespace:tspAuto"
         xmlns:p="clr-namespace:tspAuto.Properties"
         mc:Ignorable="d"
-        Title="{x:Static p:Resources.Title}" Height="750" Width="800"
+        Title="{x:Static p:Resources.Title}"
+        Height="750"
+        Width="800"
         Closing="Window_Closing"
         Loaded="Window_Loaded"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
-        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{StaticResource MaterialDesignFont}">
+    <Window.Resources>
+        <domain:MainWindow_KullaniciYetkiConverter x:Key="MainWindow_KullaniciYetkiConverter" />
+    </Window.Resources>
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent>
                 <DockPanel MinWidth="212">
                     <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
                                   DockPanel.Dock="Top"
-                                  HorizontalAlignment="Right" Margin="16"
+                                  HorizontalAlignment="Right"
+                                  Margin="16"
                                   IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
                     <!--TODO: Buradaki ListBox'ı TreeView'a çevir ki böyle açmalı maçmalı şeyler dönsün.-->
-                    <ListBox x:Name="SolPanelListBox" Margin="0 16 0 16" SelectedIndex="0"
+                    <ListBox x:Name="SolPanelListBox"
+                             Margin="0 16 0 16"
+                             SelectedIndex="0"
                              ItemsSource="{Binding PanelItems}"
                              PreviewMouseLeftButtonUp="UIElement_OnPreviewMouseLeftButtonUp">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="domain:PanelItem">
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="{Binding Icon}" Margin="27 0 0 0"/>
-                                    <TextBlock Text="{Binding Name}" FontSize="16" Margin="5 0 32 0" />
+                                    <materialDesign:PackIcon Kind="{Binding Icon}"
+                                                             Margin="27 0 0 0" />
+                                    <TextBlock Text="{Binding Name}"
+                                               FontSize="16"
+                                               Margin="5 0 32 0" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -41,72 +52,82 @@
                 </DockPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
             <DockPanel>
-                <materialDesign:ColorZone Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                          Mode="PrimaryMid" DockPanel.Dock="Top">
+                <materialDesign:ColorZone Padding="16"
+                                          materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                          Mode="PrimaryMid"
+                                          DockPanel.Dock="Top">
                     <DockPanel>
-                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
-                                      x:Name="MenuToggleButton"/>
-                        <materialDesign:ColorZone
-                            Mode="Standard"
-                            Padding="8 4 8 4"
-                            CornerRadius="2"
-                            Panel.ZIndex="1"
-                            Margin="16 0 0 0"
-                            materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"
+                                      IsChecked="False"
+                                      x:Name="MenuToggleButton" />
+                        <materialDesign:ColorZone Mode="Standard"
+                                                  Padding="8 4 8 4"
+                                                  CornerRadius="2"
+                                                  Panel.ZIndex="1"
+                                                  Margin="16 0 0 0"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition
-                                        Width="Auto" />
-                                    <ColumnDefinition
-                                        Width="*" />
-                                    <ColumnDefinition
-                                        Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <materialDesign:PackIcon
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Kind="Magnify"
-                                    Opacity=".56" />
-                                <TextBox
-                                    Grid.Column="1"
-                                    Margin="8 0 0 0"
-                                    x:Name="AramaTextbox"
-                                    materialDesign:HintAssist.Hint="Arama yap"
-                                    materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                                    BorderThickness="0"
-                                    MinWidth="200"
-                                    MaxWidth="250"
-                                    VerticalAlignment="Center"
-                                    KeyDown="AramaTextbox_KeyDown"/>
-                                <Button
-                                    Style="{DynamicResource MaterialDesignToolButton}"
-                                    Grid.Column="2"
-                                    Click="Temizle_Button_Click">
-                                    <materialDesign:PackIcon
-                                        Kind="Close"
-                                        Opacity=".56"
-                                        Margin="8 0 0 0" 
-                                        />
+                                <materialDesign:PackIcon HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"
+                                                         Kind="Magnify"
+                                                         Opacity=".56" />
+                                <TextBox Grid.Column="1"
+                                         Margin="8 0 0 0"
+                                         x:Name="AramaTextbox"
+                                         materialDesign:HintAssist.Hint="Arama yap"
+                                         materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                         BorderThickness="0"
+                                         MinWidth="200"
+                                         MaxWidth="250"
+                                         VerticalAlignment="Center"
+                                         KeyDown="AramaTextbox_KeyDown" />
+                                <Button Style="{DynamicResource MaterialDesignToolButton}"
+                                        Grid.Column="2"
+                                        Click="Temizle_Button_Click">
+                                    <materialDesign:PackIcon Kind="Close"
+                                                             Opacity=".56"
+                                                             Margin="8 0 0 0" />
                                 </Button>
                             </Grid>
                         </materialDesign:ColorZone>
-                        <Button
-                            Style="{DynamicResource MaterialDesignToolForegroundButton}"
-                            Margin="8 0 0 0"
-                            Panel.ZIndex="0"
-                            Click="AramaKomutu">
-                            <materialDesign:PackIcon
-                                Kind="Send" />
+                        <Button Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                Margin="8 0 0 0"
+                                Panel.ZIndex="0"
+                                Click="AramaKomutu">
+                            <materialDesign:PackIcon Kind="Send" />
                         </Button>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Right">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18">Av. Şevket Kurt</TextBlock>
-                            <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" StaysOpen="False">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    DockPanel.Dock="Right">
+                            <TextBlock HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="18">
+                                <!-- Ulan çok değişik ama çalıştı xd -->
+                                <!-- from: https://stackoverflow.com/a/2552911 -->
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="MevcutKullanici.Unvan" />
+                                        <Binding Path="MevcutKullanici.IsimSoyisim" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges"
+                                                     StaysOpen="False">
                                 <StackPanel>
-                                    <Button Content="Veritabanı Seç" Command="{Binding VeritabaniDialogKomutu}"/>
-                                    <Button Content="Nice Popup"/>
-                                    <Button Content="Can't Touch This" IsEnabled="False" />
-                                    <Separator/>
-                                    <Button Content="Çıkış Yap" Click="CikisYap_Button_Click"/>
+                                    <Button Content="Veritabanı Seç"
+                                            Command="{Binding VeritabaniDialogKomutu}" />
+                                    <!--<Button Content="Bunda henüz komut yok." />-->
+                                    <Button Content="Yeni Kullanıcı Ekle"
+                                            Command="{Binding YeniKullaniciEkleKomutu}"
+                                            IsEnabled="{Binding MevcutKullanici.Yetki, Converter={StaticResource MainWindow_KullaniciYetkiConverter}}" />
+                                    <Separator />
+                                    <Button Content="Çıkış Yap"
+                                            Click="CikisYap_Button_Click" />
                                 </StackPanel>
                             </materialDesign:PopupBox>
                         </StackPanel>
@@ -121,7 +142,8 @@
                                   HorizontalScrollBarVisibility="{Binding ElementName=SolPanelListBox, Path=SelectedItem.HorizontalScrollBarVisibilityRequirement}"
                                   VerticalScrollBarVisibility="{Binding ElementName=SolPanelListBox, Path=SelectedItem.VerticalScrollBarVisibilityRequirement}"
                                   Padding="{Binding ElementName=SolPanelListBox, Path=SelectedItem.MarginRequirement}">
-                        <ContentControl Name="Icerik" Content="{Binding ElementName=SolPanelListBox, Path=SelectedItem.Content}" />
+                        <ContentControl Name="Icerik"
+                                        Content="{Binding ElementName=SolPanelListBox, Path=SelectedItem.Content}" />
                     </ScrollViewer>
                 </Grid>
             </DockPanel>

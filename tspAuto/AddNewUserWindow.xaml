@@ -1,0 +1,123 @@
+﻿<Window x:Class="tspAuto.AddNewUserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:tspAuto"
+        xmlns:p="clr-namespace:tspAuto.Properties"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="{x:Static p:Resources.Title}"
+        Height="500"
+        Width="800"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{StaticResource MaterialDesignFont}">
+    <Window.Resources>
+        <Style TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="Margin"
+                    Value="0 0 0 8" />
+            <Setter Property="FontSize"
+                    Value="18" />
+        </Style>
+        <Style TargetType="{x:Type PasswordBox}"
+               BasedOn="{StaticResource MaterialDesignPasswordBox}">
+            <Setter Property="Margin"
+                    Value="0 0 0 8" />
+            <Setter Property="FontSize"
+                    Value="18" />
+        </Style>
+        <Style TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource MaterialDesignTitleTextBlock}">
+            <Setter Property="Margin"
+                    Value="0 0 0 8" />
+            <Setter Property="FontSize"
+                    Value="18" />
+        </Style>
+        <Style TargetType="{x:Type ComboBox}"
+               BasedOn="{StaticResource MaterialDesignComboBox}">
+            <Setter Property="Margin"
+                    Value="0 0 0 8" />
+            <Setter Property="FontSize"
+                    Value="18" />
+        </Style>
+    </Window.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical">
+            <TextBlock HorizontalAlignment="Center"
+                       FontSize="30"
+                       Margin="20">YENİ KULLANICI EKLE</TextBlock>
+            <Grid HorizontalAlignment="Center"
+                  VerticalAlignment="Top"
+                  Margin="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="350" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="0">Kullanıcı Adı</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="1">Şifre</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="2">Şifre Tekrar</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="3"
+                           Margin="0 50 0 8">Unvan</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="4">İsim Soyisim</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="5">Yetki</TextBlock>
+                <TextBox Grid.Column="2"
+                         Grid.Row="0"
+                         Name="kullaniciAdi"
+                         materialDesign:HintAssist.Hint="Kullanıcı Adı" />
+                <PasswordBox Grid.Column="2"
+                             Grid.Row="1"
+                             Name="sifreKutusu"
+                             materialDesign:HintAssist.Hint="Şifre" />
+                <PasswordBox Grid.Column="2"
+                             Grid.Row="2"
+                             Name="sifreKutusuTekrar"
+                             materialDesign:HintAssist.Hint="Şifre Tekrar" />
+                <TextBox Grid.Column="2"
+                         Grid.Row="3"
+                         Name="unvan"
+                         materialDesign:HintAssist.Hint="Unvan" />
+                <TextBox Grid.Column="2"
+                         Grid.Row="4"
+                         Name="isimSoyisim"
+                         materialDesign:HintAssist.Hint="İsim Soyisim" />
+                <ComboBox Grid.Column="2"
+                          Grid.Row="5"
+                          Name="YetkiComBox"/>
+                <Button Grid.Column="2"
+                        Grid.Row="6"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        Click="Button_Click">KAYDET</Button>
+                <ListView Grid.Column="0"
+                          Grid.ColumnSpan="3"
+                          Grid.Row="7"
+                          Margin="10"
+                          TextElement.Foreground="Red"
+                          x:Name="Hatalar" />
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

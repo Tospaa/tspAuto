@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using tspAuto.Domain;
 using tspAuto.Model;
 
 namespace tspAuto
@@ -8,9 +9,27 @@ namespace tspAuto
         public DbConnection() : base("tspAutoDb")
         {
             //Database.SetInitializer(new DropCreateDatabaseAlways<DbConnection>());
+            Database.SetInitializer(new MyDbConnectionInitializer());
         }
         public DbSet<MuvekkilSahis> MuvekkilSahis_tt { get; set; }
         public DbSet<MuvekkilSirket> MuvekkilSirket_tt { get; set; }
         public DbSet<HatirlaticiModel> Hatirlaticilar { get; set; }
+        public DbSet<Kullanici> Kullanicilar { get; set; }
+    }
+
+    public class MyDbConnectionInitializer : CreateDatabaseIfNotExists<DbConnection>
+    {
+        protected override void Seed(DbConnection db)
+        {
+            db.Kullanicilar.Add(new Kullanici
+            {
+                KullaniciAdi = "admin",
+                SifreHash = MethodPack.HashPassword("admin"),
+                Unvan = "sysdev",
+                IsimSoyisim = "admin",
+                Yetki = Yetkiler.Yonetici
+            });
+            db.SaveChanges();
+        }
     }
 }

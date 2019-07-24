@@ -71,5 +71,5 @@ namespace tspAuto
         }
     }
 
-    public enum WorkModes { Filling_1, Filling_1_Vekil, Filling_2, Filling_2_Vekil };
+    public enum WorkModes { Filling_1, Filling_1_Vekil, Filling_2, Filling_2_Vekil }
 }

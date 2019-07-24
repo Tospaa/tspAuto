@@ -1,31 +1,46 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
+using tspAuto.Model;
 
 namespace tspAuto.Domain
 {
-    class MainWindowViewModel
+    class MainWindowViewModel : INotifyPropertyChanged
     {
-        public MainWindowViewModel()
+        private Kullanici _mevcutKullanici;
+
+        public MainWindowViewModel(Kullanici mevcutKullanici)
         {
             PanelItems = new[]
-                {
-                    new PanelItem("Ana Sayfa", new Home(), "HomeVariant"),
-                    new PanelItem("Arama Yap", new AramaYap(), "Magnify"),
-                    new PanelItem("Yeni Müvekkil Ekle", new YeniMuvekkilEkle(), "UserPlus"),
-                    new PanelItem("Yeni Dosya Ekle", new YeniDosyaEkle(), "NotePlus"),
-                    new PanelItem("Yeni İş Ekle", new YeniIsEkle(), "BooksPlus"),
-                    new PanelItem("Hatırlatıcı", new Hatirlatici(), "Bell")
-                };
+            {
+                new PanelItem("Ana Sayfa", new Home(), "HomeVariant"),
+                new PanelItem("Arama Yap", new AramaYap(), "Magnify"),
+                new PanelItem("Yeni Müvekkil Ekle", new YeniMuvekkilEkle(), "UserPlus"),
+                new PanelItem("Yeni Dosya Ekle", new YeniDosyaEkle(), "NotePlus"),
+                new PanelItem("Yeni İş Ekle", new YeniIsEkle(), "BooksPlus"),
+                new PanelItem("Hatırlatıcı", new Hatirlatici(), "Bell")
+            };
+
+            _mevcutKullanici = mevcutKullanici;
         }
 
         public PanelItem[] PanelItems { get; }
 
+        public Kullanici MevcutKullanici
+        {
+            get { return _mevcutKullanici; }
+            private set
+            {
+                this.MutateVerbose(ref _mevcutKullanici, value, RaisePropertyChanged());
+            }
+        }
+
         public ICommand VeritabaniDialogKomutu => new AnotherCommandImplementation(VeritabaniDialogKomutuCalistir);
-        
+
         private async void VeritabaniDialogKomutuCalistir(object o)
         {
             if (Properties.Settings.Default.DatabaseFilePath != "")
@@ -33,7 +48,7 @@ namespace tspAuto.Domain
                 //Bir veritabanı halihazırda seçili demektir.
                 var view = new BenimDialog
                 {
-                    DataContext = new BenimDialogViewModel($"Zaten bir veritabanı seçilmiş. Bu veritabanı yerine başka bir veritabanı seçmek istiyor musunuz?\n{Properties.Settings.Default.DatabaseFilePath}","EVET","HAYIR","Mevcut veritabanının otomatik bir yedeği oluşturulacaktır.","Mevcut veritabanını kullanmaya devam et.")
+                    DataContext = new BenimDialogViewModel($"Zaten bir veritabanı seçilmiş. Bu veritabanı yerine başka bir veritabanı seçmek istiyor musunuz?\n{Properties.Settings.Default.DatabaseFilePath}", "EVET", "HAYIR", "Mevcut veritabanının otomatik bir yedeği oluşturulacaktır.", "Mevcut veritabanını kullanmaya devam et.")
                 };
 
                 var result = await DialogHost.Show(view, "RootDialog");
@@ -97,95 +112,6 @@ namespace tspAuto.Domain
 
         private void VeritabaniYarat()
         {
-            //Properties.Settings.Default.DatabaseFilePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\{Properties.Resources.Title}\\veri_{DateTime.Now.ToString("yyyyMMddHHmmss")}.db";
-            //Properties.Settings.Default.Save();
-
-            //SQLiteConnection.CreateFile(Properties.Settings.Default.DatabaseFilePath);
-
-            //string sql1 = @"CREATE TABLE IF NOT EXISTS MuvekkilSirket(
-            //                ID   INTEGER PRIMARY KEY AUTOINCREMENT,
-            //                MuvekkilNo          TEXT      NOT NULL,
-            //                MuvekkilTuru        TEXT      NOT NULL,
-            //                NoterIsmi           TEXT      NOT NULL,
-            //                VekaletTarihi       TEXT      NOT NULL,
-            //                VekYevmiyeNo        TEXT      NOT NULL,
-            //                AhzuKabza           BOOLEAN   NOT NULL,
-            //                Feragat             BOOLEAN   NOT NULL,
-            //                Ibra                BOOLEAN   NOT NULL,
-            //                Sulh                BOOLEAN   NOT NULL,
-            //                Banka               TEXT      NOT NULL,
-            //                Sube                TEXT      NOT NULL,
-            //                IBANno              TEXT      NOT NULL,
-            //                Adres               TEXT      NOT NULL,
-            //                Telefon             TEXT      NOT NULL,
-            //                Fax                 TEXT      NOT NULL,
-            //                Email               TEXT      NOT NULL,
-            //                SirketTuru          TEXT      NOT NULL,
-            //                SirketUnvan         TEXT      NOT NULL,
-            //                VergiDairesi        TEXT      NOT NULL,
-            //                VergiNo             TEXT      NOT NULL,
-            //                MersisNo            TEXT      NOT NULL
-            //                );";
-
-            //string sql2 = @"CREATE TABLE IF NOT EXISTS MuvekkilSahis(
-            //                ID   INTEGER PRIMARY KEY AUTOINCREMENT,
-            //                MuvekkilNo          TEXT      NOT NULL,
-            //                MuvekkilTuru        TEXT      NOT NULL,
-            //                NoterIsmi           TEXT      NOT NULL,
-            //                VekaletTarihi       TEXT      NOT NULL,
-            //                VekYevmiyeNo        TEXT      NOT NULL,
-            //                AhzuKabza           BOOLEAN   NOT NULL,
-            //                Feragat             BOOLEAN   NOT NULL,
-            //                Ibra                BOOLEAN   NOT NULL,
-            //                Sulh                BOOLEAN   NOT NULL,
-            //                Banka               TEXT      NOT NULL,
-            //                Sube                TEXT      NOT NULL,
-            //                IBANno              TEXT      NOT NULL,
-            //                Adres               TEXT      NOT NULL,
-            //                Telefon             TEXT      NOT NULL,
-            //                Fax                 TEXT      NOT NULL,
-            //                Email               TEXT      NOT NULL,
-            //                IsimSoyisim         TEXT      NOT NULL,
-            //                TCKimlik            TEXT      NOT NULL
-            //                );";
-
-            //string sql3 = @"CREATE TABLE IF NOT EXISTS Hatirlaticilar(
-            //                Baslik              TEXT      NOT NULL,
-            //                Aciklama            TEXT      NOT NULL,
-            //                Zaman               TEXT      NOT NULL,
-            //                HatirlaticiTablo    TEXT      NOT NULL,
-            //                HatirlaticiID       INTEGER   NOT NULL
-            //                );";
-
-            //bool basarili = false;
-
-            //try
-            //{
-            //    using (SQLiteConnection con = new SQLiteConnection($"Data Source={Properties.Settings.Default.DatabaseFilePath};"))
-            //    {
-            //        con.Open();
-            //        new SQLiteCommand(sql1 + sql2 + sql3, con).ExecuteNonQuery();
-
-            //        basarili = true;
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Veritabanı oluşturma işlemi sırasında bir hata oluştu.\n\n" + ex.Message);
-            //}
-            //finally
-            //{
-            //    GC.Collect();
-            //    GC.WaitForPendingFinalizers();
-            //    if (basarili)
-            //    {
-            //        MessageBox.Show("Veritabanı oluşturma başarılı.");
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Veritabanı oluşturması yapılamadı.");
-            //    }
-            //}
         }
 
         private void VeritabaniSec()
@@ -204,6 +130,21 @@ namespace tspAuto.Domain
                 Properties.Settings.Default.DatabaseFilePath = file.FileName;
                 Properties.Settings.Default.Save();
             }
+        }
+
+        public ICommand YeniKullaniciEkleKomutu => new AnotherCommandImplementation(YeniKullaniciEkleKomutuCalistir);
+
+        private void YeniKullaniciEkleKomutuCalistir(object o)
+        {
+            Window window = new AddNewUserWindow();
+            window.Show();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private Action<PropertyChangedEventArgs> RaisePropertyChanged()
+        {
+            return args => PropertyChanged?.Invoke(this, args);
         }
     }
 }

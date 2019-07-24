@@ -13,7 +13,7 @@
     </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Disabled">
-        <materialDesign:Card Background="{DynamicResource MaterialDesignBackground}">
+        <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}">
             <StackPanel Orientation="Vertical">
                 <Grid>
                     <Grid.ColumnDefinitions>

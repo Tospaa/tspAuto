@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Data;
-using System.Text.RegularExpressions;
 using tspAuto.Domain;
 using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
@@ -168,6 +166,8 @@ namespace tspAuto
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             GuncellemeModuAcik.IsChecked = false;
+            AramaKutusu.Focus();
+            AramaKutusu.SelectAll();
         }
 
         private void ContextMenu_TumunuSec_Click(object sender, RoutedEventArgs e)
