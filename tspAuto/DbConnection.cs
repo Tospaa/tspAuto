@@ -15,6 +15,8 @@ namespace tspAuto
         public DbSet<MuvekkilSirket> MuvekkilSirket_tt { get; set; }
         public DbSet<HatirlaticiModel> Hatirlaticilar { get; set; }
         public DbSet<Kullanici> Kullanicilar { get; set; }
+        public DbSet<DosyaDava> DosyaDava_tt { get; set; }
+        public DbSet<DosyaIcra> DosyaIcra_tt { get; set; }
     }
 
     public class MyDbConnectionInitializer : CreateDatabaseIfNotExists<DbConnection>

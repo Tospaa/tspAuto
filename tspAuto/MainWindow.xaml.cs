@@ -186,6 +186,8 @@ namespace tspAuto
 
         private void CikisYap_Button_Click(object sender, RoutedEventArgs e)
         {
+            Window window = new LoginWindow();
+            window.Show();
             menuItem1_Click(sender, e);
         }
 

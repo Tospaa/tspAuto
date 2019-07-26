@@ -15,8 +15,6 @@ namespace tspAuto
         public AddNewUserWindow()
         {
             InitializeComponent();
-
-            YetkiComBox.ItemsSource = Enum.GetValues(typeof(Yetkiler)).Cast<Yetkiler>();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -29,12 +27,13 @@ namespace tspAuto
                     SifreHash = MethodPack.HashPassword(sifreKutusu.Password),
                     Unvan = unvan.Text,
                     IsimSoyisim = isimSoyisim.Text,
-                    Yetki = (Yetkiler)YetkiComBox.SelectedItem
+                    Email = eMail.Text,
+                    Yetki = (Yetkiler)YetkiComBox.SelectedIndex + 1
                 };
 
                 using (var db = new DbConnection())
                 {
-                    if (db.Kullanicilar.First(s => s.KullaniciAdi == yeniKullanici.KullaniciAdi) == null)
+                    if (db.Kullanicilar.FirstOrDefault(s => s.KullaniciAdi == yeniKullanici.KullaniciAdi) == null)
                     {
                         db.Kullanicilar.Add(yeniKullanici);
                         db.SaveChanges();
@@ -68,10 +67,27 @@ namespace tspAuto
             bool sifrelerAyni = sifreKutusu.Password == sifreKutusuTekrar.Password;
             if (!sifrelerAyni) { Hatalar.Items.Add(" • Şifreler aynı değil."); }
 
+            bool emailDogru = IsValidEmail(eMail.Text);
+            if (!emailDogru) { Hatalar.Items.Add(" • E-Mail formatı hatalı."); }
+
             bool bosYerKalmasin = unvan.Text.Length > 0 && isimSoyisim.Text.Length > 0 && YetkiComBox.SelectedItem != null;
             if (!bosYerKalmasin) { Hatalar.Items.Add(" • Formda boş kutucuk kalmamalıdır."); }
 
-            return kullaniciAdiDogru && sifreDogru && sifrelerAyni && bosYerKalmasin;
+            return kullaniciAdiDogru && sifreDogru && sifrelerAyni && emailDogru && bosYerKalmasin;
+        }
+
+        //from: https://stackoverflow.com/a/1374644
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

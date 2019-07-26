@@ -1,28 +1,40 @@
 ﻿<UserControl x:Class="tspAuto.YeniIsEkle"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:tspAuto"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
-            <Setter Property="Margin" Value="0 0 0 8" />
-            <Setter Property="FontSize" Value="18" />
+        <Style TargetType="{x:Type TextBox}"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="Margin"
+                    Value="0 0 0 8" />
+            <Setter Property="FontSize"
+                    Value="18" />
         </Style>
-        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MaterialDesignTitleTextBlock}">
-            <Setter Property="Margin" Value="0 0 0 8" />
-            <Setter Property="FontSize" Value="18" />
+        <Style TargetType="{x:Type TextBlock}"
+               BasedOn="{StaticResource MaterialDesignTitleTextBlock}">
+            <Setter Property="Margin"
+                    Value="0 0 0 8" />
+            <Setter Property="FontSize"
+                    Value="18" />
         </Style>
-        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MaterialDesignComboBox}">
-            <Setter Property="Margin" Value="0 0 0 8" />
-            <Setter Property="FontSize" Value="18" />
+        <Style TargetType="{x:Type ComboBox}"
+               BasedOn="{StaticResource MaterialDesignComboBox}">
+            <Setter Property="Margin"
+                    Value="0 0 0 8" />
+            <Setter Property="FontSize"
+                    Value="18" />
         </Style>
     </UserControl.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
         <StackPanel>
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Top" Margin="16">
+            <Grid HorizontalAlignment="Center"
+                  VerticalAlignment="Top"
+                  Margin="16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -39,18 +51,30 @@
                     <ColumnDefinition Width="50" />
                     <ColumnDefinition Width="350" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Grid.Row="0">Başlık</TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="1">Açıklama</TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="2">İş Türü</TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="3">Bitiş Tarihi</TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="4">Bitiş Saati</TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="5">İlgili Kişi</TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="6">Doküman Ekle</TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="7">Hatırlatıcı Eklensin mi?</TextBlock>
-                <TextBlock Grid.Column="0" Grid.Row="8"></TextBlock>
-                <TextBox Grid.Column="2" Grid.Row="0" Name="Baslik"
+                <TextBlock Grid.Column="0"
+                           Grid.Row="0">Başlık</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="1">Açıklama</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="2">İş Türü</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="3">Bitiş Tarihi</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="4">Bitiş Saati</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="5">İlgili Kişi</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="6">Doküman Ekle</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="7">Hatırlatıcı Eklensin mi?</TextBlock>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="8"></TextBlock>
+                <TextBox Grid.Column="2"
+                         Grid.Row="0"
+                         Name="Baslik"
                          materialDesign:HintAssist.Hint="Başlık" />
-                <TextBox Grid.Column="2" Grid.Row="1"
+                <TextBox Grid.Column="2"
+                         Grid.Row="1"
                          Name="Aciklama"
                          TextWrapping="Wrap"
                          VerticalAlignment="Stretch"
@@ -59,56 +83,44 @@
                          VerticalScrollBarVisibility="Auto"
                          SpellCheck.IsEnabled="False"
                          materialDesign:HintAssist.Hint="Açıklama"
-                         Height="80">
-                </TextBox>
-                <ComboBox Grid.Column="2" Grid.Row="2"
+                         Height="80"></TextBox>
+                <ComboBox Grid.Column="2"
+                          Grid.Row="2"
                           materialDesign:HintAssist.Hint="İş Türü">
-                    <ComboBoxItem>
-                        Genel
-                    </ComboBoxItem>
-                    <ComboBoxItem>
-                        Menel
-                    </ComboBoxItem>
-                    <ComboBoxItem>
-                        Anal
-                    </ComboBoxItem>
-                    <ComboBoxItem>
-                        Oral
-                    </ComboBoxItem>
+                    <ComboBoxItem>Genel</ComboBoxItem>
+                    <ComboBoxItem>Menel</ComboBoxItem>
+                    <ComboBoxItem>Anal</ComboBoxItem>
+                    <ComboBoxItem>Oral</ComboBoxItem>
                 </ComboBox>
-                <DatePicker Grid.Column="2" Grid.Row="3"
-                            Name="TarihSec" FontSize="18" Margin="0 0 0 8"
+                <DatePicker Grid.Column="2"
+                            Grid.Row="3"
+                            Name="TarihSec"
+                            FontSize="18"
+                            Margin="0 0 0 8"
                             materialDesign:HintAssist.Hint="Tarih Seç" />
-                <materialDesign:TimePicker Grid.Column="2" Grid.Row="4" Name="SaatSec"
-                                           Is24Hours="True" Margin="0 0 0 8"
-                                           materialDesign:HintAssist.Hint="Saat Seç"/>
-                <ComboBox Grid.Column="2" Grid.Row="5"
-                          materialDesign:HintAssist.Hint="İlgili Kişi">
-                    <ComboBoxItem>
-                        Av. Şevket Kurt
-                    </ComboBoxItem>
-                    <ComboBoxItem>
-                        Av. Tomtomların Abdulah
-                    </ComboBoxItem>
-                    <ComboBoxItem>
-                        Prof.Dr. Tospaa
-                    </ComboBoxItem>
-                    <ComboBoxItem>
-                        Aş.Yük.Müh. Yeşillerin Fevzi
-                    </ComboBoxItem>
-                </ComboBox>
-                <Button Grid.Column="2" Grid.Row="6" HorizontalAlignment="Stretch"
-                        Style="{StaticResource MaterialDesignFlatButton}">
-                    DOSYA SEÇİNİZ
-                </Button>
-                <CheckBox Grid.Column="2" Grid.Row="7" IsChecked="True"
+                <materialDesign:TimePicker Grid.Column="2"
+                                           Grid.Row="4"
+                                           Name="SaatSec"
+                                           Is24Hours="True"
+                                           Margin="0 0 0 8"
+                                           materialDesign:HintAssist.Hint="Saat Seç" />
+                <ComboBox Grid.Column="2"
+                          Grid.Row="5"
+                          materialDesign:HintAssist.Hint="İlgili Kişi" />
+                <Button Grid.Column="2"
+                        Grid.Row="6"
+                        HorizontalAlignment="Stretch"
+                        Style="{StaticResource MaterialDesignFlatButton}">DOSYA SEÇİNİZ</Button>
+                <CheckBox Grid.Column="2"
+                          Grid.Row="7"
+                          IsChecked="True"
                           Style="{StaticResource MaterialDesignCheckBox}"
-                          Name="HatirlaticiEklensin"/>
-                <Button Grid.Column="2" Grid.Row="8" HorizontalAlignment="Right"
+                          Name="HatirlaticiEklensin" />
+                <Button Grid.Column="2"
+                        Grid.Row="8"
+                        HorizontalAlignment="Right"
                         Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        Click="Button_Click">
-                    KAYDET
-                </Button>
+                        Click="Button_Click">KAYDET</Button>
             </Grid>
         </StackPanel>
     </ScrollViewer>

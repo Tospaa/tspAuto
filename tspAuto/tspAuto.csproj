@@ -143,6 +143,8 @@
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\DosyaDava.cs" />
+    <Compile Include="Model\DosyaIcra.cs" />
     <Compile Include="Model\HatirlaticiModel.cs" />
     <Compile Include="Model\IDataModel_tspAuto.cs" />
     <Compile Include="Model\Kullanici.cs" />

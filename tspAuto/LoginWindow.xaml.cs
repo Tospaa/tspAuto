@@ -22,10 +22,15 @@ namespace tspAuto
         {
             if (KullaniciAdiKutusu.Text != string.Empty && SifreKutusu.Password != string.Empty)
             {
-                using (var db = new DbConnection())
+                try
                 {
-                    yerelKullanici = db.Kullanicilar.Where(s => s.KullaniciAdi == KullaniciAdiKutusu.Text).FirstOrDefault();
+                    using (var db = new DbConnection())
+                    {
+                        yerelKullanici = db.Kullanicilar.Where(s => s.KullaniciAdi == KullaniciAdiKutusu.Text).FirstOrDefault();
+                    }
                 }
+                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+
                 if (Cabbar_Izin())
                 {
                     return true;
