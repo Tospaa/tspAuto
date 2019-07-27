@@ -128,7 +128,7 @@
                               Grid.Row="2"
                               Name="IsTuru"
                               materialDesign:HintAssist.Hint="İş Türü">
-                        <ComboBoxItem>Genel</ComboBoxItem>
+                        <ComboBoxItem IsSelected="True">Genel</ComboBoxItem>
                         <ComboBoxItem>Menel</ComboBoxItem>
                         <ComboBoxItem>Anal</ComboBoxItem>
                         <ComboBoxItem>Oral</ComboBoxItem>

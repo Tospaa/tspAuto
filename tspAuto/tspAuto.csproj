@@ -126,6 +126,9 @@
     </Compile>
     <Compile Include="Domain\AramaYapDialogViewModel.cs" />
     <Compile Include="Domain\Converters.cs" />
+    <Compile Include="Domain\DosyaIslemEkleDialog.xaml.cs">
+      <DependentUpon>DosyaIslemEkleDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Domain\MainWindowViewModel.cs" />
     <Compile Include="Domain\MethodPack.cs" />
     <Compile Include="Domain\NotifyPropertyChangedExtension.cs" />
@@ -180,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Domain\BenimDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Domain\DosyaIslemEkleDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

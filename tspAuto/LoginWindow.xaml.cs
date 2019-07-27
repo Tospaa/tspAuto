@@ -95,6 +95,16 @@ namespace tspAuto
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            using (var db = new DbConnection())
+            {
+                if (db.Kullanicilar.ToList().Count <= 1)
+                {
+                    MessageBox.Show("Programı ilk defa açıyorsunuz. Bir kullanıcı eklemeniz gerekiyor.");
+                    Window window = new AddNewUserWindow();
+                    window.Show();
+                }
+            }
+
             KullaniciAdiKutusu.Focus();
         }
     }

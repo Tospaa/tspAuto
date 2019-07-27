@@ -87,7 +87,16 @@ namespace tspAuto
 
                         if (Convert.ToBoolean(result))
                         {
-                            MethodPack.YeniHatirlatici(Baslik.Text, Aciklama.Text, tarih);
+                            try
+                            {
+                                using (var db = new DbConnection())
+                                {
+                                    int isEntryID = db.Isler.LastOrDefault().ID;
+
+                                    MethodPack.YeniHatirlatici(Baslik.Text, Aciklama.Text, tarih, "dbo.Isler", isEntryID);
+                                }
+                            }
+                            catch (Exception ex) { MessageBox.Show("Hatırlatıcı eklemede bir hata oluştu.\n\n" + ex.ToString()); }
                         }
                     }
                     #endregion
@@ -102,6 +111,11 @@ namespace tspAuto
         private void Temizle()
         {
             yerelDosya = null;
+            Baslik.Text = string.Empty;
+            Aciklama.Text = string.Empty;
+            IsTuru.SelectedIndex = 0;
+            TarihSec.SelectedDate = DateTime.Now;
+            SaatSec.SelectedTime = DateTime.Now;
         }
 
         private void DosyaSecButon_Click(object sender, RoutedEventArgs e)

@@ -8,6 +8,7 @@ using System.Linq;
 using tspAuto.Model;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Infrastructure;
 
 namespace tspAuto
 {
@@ -149,11 +150,15 @@ namespace tspAuto
 
                         if (Convert.ToBoolean(result))
                         {
-                            using (var db = new DbConnection())
+                            try
                             {
-                                db.Database.ExecuteSqlCommand("DELETE FROM dbo." + tablo + " WHERE ID={0}", item.ID);
-                                db.SaveChanges();
+                                using (var db = new DbConnection())
+                                {
+                                    db.Database.ExecuteSqlCommand("DELETE FROM dbo." + tablo + " WHERE ID={0}", item.ID);
+                                    db.SaveChanges();
+                                }
                             }
+                            catch (Exception ex) { MessageBox.Show("Silme işlemi esnasında bir hata oluştu.\n\n" + ex.ToString()); }
                             Arama();
                         }
                     }
@@ -244,10 +249,41 @@ namespace tspAuto
             }
         }
 
-        private void DosyaIslemEkle_Click(object sender, RoutedEventArgs e)
+        private async void DosyaIslemEkle_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Dosyaya işlem ekleme şeysini yap.
-            throw new NotImplementedException("This feature has not been implemented yet.");
+            try
+            {
+                DataGrid dataGrid = ((ContextMenu)(sender as MenuItem).Parent).PlacementTarget as DataGrid;
+                IDosya_tspAuto item = (IDosya_tspAuto)dataGrid.SelectedItem;
+                string tablo = dataGrid.Name;
+
+                if (item != null)
+                {
+                    var view = new DosyaIslemEkleDialog();
+
+                    var result = await DialogHost.Show(view, "RootDialog");
+
+                    if (Convert.ToBoolean(result))
+                    {
+                        using (var db = new DbConnection())
+                        {
+                            if (tablo == "DosyaDava_tt")
+                            {
+                                DosyaDava dosya = db.DosyaDava_tt.FirstOrDefault(s => s.ID == item.ID);
+                                dosya.Log = dosya.Log + "\n[" + DateTime.Now.ToString("dd/MM/yyyy HH:mm") + "] " + view.EklenecekIslem.Text;
+                                db.SaveChanges();
+                            }
+                            else if (tablo == "DosyaIcra_tt")
+                            {
+                                DosyaIcra dosya = db.DosyaIcra_tt.FirstOrDefault(s => s.ID == item.ID);
+                                dosya.Log = dosya.Log + "\n[" + DateTime.Now.ToString("dd/MM/yyyy HH:mm") + "] " + view.EklenecekIslem.Text;
+                                db.SaveChanges();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
         }
     }
 

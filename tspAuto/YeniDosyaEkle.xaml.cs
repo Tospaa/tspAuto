@@ -159,9 +159,9 @@ namespace tspAuto
             IsimSoyisim_2_Vekil.Text = string.Empty;
             TCKimlikNo_2_Vekil.Text = string.Empty;
             Adres_2_Vekil.Text = string.Empty;
-            Durum.Text = string.Empty;
-            DavaTuru.Text = string.Empty;
-            Mahkeme.Text = string.Empty;
+            Durum.SelectedIndex = 0;
+            DavaTuru.SelectedIndex = 0;
+            Mahkeme.SelectedIndex = 0;
             Konusu.Text = string.Empty;
             IcraDairesi.Text = string.Empty;
         }
