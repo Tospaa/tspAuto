@@ -6,6 +6,8 @@ using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
 using System.Linq;
 using tspAuto.Model;
+using System.Data.Entity;
+using System.Collections.ObjectModel;
 
 namespace tspAuto
 {
@@ -75,6 +77,45 @@ namespace tspAuto
             }
 
             MuvekkilSirket_tt.SelectedItem = null;
+
+            columns = SecilenKolonlar(DosyaIcraContextMenu.Items);
+            if (columns.Length > 0)
+            {
+                using (var db = new DbConnection())
+                {
+                    //böyle include şekli yapmazsam o kolonlar boş kalıyor :( üzücü baya
+                    db.DosyaIcra_tt
+                        .Include(s => s.Alacakli)
+                        .Include(s => s.Borclu)
+                        .Include(s => s.AlacakliVekil)
+                        .Include(s => s.BorcluVekil)
+                        .Load();
+                    ObservableCollection<DosyaIcra> queryResult = db.DosyaIcra_tt.Local;
+                    DosyaIcra_tt.ItemsSource = queryResult;
+                    DosyaIcraExpander.Header = $"İcra Dosyaları ({queryResult.Count.ToString()})";
+                }
+            }
+
+            DosyaIcra_tt.SelectedItem = null;
+
+            columns = SecilenKolonlar(DosyaDavaContextMenu.Items);
+            if (columns.Length > 0)
+            {
+                using (var db = new DbConnection())
+                {
+                    db.DosyaDava_tt
+                        .Include(s => s.Davali)
+                        .Include(s => s.Davaci)
+                        .Include(s => s.DavaliVekil)
+                        .Include(s => s.DavaciVekil)
+                        .Load();
+                    ObservableCollection<DosyaDava> queryResult = db.DosyaDava_tt.Local;
+                    DosyaDava_tt.ItemsSource = queryResult;
+                    DosyaDavaExpander.Header = $"Dava Dosyaları ({queryResult.Count.ToString()})";
+                }
+            }
+
+            DosyaDava_tt.SelectedItem = null;
         }
 
         private async void DataGrid_RightClick(object sender, RoutedEventArgs e)
@@ -82,7 +123,7 @@ namespace tspAuto
             try
             {
                 DataGrid dataGrid = ((ContextMenu)(sender as MenuItem).Parent).PlacementTarget as DataGrid;
-                IDataModel_tspAuto item = (IDataModel_tspAuto)dataGrid.SelectedItem;
+                IData_tspAuto item = (IData_tspAuto)dataGrid.SelectedItem;
                 string tablo = dataGrid.Name;
 
                 if (item != null)
@@ -132,7 +173,7 @@ namespace tspAuto
                 {
                     string tablo = (sender as DataGrid).Name;
                     string kolon = e.Column.SortMemberPath;
-                    int girdiID = ((sender as DataGrid).SelectedItem as IDataModel_tspAuto).ID;
+                    int girdiID = ((sender as DataGrid).SelectedItem as IData_tspAuto).ID;
 
                     var view = new BenimDialog
                     {
@@ -143,6 +184,7 @@ namespace tspAuto
 
                     if (Convert.ToBoolean(result))
                     {
+                        // TODO: AramaYap'a güncelleme ekle.
                         //using (var db = new DbConnection())
                         //{
                         //    db.Database.ExecuteSqlCommand("UPDATE " + tablo + " SET " + kolon + "={0} WHERE ID={1}", newVal, girdiID);
@@ -200,6 +242,12 @@ namespace tspAuto
                     }
                 }
             }
+        }
+
+        private void DosyaIslemEkle_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: Dosyaya işlem ekleme şeysini yap.
+            throw new NotImplementedException("This feature has not been implemented yet.");
         }
     }
 

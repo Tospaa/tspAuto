@@ -56,7 +56,7 @@ namespace tspAuto.Domain
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException("This feature have not been implemented yet.");
+            throw new NotImplementedException("This feature has not been implemented yet.");
         }
     }
 
@@ -84,7 +84,7 @@ namespace tspAuto.Domain
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException("This feature have not been implemented yet.");
+            throw new NotImplementedException("This feature has not been implemented yet.");
         }
     }
 
@@ -105,7 +105,7 @@ namespace tspAuto.Domain
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException("This feature have not been implemented yet.");
+            throw new NotImplementedException("This feature has not been implemented yet.");
         }
     }
 }

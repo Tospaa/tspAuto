@@ -16,6 +16,8 @@ namespace tspAuto
             InitializeComponent();
 
             VekTarihi.Language = System.Windows.Markup.XmlLanguage.GetLanguage("tr-TR");
+
+            VekTarihi.SelectedDate = DateTime.Now;
         }
 
         private void Sahis_Kaydet_Button_Click(object sender, RoutedEventArgs e)
@@ -106,9 +108,8 @@ namespace tspAuto
         private void Temizle()
         {
             MuvekkilNo.Text = string.Empty;
-            MuvekkilTuru.SelectedIndex = 0;
             NoterIsmi.Text = string.Empty;
-            VekTarihi.Text = string.Empty;
+            VekTarihi.SelectedDate = DateTime.Now;
             VekYevNo.Text = string.Empty;
             AhzuKabza.SelectedIndex = 1;
             Feragat.SelectedIndex = 1;

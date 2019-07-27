@@ -76,49 +76,94 @@ namespace tspAuto
 
         private void DosyaDavaEkle_Click(object sender, RoutedEventArgs e)
         {
-            using (var db = new DbConnection())
+            if (IsimSoyisim_1.Tag != null && IsimSoyisim_2.Tag != null)
             {
-                DosyaDava dosyaDava = new DosyaDava
+                try
                 {
-                    DosyaTuru = DosyaTuru.Text,
-                    DosyaNo = DosyaNo.Text,
-                    ArsivNo = ArsivNo.Text,
-                    Davaci = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_1.Tag),
-                    DavaciVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_1_Vekil.Tag),
-                    Davali = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_2.Tag),
-                    DavaliVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_2_Vekil.Tag),
-                    Durum = Durum.Text,
-                    DavaTuru = DavaTuru.Text,
-                    Mahkeme = Mahkeme.Text,
-                    DavaKonusu = Konusu.Text,
-                    Log = $"[{DateTime.Now.ToString("dd/MM/yyyy hh:mm")}] Dosya oluşturuldu."
-                };
+                    using (var db = new DbConnection())
+                    {
+                        DosyaDava dosyaDava = new DosyaDava
+                        {
+                            DosyaTuru = DosyaTuru.Text,
+                            DosyaNo = DosyaNo.Text,
+                            ArsivNo = ArsivNo.Text,
+                            Davaci = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_1.Tag),
+                            DavaciVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_1_Vekil.Tag),
+                            Davali = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_2.Tag),
+                            DavaliVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_2_Vekil.Tag),
+                            Durum = Durum.Text,
+                            DavaTuru = DavaTuru.Text,
+                            Mahkeme = Mahkeme.Text,
+                            DavaKonusu = Konusu.Text,
+                            Log = $"[{DateTime.Now.ToString("dd/MM/yyyy HH:mm")}] Dosya oluşturuldu."
+                        };
 
-                db.DosyaDava_tt.Add(dosyaDava);
-                db.SaveChanges();
+                        db.DosyaDava_tt.Add(dosyaDava);
+                        db.SaveChanges();
+                    }
+                    MessageBox.Show("Veritabanı girdisi başarılı.");
+                    Temizle();
+                }
+                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
             }
         }
 
         private void DosyaIcraEkle_Click(object sender, RoutedEventArgs e)
         {
-            using (var db = new DbConnection())
+            if (IsimSoyisim_1.Tag != null && IsimSoyisim_2.Tag != null)
             {
-                DosyaIcra dosyaIcra = new DosyaIcra
+                try
                 {
-                    DosyaTuru = DosyaTuru.Text,
-                    DosyaNo = DosyaNo.Text,
-                    ArsivNo = ArsivNo.Text,
-                    Alacakli = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_1.Tag),
-                    AlacakliVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_1_Vekil.Tag),
-                    Borclu = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_2.Tag),
-                    BorcluVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_2_Vekil.Tag),
-                    IcraDairesi = IcraDairesi.Text,
-                    Log = $"[{DateTime.Now.ToString("dd/MM/yyyy hh:mm")}] Dosya oluşturuldu."
-                };
+                    using (var db = new DbConnection())
+                    {
+                        DosyaIcra dosyaIcra = new DosyaIcra
+                        {
+                            DosyaTuru = DosyaTuru.Text,
+                            DosyaNo = DosyaNo.Text,
+                            ArsivNo = ArsivNo.Text,
+                            Alacakli = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_1.Tag),
+                            AlacakliVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_1_Vekil.Tag),
+                            Borclu = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_2.Tag),
+                            BorcluVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)IsimSoyisim_2_Vekil.Tag),
+                            IcraDairesi = IcraDairesi.Text,
+                            Log = $"[{DateTime.Now.ToString("dd/MM/yyyy HH:mm")}] Dosya oluşturuldu."
+                        };
 
-                db.DosyaIcra_tt.Add(dosyaIcra);
-                db.SaveChanges();
+                        db.DosyaIcra_tt.Add(dosyaIcra);
+                        db.SaveChanges();
+                    }
+                    MessageBox.Show("Veritabanı girdisi başarılı.");
+                    Temizle();
+                }
+                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
             }
+        }
+
+        private void Temizle()
+        {
+            DosyaNo.Text = string.Empty;
+            ArsivNo.Text = string.Empty;
+            IsimSoyisim_1.Tag = null;
+            IsimSoyisim_1.Text = string.Empty;
+            TCKimlikNo_1.Text = string.Empty;
+            Adres_1.Text = string.Empty;
+            IsimSoyisim_1_Vekil.Tag = null;
+            IsimSoyisim_1_Vekil.Text = string.Empty;
+            TCKimlikNo_1_Vekil.Text = string.Empty;
+            Adres_1_Vekil.Text = string.Empty;
+            IsimSoyisim_2.Tag = null;
+            IsimSoyisim_2.Text = string.Empty;
+            TCKimlikNo_2.Text = string.Empty;
+            Adres_2.Text = string.Empty;
+            IsimSoyisim_2_Vekil.Tag = null;
+            IsimSoyisim_2_Vekil.Text = string.Empty;
+            TCKimlikNo_2_Vekil.Text = string.Empty;
+            Adres_2_Vekil.Text = string.Empty;
+            Durum.Text = string.Empty;
+            DavaTuru.Text = string.Empty;
+            Mahkeme.Text = string.Empty;
+            Konusu.Text = string.Empty;
+            IcraDairesi.Text = string.Empty;
         }
     }
 

@@ -335,6 +335,138 @@
                         Height="1"
                         HorizontalAlignment="Stretch"
                         SnapsToDevicePixels="True" />
+                <Expander HorizontalAlignment="Stretch"
+                          IsExpanded="False"
+                          Name="DosyaIcraExpander"
+                          Header="İcra Dosyaları (0)">
+                    <DataGrid Name="DosyaIcra_tt"
+                              EnableRowVirtualization="False"
+                              CanUserReorderColumns="True"
+                              CanUserResizeColumns="True"
+                              CanUserResizeRows="True"
+                              CanUserSortColumns="True"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              IsReadOnly="{Binding ElementName=GuncellemeModuAcik, Path=IsChecked, Converter={StaticResource BooleanInverseConverter}}"
+                              AutoGenerateColumns="False"
+                              IsSynchronizedWithCurrentItem="True"
+                              CellEditEnding="DataGrid_CellEditEnding">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Dosya Türü"
+                                                Binding="{Binding DosyaTuru}" />
+                            <DataGridTextColumn Header="Dosya No"
+                                                Binding="{Binding DosyaNo}" />
+                            <DataGridTextColumn Header="Arşiv No"
+                                                Binding="{Binding ArsivNo}" />
+                            <DataGridTextColumn Header="Alacaklı"
+                                                Binding="{Binding Alacakli}" />
+                            <DataGridTextColumn Header="Borçlu"
+                                                Binding="{Binding Borclu.IsimSoyisim}" />
+                            <DataGridTextColumn Header="Alacaklı Vekili"
+                                                Binding="{Binding AlacakliVekil}" />
+                            <DataGridTextColumn Header="Borçlu Vekili"
+                                                Binding="{Binding BorcluVekil}" />
+                            <DataGridTextColumn Header="İcra Dairesi"
+                                                Binding="{Binding IcraDairesi}" />
+                            <DataGridTextColumn Header="Yapılan İşlemler"
+                                                Binding="{Binding Log}" />
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="İşlem Ekle"
+                                          Click="DosyaIslemEkle_Click" />
+                                <MenuItem Header="Şunlarda ara..."
+                                          Name="DosyaIcraContextMenu">
+                                    <MenuItem Header="Dosya Türü"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="DosyaTuru" />
+                                    <Separator />
+                                    <MenuItem Header="Tümünü seç"
+                                              Click="ContextMenu_TumunuSec_Click" />
+                                    <MenuItem Header="Seçimleri kaldır"
+                                              Click="ContextMenu_SecimleriKaldir_Click" />
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="Sil"
+                                          Click="DataGrid_RightClick" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+                </Expander>
+                <Border Background="{DynamicResource MaterialDesignDivider}"
+                        Height="1"
+                        HorizontalAlignment="Stretch"
+                        SnapsToDevicePixels="True" />
+                <Expander HorizontalAlignment="Stretch"
+                          IsExpanded="False"
+                          Name="DosyaDavaExpander"
+                          Header="Dava Dosyaları (0)">
+                    <DataGrid Name="DosyaDava_tt"
+                              EnableRowVirtualization="False"
+                              CanUserReorderColumns="True"
+                              CanUserResizeColumns="True"
+                              CanUserResizeRows="True"
+                              CanUserSortColumns="True"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              IsReadOnly="{Binding ElementName=GuncellemeModuAcik, Path=IsChecked, Converter={StaticResource BooleanInverseConverter}}"
+                              AutoGenerateColumns="False"
+                              IsSynchronizedWithCurrentItem="True"
+                              CellEditEnding="DataGrid_CellEditEnding">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Dosya Türü"
+                                                Binding="{Binding DosyaTuru}" />
+                            <DataGridTextColumn Header="Dosya No"
+                                                Binding="{Binding DosyaNo}" />
+                            <DataGridTextColumn Header="Arşiv No"
+                                                Binding="{Binding ArsivNo}" />
+                            <DataGridTextColumn Header="Davacı"
+                                                Binding="{Binding Davaci}" />
+                            <DataGridTextColumn Header="Davalı"
+                                                Binding="{Binding Davali.IsimSoyisim}" />
+                            <DataGridTextColumn Header="Davacı Vekili"
+                                                Binding="{Binding DavaciVekil}" />
+                            <DataGridTextColumn Header="Davalı Vekili"
+                                                Binding="{Binding DavaliVekil}" />
+                            <DataGridTextColumn Header="Durum"
+                                                Binding="{Binding Durum}" />
+                            <DataGridTextColumn Header="Dava Türü"
+                                                Binding="{Binding DavaTuru}" />
+                            <DataGridTextColumn Header="Mahkeme"
+                                                Binding="{Binding Mahkeme}" />
+                            <DataGridTextColumn Header="Dava Konusu"
+                                                Binding="{Binding DavaKonusu}" />
+                            <DataGridTextColumn Header="Yapılan İşlemler"
+                                                Binding="{Binding Log}" />
+                        </DataGrid.Columns>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="İşlem Ekle"
+                                          Click="DosyaIslemEkle_Click" />
+                                <MenuItem Header="Şunlarda ara..."
+                                          Name="DosyaDavaContextMenu">
+                                    <MenuItem Header="Dosya Türü"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="DosyaTuru" />
+                                    <Separator />
+                                    <MenuItem Header="Tümünü seç"
+                                              Click="ContextMenu_TumunuSec_Click" />
+                                    <MenuItem Header="Seçimleri kaldır"
+                                              Click="ContextMenu_SecimleriKaldir_Click" />
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="Sil"
+                                          Click="DataGrid_RightClick" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
+                </Expander>
+                <Border Background="{DynamicResource MaterialDesignDivider}"
+                        Height="1"
+                        HorizontalAlignment="Stretch"
+                        SnapsToDevicePixels="True" />
             </StackPanel>
         </materialDesign:Card>
     </ScrollViewer>

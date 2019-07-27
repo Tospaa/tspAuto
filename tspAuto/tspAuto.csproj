@@ -146,7 +146,9 @@
     <Compile Include="Model\DosyaDava.cs" />
     <Compile Include="Model\DosyaIcra.cs" />
     <Compile Include="Model\HatirlaticiModel.cs" />
-    <Compile Include="Model\IDataModel_tspAuto.cs" />
+    <Compile Include="Model\IData_tspAuto.cs" />
+    <Compile Include="Model\IDosya_tspAuto.cs" />
+    <Compile Include="Model\IsModel.cs" />
     <Compile Include="Model\Kullanici.cs" />
     <Compile Include="Model\MuvekkilSahis.cs" />
     <Compile Include="Model\MuvekkilSirket.cs" />

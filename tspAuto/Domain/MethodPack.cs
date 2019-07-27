@@ -15,8 +15,9 @@ namespace tspAuto.Domain
             bool basarili = false;
 
             IReadOnlyCollection<TriggerKey> allTriggerKeys = hatirlaticiInstance.scheduler.GetTriggerKeys(GroupMatcher<TriggerKey>.AnyGroup()).GetAwaiter().GetResult();
-
-            using (var db = new DbConnection())
+            try
+            {
+                using (var db = new DbConnection())
             {
                 db.Database.ExecuteSqlCommand("DELETE FROM dbo.Hatirlaticilar");
 
@@ -42,6 +43,8 @@ namespace tspAuto.Domain
                 db.SaveChanges();
                 basarili = true;
             }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
 
             if (!basarili)
             {
@@ -49,7 +52,7 @@ namespace tspAuto.Domain
             }
         }
 
-        public static bool YeniHatirlatici(string baslik, string aciklama, DateTime tarih, string tablo = "Tablosuz", long id = 0)
+        public static bool YeniHatirlatici(string baslik, string aciklama, DateTime tarih, string tablo = "Tablosuz", int id = 0)
         {
             if (baslik != string.Empty && aciklama != string.Empty && tarih != null)
             {

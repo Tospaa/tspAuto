@@ -17,6 +17,7 @@ namespace tspAuto
         public DbSet<Kullanici> Kullanicilar { get; set; }
         public DbSet<DosyaDava> DosyaDava_tt { get; set; }
         public DbSet<DosyaIcra> DosyaIcra_tt { get; set; }
+        public DbSet<IsModel> Isler { get; set; }
     }
 
     public class MyDbConnectionInitializer : CreateDatabaseIfNotExists<DbConnection>

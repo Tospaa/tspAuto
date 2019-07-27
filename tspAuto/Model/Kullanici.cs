@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace tspAuto.Model
 {
     [Table("Kullanicilar")]
-    public class Kullanici : IDataModel_tspAuto
+    public class Kullanici : IData_tspAuto
     {
         [Key]
         public int ID { get; set; }
@@ -14,6 +14,11 @@ namespace tspAuto.Model
         public string IsimSoyisim { get; set; }
         public string Email { get; set; }
         public Yetkiler Yetki { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Unvan} {IsimSoyisim}";
+        }
     }
 
     public enum Yetkiler { Yonetici, Avukat, Stajyer, Yetkisiz }

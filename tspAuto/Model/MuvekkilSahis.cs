@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace tspAuto.Model
 {
     [Table("MuvekkilSahis_tt")]
-    public class MuvekkilSahis : IDataModel_tspAuto
+    public class MuvekkilSahis : IData_tspAuto
     {
         [Key]
         public int ID { get; set; }
@@ -27,5 +27,10 @@ namespace tspAuto.Model
         public string Email { get; set; }
         public string IsimSoyisim { get; set; }
         public string TCKimlik { get; set; }
+
+        public override string ToString()
+        {
+            return IsimSoyisim;
+        }
     }
 }
