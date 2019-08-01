@@ -33,9 +33,8 @@ namespace tspAuto
             {
                 using (var db = new DbConnection())
                 {
-                    List<Kullanici> kullanicilar = db.Kullanicilar.ToList();
-                    kullanicilar.RemoveAll(s => s.Yetki == Yetkiler.Yonetici);
-                    IlgiliKisiComBox.ItemsSource = kullanicilar/*.Select(s => s.Unvan + s.IsimSoyisim)*/;
+                    List<Kullanici> kullanicilar = db.Kullanicilar.Where(s => s.Yetki != Yetkiler.Yonetici).ToList();
+                    IlgiliKisiComBox.ItemsSource = kullanicilar;
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }

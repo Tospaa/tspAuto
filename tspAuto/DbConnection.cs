@@ -8,7 +8,6 @@ namespace tspAuto
     {
         public DbConnection() : base("tspAutoDb")
         {
-            //Database.SetInitializer(new DropCreateDatabaseAlways<DbConnection>());
             Database.SetInitializer(new MyDbConnectionInitializer());
         }
         public DbSet<MuvekkilSahis> MuvekkilSahis_tt { get; set; }

@@ -64,10 +64,14 @@ namespace tspAuto
         {
             List<HatirlaticiModel> queryResult = new List<HatirlaticiModel>();
 
-            using (var db = new DbConnection())
+            try
             {
-                queryResult = db.Hatirlaticilar.ToList();
+                using (var db = new DbConnection())
+                {
+                    queryResult = db.Hatirlaticilar.ToList();
+                }
             }
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
 
             try
             {

@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using tspAuto.Model;
 using System.Data.Entity;
-using System.Collections.ObjectModel;
-using System.Data.Entity.Infrastructure;
 
 namespace tspAuto
 {
@@ -20,6 +18,13 @@ namespace tspAuto
         public AramaYap()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            GuncellemeModuAcik.IsChecked = false;
+            AramaKutusu.Focus();
+            AramaKutusu.SelectAll();
         }
 
         private void AramaKutusu_TextChanged(object sender, TextChangedEventArgs e)
@@ -53,15 +58,24 @@ namespace tspAuto
 
         public void Arama()
         {
-            string[]  columns = SecilenKolonlar(MuvekkilSahisContextMenu.Items);
+            string[] columns = SecilenKolonlar(MuvekkilSahisContextMenu.Items);
             if (columns.Length > 0)
             {
-                using (var db = new DbConnection())
+                try
                 {
-                    List<MuvekkilSahis> queryResult = db.MuvekkilSahis_tt.ToList();
-                    MuvekkilSahis_tt.ItemsSource = queryResult;
-                    MuvekkilSahisExpander.Header = $"Şahıs Müvekkiller ({queryResult.Count.ToString()})";
+                    using (var db = new DbConnection())
+                    {
+                        // AsEnumerable() from: https://entityframework.net/linq-does-not-recognize-method
+                        // StringComparison.CurrentCultureIgnoreCase from: https://stackoverflow.com/a/8879798
+                        List<MuvekkilSahis> queryResult = db.MuvekkilSahis_tt
+                            .AsEnumerable()
+                            .Where(s => s.GetConcatenatedString(columns).IndexOf(AramaKutusu.Text, StringComparison.CurrentCultureIgnoreCase) != -1)
+                            .ToList();
+                        MuvekkilSahis_tt.ItemsSource = queryResult;
+                        MuvekkilSahisExpander.Header = $"Şahıs Müvekkiller ({queryResult.Count.ToString()})";
+                    }
                 }
+                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
             }
 
             MuvekkilSahis_tt.SelectedItem = null;
@@ -69,12 +83,19 @@ namespace tspAuto
             columns = SecilenKolonlar(MuvekkilSirketContextMenu.Items);
             if (columns.Length > 0)
             {
-                using (var db = new DbConnection())
+                try
                 {
-                    List<MuvekkilSirket> queryResult = db.MuvekkilSirket_tt.ToList();
-                    MuvekkilSirket_tt.ItemsSource = queryResult;
-                    MuvekkilSirketExpander.Header = $"Şirket Müvekkiller ({queryResult.Count.ToString()})";
+                    using (var db = new DbConnection())
+                    {
+                        List<MuvekkilSirket> queryResult = db.MuvekkilSirket_tt
+                            .AsEnumerable()
+                            .Where(s => s.GetConcatenatedString(columns).IndexOf(AramaKutusu.Text, StringComparison.CurrentCultureIgnoreCase) != -1)
+                            .ToList();
+                        MuvekkilSirket_tt.ItemsSource = queryResult;
+                        MuvekkilSirketExpander.Header = $"Şirket Müvekkiller ({queryResult.Count.ToString()})";
+                    }
                 }
+                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
             }
 
             MuvekkilSirket_tt.SelectedItem = null;
@@ -82,19 +103,24 @@ namespace tspAuto
             columns = SecilenKolonlar(DosyaIcraContextMenu.Items);
             if (columns.Length > 0)
             {
-                using (var db = new DbConnection())
+                try
                 {
-                    //böyle include şekli yapmazsam o kolonlar boş kalıyor :( üzücü baya
-                    db.DosyaIcra_tt
-                        .Include(s => s.Alacakli)
-                        .Include(s => s.Borclu)
-                        .Include(s => s.AlacakliVekil)
-                        .Include(s => s.BorcluVekil)
-                        .Load();
-                    ObservableCollection<DosyaIcra> queryResult = db.DosyaIcra_tt.Local;
-                    DosyaIcra_tt.ItemsSource = queryResult;
-                    DosyaIcraExpander.Header = $"İcra Dosyaları ({queryResult.Count.ToString()})";
+                    using (var db = new DbConnection())
+                    {
+                        //böyle include şekli yapmazsam o kolonlar boş kalıyor :( üzücü baya
+                        List<DosyaIcra> queryResult = db.DosyaIcra_tt
+                            .Include(s => s.Alacakli)
+                            .Include(s => s.Borclu)
+                            .Include(s => s.AlacakliVekil)
+                            .Include(s => s.BorcluVekil)
+                            .AsEnumerable()
+                            .Where(s => s.GetConcatenatedString(columns).IndexOf(AramaKutusu.Text, StringComparison.CurrentCultureIgnoreCase) != -1)
+                            .ToList();
+                        DosyaIcra_tt.ItemsSource = queryResult;
+                        DosyaIcraExpander.Header = $"İcra Dosyaları ({queryResult.Count.ToString()})";
+                    }
                 }
+                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
             }
 
             DosyaIcra_tt.SelectedItem = null;
@@ -102,24 +128,32 @@ namespace tspAuto
             columns = SecilenKolonlar(DosyaDavaContextMenu.Items);
             if (columns.Length > 0)
             {
-                using (var db = new DbConnection())
+                try
                 {
-                    db.DosyaDava_tt
-                        .Include(s => s.Davali)
-                        .Include(s => s.Davaci)
-                        .Include(s => s.DavaliVekil)
-                        .Include(s => s.DavaciVekil)
-                        .Load();
-                    ObservableCollection<DosyaDava> queryResult = db.DosyaDava_tt.Local;
-                    DosyaDava_tt.ItemsSource = queryResult;
-                    DosyaDavaExpander.Header = $"Dava Dosyaları ({queryResult.Count.ToString()})";
+                    using (var db = new DbConnection())
+                    {
+                        List<DosyaDava> queryResult = db.DosyaDava_tt
+                            .Include(s => s.Davaci)
+                            .Include(s => s.Davali)
+                            .Include(s => s.DavaciVekil)
+                            .Include(s => s.DavaliVekil)
+                            .AsEnumerable()
+                            .Where(s => s.GetConcatenatedString(columns).IndexOf(AramaKutusu.Text, StringComparison.CurrentCultureIgnoreCase) != -1)
+                            .ToList();
+                        DosyaDava_tt.ItemsSource = queryResult;
+                        DosyaDavaExpander.Header = $"Dava Dosyaları ({queryResult.Count.ToString()})";
+                    }
                 }
+                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
             }
 
             DosyaDava_tt.SelectedItem = null;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
-        private async void DataGrid_RightClick(object sender, RoutedEventArgs e)
+        private async void DataGrid_ContextMenu_SilButtonClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -210,13 +244,6 @@ namespace tspAuto
             }
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            GuncellemeModuAcik.IsChecked = false;
-            AramaKutusu.Focus();
-            AramaKutusu.SelectAll();
-        }
-
         private void ContextMenu_TumunuSec_Click(object sender, RoutedEventArgs e)
         {
             ItemCollection items = ((MenuItem)(sender as MenuItem).Parent).Items;
@@ -284,35 +311,6 @@ namespace tspAuto
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }
-        }
-    }
-
-    public class DateToStringConverter : System.Windows.Data.IValueConverter
-    {
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            try
-            {
-                string newVal = string.Format("{0:dd.MM.yyyy}", value);
-                return newVal;
-            }
-            catch
-            {
-                throw new InvalidCastException("Value can't be converted to string.");
-            }
-        }
-
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            try
-            {
-                DateTime? newVal = System.Convert.ToDateTime(value);
-                return newVal;
-            }
-            catch
-            {
-                return DateTime.Now;
-            }
         }
     }
 }

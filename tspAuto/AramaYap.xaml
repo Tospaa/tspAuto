@@ -121,10 +121,6 @@
                                               IsCheckable="True"
                                               IsChecked="True"
                                               Tag="NoterIsmi" />
-                                    <MenuItem Header="Vekalet Tarihi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="VekaletTarihi" />
                                     <MenuItem Header="Vek. Yevmiye No"
                                               IsCheckable="True"
                                               IsChecked="True"
@@ -173,7 +169,7 @@
                                 </MenuItem>
                                 <Separator />
                                 <MenuItem Header="Sil"
-                                          Click="DataGrid_RightClick" />
+                                          Click="DataGrid_ContextMenu_SilButtonClick" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
@@ -326,7 +322,7 @@
                                 </MenuItem>
                                 <Separator />
                                 <MenuItem Header="Sil"
-                                          Click="DataGrid_RightClick" />
+                                          Click="DataGrid_ContextMenu_SilButtonClick" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
@@ -381,6 +377,34 @@
                                               IsCheckable="True"
                                               IsChecked="True"
                                               Tag="DosyaTuru" />
+                                    <MenuItem Header="Dosya No"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="DosyaNo" />
+                                    <MenuItem Header="Arşiv No"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="ArsivNo" />
+                                    <MenuItem Header="Alacaklı İsmi"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="Alacakli" />
+                                    <MenuItem Header="Borçlu İsmi"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="Borclu" />
+                                    <MenuItem Header="Alacaklı Vekili İsmi"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="AlacakliVekil" />
+                                    <MenuItem Header="Borçlu Vekili İsmi"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="BorcluVekil" />
+                                    <MenuItem Header="İcra Dairesi"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="IcraDairesi" />
                                     <Separator />
                                     <MenuItem Header="Tümünü seç"
                                               Click="ContextMenu_TumunuSec_Click" />
@@ -389,7 +413,7 @@
                                 </MenuItem>
                                 <Separator />
                                 <MenuItem Header="Sil"
-                                          Click="DataGrid_RightClick" />
+                                          Click="DataGrid_ContextMenu_SilButtonClick" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
@@ -450,6 +474,46 @@
                                               IsCheckable="True"
                                               IsChecked="True"
                                               Tag="DosyaTuru" />
+                                    <MenuItem Header="Dosya No"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="DosyaNo" />
+                                    <MenuItem Header="Arşiv No"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="ArsivNo" />
+                                    <MenuItem Header="Davacı İsmi"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="Davaci" />
+                                    <MenuItem Header="Davalı İsmi"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="Davali" />
+                                    <MenuItem Header="Davacı Vekil İsmi"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="DavaciVekil" />
+                                    <MenuItem Header="Davalı Vekil İsmi"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="DavaliVekil" />
+                                    <MenuItem Header="Dava Durumu"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="Durum" />
+                                    <MenuItem Header="Dava Türü"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="DavaTuru" />
+                                    <MenuItem Header="Mahkeme"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="Mahkeme" />
+                                    <MenuItem Header="Dava Konusu"
+                                              IsCheckable="True"
+                                              IsChecked="True"
+                                              Tag="DavaKonusu" />
                                     <Separator />
                                     <MenuItem Header="Tümünü seç"
                                               Click="ContextMenu_TumunuSec_Click" />
@@ -458,7 +522,7 @@
                                 </MenuItem>
                                 <Separator />
                                 <MenuItem Header="Sil"
-                                          Click="DataGrid_RightClick" />
+                                          Click="DataGrid_ContextMenu_SilButtonClick" />
                             </ContextMenu>
                         </DataGrid.ContextMenu>
                     </DataGrid>
