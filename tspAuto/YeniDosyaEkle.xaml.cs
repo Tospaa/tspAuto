@@ -1,8 +1,10 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using tspAuto.Domain;
 using tspAuto.Model;
 
 namespace tspAuto
@@ -15,6 +17,74 @@ namespace tspAuto
         public YeniDosyaEkle()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext != null && (DataContext as YeniDosyaEkleViewModel).GuncellemeModu && (DataContext as YeniDosyaEkleViewModel).Item != null)
+            {
+                IDosya_tspAuto item = (DataContext as YeniDosyaEkleViewModel).Item;
+
+                DosyaNo.Text = item.DosyaNo;
+                ArsivNo.Text = item.ArsivNo;
+                if (item.GetType().BaseType == typeof(DosyaDava))
+                {
+                    DosyaTuru.SelectedIndex = 0;
+                    IsimSoyisim_1.Tag = (item as DosyaDava).Davaci.ID;
+                    IsimSoyisim_1.Text = (item as DosyaDava).Davaci.IsimSoyisim;
+                    TCKimlikNo_1.Text = (item as DosyaDava).Davaci.TCKimlik;
+                    Adres_1.Text = (item as DosyaDava).Davaci.Adres;
+                    if ((item as DosyaDava).DavaciVekil != null)
+                    {
+                        IsimSoyisim_1_Vekil.Tag = (item as DosyaDava).DavaciVekil.ID;
+                        IsimSoyisim_1_Vekil.Text = (item as DosyaDava).DavaciVekil.IsimSoyisim;
+                        TCKimlikNo_1_Vekil.Text = (item as DosyaDava).DavaciVekil.TCKimlik;
+                        Adres_1_Vekil.Text = (item as DosyaDava).DavaciVekil.Adres;
+                    }
+                    IsimSoyisim_2.Tag = (item as DosyaDava).Davali.ID;
+                    IsimSoyisim_2.Text = (item as DosyaDava).Davali.IsimSoyisim;
+                    TCKimlikNo_2.Text = (item as DosyaDava).Davali.TCKimlik;
+                    Adres_2.Text = (item as DosyaDava).Davali.Adres;
+                    if ((item as DosyaDava).DavaliVekil != null)
+                    {
+                        IsimSoyisim_2_Vekil.Tag = (item as DosyaDava).DavaliVekil.ID;
+                        IsimSoyisim_2_Vekil.Text = (item as DosyaDava).DavaliVekil.IsimSoyisim;
+                        TCKimlikNo_2_Vekil.Text = (item as DosyaDava).DavaliVekil.TCKimlik;
+                        Adres_2_Vekil.Text = (item as DosyaDava).DavaliVekil.Adres;
+                    }
+                    Durum.Text = (item as DosyaDava).Durum;
+                    DavaTuru.Text = (item as DosyaDava).DavaTuru;
+                    Mahkeme.Text = (item as DosyaDava).Mahkeme;
+                    Konusu.Text = (item as DosyaDava).DavaKonusu;
+                }
+                else if (item.GetType().BaseType == typeof(DosyaIcra))
+                {
+                    DosyaTuru.SelectedIndex = 1;
+                    IsimSoyisim_1.Tag = (item as DosyaIcra).Alacakli.ID;
+                    IsimSoyisim_1.Text = (item as DosyaIcra).Alacakli.IsimSoyisim;
+                    TCKimlikNo_1.Text = (item as DosyaIcra).Alacakli.TCKimlik;
+                    Adres_1.Text = (item as DosyaIcra).Alacakli.Adres;
+                    if ((item as DosyaIcra).AlacakliVekil != null)
+                    {
+                        IsimSoyisim_1_Vekil.Tag = (item as DosyaIcra).AlacakliVekil.ID;
+                        IsimSoyisim_1_Vekil.Text = (item as DosyaIcra).AlacakliVekil.IsimSoyisim;
+                        TCKimlikNo_1_Vekil.Text = (item as DosyaIcra).AlacakliVekil.TCKimlik;
+                        Adres_1_Vekil.Text = (item as DosyaIcra).AlacakliVekil.Adres;
+                    }
+                    IsimSoyisim_2.Tag = (item as DosyaIcra).Borclu.ID;
+                    IsimSoyisim_2.Text = (item as DosyaIcra).Borclu.IsimSoyisim;
+                    TCKimlikNo_2.Text = (item as DosyaIcra).Borclu.TCKimlik;
+                    Adres_2.Text = (item as DosyaIcra).Borclu.Adres;
+                    if ((item as DosyaIcra).BorcluVekil != null)
+                    {
+                        IsimSoyisim_2_Vekil.Tag = (item as DosyaIcra).BorcluVekil.ID;
+                        IsimSoyisim_2_Vekil.Text = (item as DosyaIcra).BorcluVekil.IsimSoyisim;
+                        TCKimlikNo_2_Vekil.Text = (item as DosyaIcra).BorcluVekil.TCKimlik;
+                        Adres_2_Vekil.Text = (item as DosyaIcra).BorcluVekil.Adres;
+                    }
+                    IcraDairesi.Text = (item as DosyaIcra).IcraDairesi;
+                }
+            }
         }
 
         private WorkModes workMode;
@@ -167,4 +237,41 @@ namespace tspAuto
     }
 
     public enum WorkModes { Filling_1, Filling_1_Vekil, Filling_2, Filling_2_Vekil }
+
+    public class YeniDosyaEkleViewModel : INotifyPropertyChanged
+    {
+        private bool _guncellemeModu;
+        private IDosya_tspAuto _item;
+
+        public YeniDosyaEkleViewModel(bool guncellemeModu, IDosya_tspAuto item = null)
+        {
+            _guncellemeModu = guncellemeModu;
+            _item = item;
+        }
+
+        public bool GuncellemeModu
+        {
+            get { return _guncellemeModu; }
+            set
+            {
+                this.MutateVerbose(ref _guncellemeModu, value, RaisePropertyChanged());
+            }
+        }
+
+        public IDosya_tspAuto Item
+        {
+            get { return _item; }
+            set
+            {
+                this.MutateVerbose(ref _item, value, RaisePropertyChanged());
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private Action<PropertyChangedEventArgs> RaisePropertyChanged()
+        {
+            return args => PropertyChanged?.Invoke(this, args);
+        }
+    }
 }

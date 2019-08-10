@@ -7,7 +7,8 @@
              xmlns:local="clr-namespace:tspAuto"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:domain="clr-namespace:tspAuto.Domain"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <Style TargetType="{x:Type TextBox}"
                BasedOn="{StaticResource MaterialDesignTextBox}">
@@ -33,6 +34,7 @@
         <domain:BooleanInverseConverter x:Key="BooleanInverseConverter" />
         <domain:YeniDosyaEkle_DavaciAlacakliConverter x:Key="YeniDosyaEkle_DavaciAlacakliConverter" />
         <domain:YeniDosyaEkle_DavaliBorcluConverter x:Key="YeniDosyaEkle_DavaliBorcluConverter" />
+        <materialDesign:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
     <materialDesign:DialogHost DialogClosing="YeniDosyaEkleDialogHost_DialogClosing"
                                HorizontalAlignment="Stretch"
@@ -50,7 +52,8 @@
                             Command="materialDesign:DialogHost.CloseDialogCommand">
                         <Button.CommandParameter>
                             <system:Boolean>True</system:Boolean>
-                        </Button.CommandParameter> TAMAM
+                        </Button.CommandParameter>
+                        TAMAM
                     </Button>
                     <Button Style="{StaticResource MaterialDesignFlatButton}"
                             IsCancel="True"
@@ -58,7 +61,8 @@
                             Command="materialDesign:DialogHost.CloseDialogCommand">
                         <Button.CommandParameter>
                             <system:Boolean>False</system:Boolean>
-                        </Button.CommandParameter> İPTAL
+                        </Button.CommandParameter>
+                        İPTAL
                     </Button>
                 </StackPanel>
             </StackPanel>
@@ -132,7 +136,8 @@
                                       Grid.Row="0"
                                       Grid.ColumnSpan="4"
                                       Name="DosyaTuru"
-                                      materialDesign:HintAssist.Hint="Dosya Türü">
+                                      materialDesign:HintAssist.Hint="Dosya Türü"
+                                      IsEnabled="{Binding GuncellemeModu, Converter={StaticResource BooleanInverseConverter}}">
                                 <ComboBoxItem IsSelected="True">Dava</ComboBoxItem>
                                 <ComboBoxItem>İcra</ComboBoxItem>
                             </ComboBox>
@@ -334,7 +339,8 @@
                                     Grid.Row="4"
                                     HorizontalAlignment="Right"
                                     Click="DosyaDavaEkle_Click"
-                                    Style="{StaticResource MaterialDesignRaisedAccentButton}">KAYDET</Button>
+                                    Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                    Visibility="{Binding ElementName=DavaTuru, Path=IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">KAYDET</Button>
                         </Grid>
                     </Expander>
                     <Border Background="{DynamicResource MaterialDesignDivider}"
@@ -367,7 +373,8 @@
                                     Grid.Row="1"
                                     HorizontalAlignment="Right"
                                     Click="DosyaIcraEkle_Click"
-                                    Style="{StaticResource MaterialDesignRaisedAccentButton}">KAYDET</Button>
+                                    Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                                    Visibility="{Binding ElementName=DavaTuru, Path=IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">KAYDET</Button>
                         </Grid>
                     </Expander>
                     <Border Background="{DynamicResource MaterialDesignDivider}"

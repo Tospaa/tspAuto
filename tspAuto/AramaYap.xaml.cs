@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using tspAuto.Model;
 using System.Data.Entity;
+using System.Windows.Input;
 
 namespace tspAuto
 {
@@ -41,15 +42,9 @@ namespace tspAuto
 
             foreach (var item in items)
             {
-                if (item.GetType() == typeof(MenuItem))
+                if (item.GetType() == typeof(MenuItem) && (item as MenuItem).IsCheckable && (item as MenuItem).IsChecked)
                 {
-                    if ((item as MenuItem).IsCheckable)
-                    {
-                        if ((item as MenuItem).IsChecked)
-                        {
-                            columnList.Add((item as MenuItem).Tag.ToString());
-                        }
-                    }
+                    columnList.Add((item as MenuItem).Tag.ToString());
                 }
             }
 
@@ -204,58 +199,15 @@ namespace tspAuto
             }
         }
 
-        private async void DataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            try
-            {
-                if (e.EditAction == DataGridEditAction.Commit)
-                {
-                    string tablo = (sender as DataGrid).Name;
-                    string kolon = e.Column.SortMemberPath;
-                    int girdiID = ((sender as DataGrid).SelectedItem as IData_tspAuto).ID;
-
-                    var view = new BenimDialog
-                    {
-                        DataContext = new BenimDialogViewModel("Bu değeri güncellemek istediğinizden emin misiniz?", "EVET", "HAYIR")
-                    };
-
-                    var result = await DialogHost.Show(view, "RootDialog");
-
-                    if (Convert.ToBoolean(result))
-                    {
-                        // TODO: AramaYap'a güncelleme ekle.
-                        //using (var db = new DbConnection())
-                        //{
-                        //    db.Database.ExecuteSqlCommand("UPDATE " + tablo + " SET " + kolon + "={0} WHERE ID={1}", newVal, girdiID);
-                        //    db.SaveChanges();
-                        //}
-                    }
-                    else
-                    {
-                        // TODO: Şurda tekrar arama yaptırma. Eski değere ulaş. Çöz.
-                        e.Cancel = true;
-                        Arama();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-        }
-
         private void ContextMenu_TumunuSec_Click(object sender, RoutedEventArgs e)
         {
             ItemCollection items = ((MenuItem)(sender as MenuItem).Parent).Items;
 
             foreach (var item in items)
             {
-                if (item.GetType() == typeof(MenuItem))
+                if (item.GetType() == typeof(MenuItem) && (item as MenuItem).IsCheckable)
                 {
-                    if ((item as MenuItem).IsCheckable)
-                    {
-                        (item as MenuItem).IsChecked = true;
-                    }
+                    (item as MenuItem).IsChecked = true;
                 }
             }
         }
@@ -266,12 +218,9 @@ namespace tspAuto
 
             foreach (var item in items)
             {
-                if (item.GetType() == typeof(MenuItem))
+                if (item.GetType() == typeof(MenuItem) && (item as MenuItem).IsCheckable)
                 {
-                    if ((item as MenuItem).IsCheckable)
-                    {
-                        (item as MenuItem).IsChecked = false;
-                    }
+                    (item as MenuItem).IsChecked = false;
                 }
             }
         }
@@ -292,25 +241,223 @@ namespace tspAuto
 
                     if (Convert.ToBoolean(result))
                     {
-                        using (var db = new DbConnection())
+                        try
                         {
-                            if (tablo == "DosyaDava_tt")
+                            using (var db = new DbConnection())
                             {
-                                DosyaDava dosya = db.DosyaDava_tt.FirstOrDefault(s => s.ID == item.ID);
-                                dosya.Log = dosya.Log + "\n[" + DateTime.Now.ToString("dd/MM/yyyy HH:mm") + "] " + view.EklenecekIslem.Text;
-                                db.SaveChanges();
-                            }
-                            else if (tablo == "DosyaIcra_tt")
-                            {
-                                DosyaIcra dosya = db.DosyaIcra_tt.FirstOrDefault(s => s.ID == item.ID);
-                                dosya.Log = dosya.Log + "\n[" + DateTime.Now.ToString("dd/MM/yyyy HH:mm") + "] " + view.EklenecekIslem.Text;
-                                db.SaveChanges();
+                                if (tablo == "DosyaDava_tt")
+                                {
+                                    DosyaDava dosya = db.DosyaDava_tt.FirstOrDefault(s => s.ID == item.ID);
+                                    dosya.Log = dosya.Log + "\n[" + DateTime.Now.ToString("dd/MM/yyyy HH:mm") + "] " + view.EklenecekIslem.Text;
+                                    db.SaveChanges();
+                                }
+                                else if (tablo == "DosyaIcra_tt")
+                                {
+                                    DosyaIcra dosya = db.DosyaIcra_tt.FirstOrDefault(s => s.ID == item.ID);
+                                    dosya.Log = dosya.Log + "\n[" + DateTime.Now.ToString("dd/MM/yyyy HH:mm") + "] " + view.EklenecekIslem.Text;
+                                    db.SaveChanges();
+                                }
                             }
                         }
+                        catch (Exception ex) { MessageBox.Show(ex.ToString()); }
                     }
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+        }
+
+        private async void MuvekkilSahis_tt_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (GuncellemeModuAcik.IsChecked)
+            {
+                DataGrid dataGrid = sender as DataGrid;
+                MuvekkilSahis item = (MuvekkilSahis)dataGrid.SelectedItem;
+
+                if (item != null)
+                {
+                    var view = new DialogWithContentControl(new YeniMuvekkilEkle { DataContext = new YeniMuvekkilEkleViewModel(true, item) });
+                    var result = await DialogHost.Show(view, "RootDialog");
+
+                    if (Convert.ToBoolean(result))
+                    {
+                        try
+                        {
+                            using (var db = new DbConnection())
+                            {
+                                MuvekkilSahis guncellenecekGirdi = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == item.ID);
+
+                                YeniMuvekkilEkle YMEInstance = view.Icerik.Content as YeniMuvekkilEkle;
+
+                                guncellenecekGirdi.MuvekkilNo = YMEInstance.MuvekkilNo.Text;
+                                guncellenecekGirdi.MuvekkilTuru = YMEInstance.MuvekkilTuru.Text;
+                                guncellenecekGirdi.NoterIsmi = YMEInstance.NoterIsmi.Text;
+                                guncellenecekGirdi.VekaletTarihi = YMEInstance.VekTarihi_Duzeltme();
+                                guncellenecekGirdi.VekYevmiyeNo = YMEInstance.VekYevNo.Text;
+                                guncellenecekGirdi.AhzuKabza = Convert.ToBoolean(YMEInstance.AhzuKabza.SelectedIndex);
+                                guncellenecekGirdi.Feragat = Convert.ToBoolean(YMEInstance.Feragat.SelectedIndex);
+                                guncellenecekGirdi.Ibra = Convert.ToBoolean(YMEInstance.Ibra.SelectedIndex);
+                                guncellenecekGirdi.Sulh = Convert.ToBoolean(YMEInstance.Sulh.SelectedIndex);
+                                guncellenecekGirdi.Banka = YMEInstance.Banka.Text;
+                                guncellenecekGirdi.Sube = YMEInstance.Sube.Text;
+                                guncellenecekGirdi.IBANno = YMEInstance.IBANno.Text;
+                                guncellenecekGirdi.Adres = YMEInstance.Adres.Text;
+                                guncellenecekGirdi.Telefon = YMEInstance.Telefon.Text;
+                                guncellenecekGirdi.Fax = YMEInstance.Fax.Text;
+                                guncellenecekGirdi.Email = YMEInstance.Email.Text;
+                                guncellenecekGirdi.IsimSoyisim = YMEInstance.IsimSoyisim.Text;
+                                guncellenecekGirdi.TCKimlik = YMEInstance.TCKimlik.Text;
+
+                                db.SaveChanges();
+                            }
+                            MessageBox.Show("Güncelleme başarılı.");
+                            Arama();
+                        }
+                        catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+                    }
+                }
+            }
+        }
+
+        private async void MuvekkilSirket_tt_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (GuncellemeModuAcik.IsChecked)
+            {
+                DataGrid dataGrid = sender as DataGrid;
+                MuvekkilSirket item = (MuvekkilSirket)dataGrid.SelectedItem;
+
+                if (item != null)
+                {
+                    var view = new DialogWithContentControl(new YeniMuvekkilEkle { DataContext = new YeniMuvekkilEkleViewModel(true, item) });
+                    var result = await DialogHost.Show(view, "RootDialog");
+
+                    if (Convert.ToBoolean(result))
+                    {
+                        try
+                        {
+                            using (var db = new DbConnection())
+                            {
+                                MuvekkilSirket guncellenecekGirdi = db.MuvekkilSirket_tt.FirstOrDefault(s => s.ID == item.ID);
+
+                                YeniMuvekkilEkle YMEInstance = view.Icerik.Content as YeniMuvekkilEkle;
+
+                                guncellenecekGirdi.MuvekkilNo = YMEInstance.MuvekkilNo.Text;
+                                guncellenecekGirdi.MuvekkilTuru = YMEInstance.MuvekkilTuru.Text;
+                                guncellenecekGirdi.NoterIsmi = YMEInstance.NoterIsmi.Text;
+                                guncellenecekGirdi.VekaletTarihi = YMEInstance.VekTarihi_Duzeltme();
+                                guncellenecekGirdi.VekYevmiyeNo = YMEInstance.VekYevNo.Text;
+                                guncellenecekGirdi.AhzuKabza = Convert.ToBoolean(YMEInstance.AhzuKabza.SelectedIndex);
+                                guncellenecekGirdi.Feragat = Convert.ToBoolean(YMEInstance.Feragat.SelectedIndex);
+                                guncellenecekGirdi.Ibra = Convert.ToBoolean(YMEInstance.Ibra.SelectedIndex);
+                                guncellenecekGirdi.Sulh = Convert.ToBoolean(YMEInstance.Sulh.SelectedIndex);
+                                guncellenecekGirdi.Banka = YMEInstance.Banka.Text;
+                                guncellenecekGirdi.Sube = YMEInstance.Sube.Text;
+                                guncellenecekGirdi.IBANno = YMEInstance.IBANno.Text;
+                                guncellenecekGirdi.Adres = YMEInstance.Adres.Text;
+                                guncellenecekGirdi.Telefon = YMEInstance.Telefon.Text;
+                                guncellenecekGirdi.Fax = YMEInstance.Fax.Text;
+                                guncellenecekGirdi.Email = YMEInstance.Email.Text;
+                                guncellenecekGirdi.SirketTuru = YMEInstance.SirketTuru.Text;
+                                guncellenecekGirdi.SirketUnvan = YMEInstance.SirketUnvan.Text;
+                                guncellenecekGirdi.VergiDairesi = YMEInstance.VergiDairesi.Text;
+                                guncellenecekGirdi.VergiNo = YMEInstance.VergiNo.Text;
+                                guncellenecekGirdi.MersisNo = YMEInstance.MersisNo.Text;
+
+                                db.SaveChanges();
+                            }
+                            MessageBox.Show("Güncelleme başarılı.");
+                            Arama();
+                        }
+                        catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+                    }
+                }
+            }
+        }
+
+        private async void DosyaIcra_tt_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (GuncellemeModuAcik.IsChecked)
+            {
+                DataGrid dataGrid = sender as DataGrid;
+                DosyaIcra item = (DosyaIcra)dataGrid.SelectedItem;
+
+                if (item != null)
+                {
+                    var view = new DialogWithContentControl(new YeniDosyaEkle { DataContext = new YeniDosyaEkleViewModel(true, item) });
+                    var result = await DialogHost.Show(view, "RootDialog");
+
+                    if (Convert.ToBoolean(result))
+                    {
+                        try
+                        {
+                            using (var db = new DbConnection())
+                            {
+                                DosyaIcra guncellenecekGirdi = db.DosyaIcra_tt.FirstOrDefault(s => s.ID == item.ID);
+
+                                YeniDosyaEkle YDEInstance = view.Icerik.Content as YeniDosyaEkle;
+
+                                guncellenecekGirdi.DosyaTuru = YDEInstance.DosyaTuru.Text;
+                                guncellenecekGirdi.DosyaNo = YDEInstance.DosyaNo.Text;
+                                guncellenecekGirdi.ArsivNo = YDEInstance.ArsivNo.Text;
+                                guncellenecekGirdi.Alacakli = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)YDEInstance.IsimSoyisim_1.Tag);
+                                guncellenecekGirdi.AlacakliVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)YDEInstance.IsimSoyisim_1_Vekil.Tag);
+                                guncellenecekGirdi.Borclu = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)YDEInstance.IsimSoyisim_2.Tag);
+                                guncellenecekGirdi.BorcluVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)YDEInstance.IsimSoyisim_2_Vekil.Tag);
+                                guncellenecekGirdi.IcraDairesi = YDEInstance.IcraDairesi.Text;
+
+                                db.SaveChanges();
+                            }
+                            MessageBox.Show("Güncelleme başarılı.");
+                            Arama();
+                        }
+                        catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+                    }
+                }
+            }
+        }
+
+        private async void DosyaDava_tt_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (GuncellemeModuAcik.IsChecked)
+            {
+                DataGrid dataGrid = sender as DataGrid;
+                DosyaDava item = (DosyaDava)dataGrid.SelectedItem;
+
+                if (item != null)
+                {
+                    var view = new DialogWithContentControl(new YeniDosyaEkle { DataContext = new YeniDosyaEkleViewModel(true, item) });
+                    var result = await DialogHost.Show(view, "RootDialog");
+
+                    if (Convert.ToBoolean(result))
+                    {
+                        try
+                        {
+                            using (var db = new DbConnection())
+                            {
+                                DosyaDava guncellenecekGirdi = db.DosyaDava_tt.FirstOrDefault(s => s.ID == item.ID);
+
+                                YeniDosyaEkle YDEInstance = view.Icerik.Content as YeniDosyaEkle;
+
+                                guncellenecekGirdi.DosyaTuru = YDEInstance.DosyaTuru.Text;
+                                guncellenecekGirdi.DosyaNo = YDEInstance.DosyaNo.Text;
+                                guncellenecekGirdi.ArsivNo = YDEInstance.ArsivNo.Text;
+                                guncellenecekGirdi.Davaci = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)YDEInstance.IsimSoyisim_1.Tag);
+                                guncellenecekGirdi.DavaciVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)YDEInstance.IsimSoyisim_1_Vekil.Tag);
+                                guncellenecekGirdi.Davali = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)YDEInstance.IsimSoyisim_2.Tag);
+                                guncellenecekGirdi.DavaliVekil = db.MuvekkilSahis_tt.FirstOrDefault(s => s.ID == (int?)YDEInstance.IsimSoyisim_2_Vekil.Tag);
+                                guncellenecekGirdi.Durum = YDEInstance.Durum.Text;
+                                guncellenecekGirdi.DavaTuru = YDEInstance.DavaTuru.Text;
+                                guncellenecekGirdi.Mahkeme = YDEInstance.Mahkeme.Text;
+                                guncellenecekGirdi.DavaKonusu = YDEInstance.Konusu.Text;
+
+                                db.SaveChanges();
+                            }
+                            MessageBox.Show("Güncelleme başarılı.");
+                            Arama();
+                        }
+                        catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+                    }
+                }
+            }
         }
     }
 }

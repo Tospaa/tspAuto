@@ -18,31 +18,31 @@ namespace tspAuto.Domain
             try
             {
                 using (var db = new DbConnection())
-            {
-                db.Database.ExecuteSqlCommand("DELETE FROM dbo.Hatirlaticilar");
-
-                foreach (TriggerKey triggerKey in allTriggerKeys)
                 {
-                    ITrigger triggerdetails = hatirlaticiInstance.scheduler.GetTrigger(triggerKey).GetAwaiter().GetResult();
-                    IJobDetail jobDetail = hatirlaticiInstance.scheduler.GetJobDetail(triggerdetails.JobKey).GetAwaiter().GetResult();
+                    db.Database.ExecuteSqlCommand("DELETE FROM dbo.Hatirlaticilar");
 
-                    if ((triggerdetails as Quartz.Impl.Triggers.SimpleTriggerImpl).TimesTriggered == 0)
+                    foreach (TriggerKey triggerKey in allTriggerKeys)
                     {
-                        var hatirlaticimodel = new HatirlaticiModel
-                        {
-                            Baslik = jobDetail.JobDataMap.GetString("Baslik"),
-                            Aciklama = jobDetail.JobDataMap.GetString("Aciklama"),
-                            Zaman = triggerdetails.StartTimeUtc.DateTime,
-                            HatirlaticiTablo = jobDetail.JobDataMap.GetString("Tablo"),
-                            HatirlaticiID = jobDetail.JobDataMap.GetInt("ID")
-                        };
+                        ITrigger triggerdetails = hatirlaticiInstance.scheduler.GetTrigger(triggerKey).GetAwaiter().GetResult();
+                        IJobDetail jobDetail = hatirlaticiInstance.scheduler.GetJobDetail(triggerdetails.JobKey).GetAwaiter().GetResult();
 
-                        db.Hatirlaticilar.Add(hatirlaticimodel);
+                        if ((triggerdetails as Quartz.Impl.Triggers.SimpleTriggerImpl).TimesTriggered == 0)
+                        {
+                            var hatirlaticimodel = new HatirlaticiModel
+                            {
+                                Baslik = jobDetail.JobDataMap.GetString("Baslik"),
+                                Aciklama = jobDetail.JobDataMap.GetString("Aciklama"),
+                                Zaman = triggerdetails.StartTimeUtc.DateTime,
+                                HatirlaticiTablo = jobDetail.JobDataMap.GetString("Tablo"),
+                                HatirlaticiID = jobDetail.JobDataMap.GetInt("ID")
+                            };
+
+                            db.Hatirlaticilar.Add(hatirlaticimodel);
+                        }
                     }
+                    db.SaveChanges();
+                    basarili = true;
                 }
-                db.SaveChanges();
-                basarili = true;
-            }
             }
             catch (Exception ex) { MessageBox.Show(ex.ToString()); }
 
@@ -60,33 +60,29 @@ namespace tspAuto.Domain
                 {
                     if (window.GetType() == typeof(MainWindow))
                     {
-                        foreach (PanelItem item in (window as MainWindow).SolPanelListBox.Items)
+                        try
                         {
-                            if (item.Content.GetType() == typeof(Hatirlatici))
-                            {
-                                try
-                                {
-                                    // define the job and tie it to our Gorev class
-                                    IJobDetail job = JobBuilder.Create<Gorev>()
-                                        .UsingJobData("Baslik", baslik)
-                                        .UsingJobData("Aciklama", aciklama)
-                                        .UsingJobData("Tablo", tablo)
-                                        .UsingJobData("ID", id)
-                                        .Build();
+                            Hatirlatici hatirlaticiInstance = (Hatirlatici)((window as MainWindow).DataContext as MainWindowViewModel).PanelItems[5].Content;
 
-                                    // trigger builder creates simple trigger by default, actually an ITrigger is returned
-                                    ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
-                                        .StartAt(tarih)
-                                        .Build();
+                            // define the job and tie it to our Gorev class
+                            IJobDetail job = JobBuilder.Create<Gorev>()
+                                .UsingJobData("Baslik", baslik)
+                                .UsingJobData("Aciklama", aciklama)
+                                .UsingJobData("Tablo", tablo)
+                                .UsingJobData("ID", id)
+                                .Build();
 
-                                    // Tell quartz to schedule the job using our trigger
-                                    (item.Content as Hatirlatici).scheduler.ScheduleJob(job, trigger);
-                                    HatirlaticilarVeritabanina(item.Content as Hatirlatici);
-                                    return true;
-                                }
-                                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
-                            }
+                            // trigger builder creates simple trigger by default, actually an ITrigger is returned
+                            ISimpleTrigger trigger = (ISimpleTrigger)TriggerBuilder.Create()
+                                .StartAt(tarih)
+                                .Build();
+
+                            // Tell quartz to schedule the job using our trigger
+                            hatirlaticiInstance.scheduler.ScheduleJob(job, trigger);
+                            HatirlaticilarVeritabanina(hatirlaticiInstance);
+                            return true;
                         }
+                        catch (Exception ex) { MessageBox.Show(ex.ToString()); }
                     }
                 }
             }

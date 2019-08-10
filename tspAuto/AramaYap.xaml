@@ -47,9 +47,9 @@
                         </MenuItem>
                     </Menu>
                 </Grid>
-                <Expander HorizontalAlignment="Stretch"
+                <Expander Name="MuvekkilSahisExpander"
+                          HorizontalAlignment="Stretch"
                           IsExpanded="False"
-                          Name="MuvekkilSahisExpander"
                           Header="Şahıs Müvekkiller (0)">
                     <DataGrid Name="MuvekkilSahis_tt"
                               EnableRowVirtualization="False"
@@ -59,10 +59,10 @@
                               CanUserSortColumns="True"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
-                              IsReadOnly="{Binding ElementName=GuncellemeModuAcik, Path=IsChecked, Converter={StaticResource BooleanInverseConverter}}"
+                              IsReadOnly="True"
                               AutoGenerateColumns="False"
                               IsSynchronizedWithCurrentItem="True"
-                              CellEditEnding="DataGrid_CellEditEnding">
+                              MouseDoubleClick="MuvekkilSahis_tt_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Müvekkil No"
                                                 Binding="{Binding MuvekkilNo}" />
@@ -178,9 +178,9 @@
                         Height="1"
                         HorizontalAlignment="Stretch"
                         SnapsToDevicePixels="True" />
-                <Expander HorizontalAlignment="Stretch"
+                <Expander Name="MuvekkilSirketExpander"
+                          HorizontalAlignment="Stretch"
                           IsExpanded="False"
-                          Name="MuvekkilSirketExpander"
                           Header="Şirket Müvekkiller (0)">
                     <DataGrid Name="MuvekkilSirket_tt"
                               EnableRowVirtualization="False"
@@ -190,10 +190,10 @@
                               CanUserSortColumns="True"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
-                              IsReadOnly="{Binding ElementName=GuncellemeModuAcik, Path=IsChecked, Converter={StaticResource BooleanInverseConverter}}"
+                              IsReadOnly="True"
                               AutoGenerateColumns="False"
                               IsSynchronizedWithCurrentItem="True"
-                              CellEditEnding="DataGrid_CellEditEnding">
+                              MouseDoubleClick="MuvekkilSirket_tt_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Müvekkil No"
                                                 Binding="{Binding MuvekkilNo}" />
@@ -258,10 +258,6 @@
                                               IsCheckable="True"
                                               IsChecked="True"
                                               Tag="NoterIsmi" />
-                                    <MenuItem Header="Vekalet Tarihi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="VekaletTarihi" />
                                     <MenuItem Header="Vek. Yevmiye No"
                                               IsCheckable="True"
                                               IsChecked="True"
@@ -331,9 +327,9 @@
                         Height="1"
                         HorizontalAlignment="Stretch"
                         SnapsToDevicePixels="True" />
-                <Expander HorizontalAlignment="Stretch"
+                <Expander Name="DosyaIcraExpander"
+                          HorizontalAlignment="Stretch"
                           IsExpanded="False"
-                          Name="DosyaIcraExpander"
                           Header="İcra Dosyaları (0)">
                     <DataGrid Name="DosyaIcra_tt"
                               EnableRowVirtualization="False"
@@ -343,10 +339,10 @@
                               CanUserSortColumns="True"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
-                              IsReadOnly="{Binding ElementName=GuncellemeModuAcik, Path=IsChecked, Converter={StaticResource BooleanInverseConverter}}"
+                              IsReadOnly="True"
                               AutoGenerateColumns="False"
                               IsSynchronizedWithCurrentItem="True"
-                              CellEditEnding="DataGrid_CellEditEnding">
+                              MouseDoubleClick="DosyaIcra_tt_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Dosya Türü"
                                                 Binding="{Binding DosyaTuru}" />
@@ -357,15 +353,13 @@
                             <DataGridTextColumn Header="Alacaklı"
                                                 Binding="{Binding Alacakli}" />
                             <DataGridTextColumn Header="Borçlu"
-                                                Binding="{Binding Borclu.IsimSoyisim}" />
+                                                Binding="{Binding Borclu}" />
                             <DataGridTextColumn Header="Alacaklı Vekili"
                                                 Binding="{Binding AlacakliVekil}" />
                             <DataGridTextColumn Header="Borçlu Vekili"
                                                 Binding="{Binding BorcluVekil}" />
                             <DataGridTextColumn Header="İcra Dairesi"
                                                 Binding="{Binding IcraDairesi}" />
-                            <DataGridTextColumn Header="Yapılan İşlemler"
-                                                Binding="{Binding Log}" />
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>
@@ -422,9 +416,9 @@
                         Height="1"
                         HorizontalAlignment="Stretch"
                         SnapsToDevicePixels="True" />
-                <Expander HorizontalAlignment="Stretch"
+                <Expander Name="DosyaDavaExpander"
+                          HorizontalAlignment="Stretch"
                           IsExpanded="False"
-                          Name="DosyaDavaExpander"
                           Header="Dava Dosyaları (0)">
                     <DataGrid Name="DosyaDava_tt"
                               EnableRowVirtualization="False"
@@ -434,10 +428,10 @@
                               CanUserSortColumns="True"
                               CanUserAddRows="False"
                               CanUserDeleteRows="False"
-                              IsReadOnly="{Binding ElementName=GuncellemeModuAcik, Path=IsChecked, Converter={StaticResource BooleanInverseConverter}}"
+                              IsReadOnly="True"
                               AutoGenerateColumns="False"
                               IsSynchronizedWithCurrentItem="True"
-                              CellEditEnding="DataGrid_CellEditEnding">
+                              MouseDoubleClick="DosyaDava_tt_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Dosya Türü"
                                                 Binding="{Binding DosyaTuru}" />
@@ -448,7 +442,7 @@
                             <DataGridTextColumn Header="Davacı"
                                                 Binding="{Binding Davaci}" />
                             <DataGridTextColumn Header="Davalı"
-                                                Binding="{Binding Davali.IsimSoyisim}" />
+                                                Binding="{Binding Davali}" />
                             <DataGridTextColumn Header="Davacı Vekili"
                                                 Binding="{Binding DavaciVekil}" />
                             <DataGridTextColumn Header="Davalı Vekili"
@@ -461,8 +455,6 @@
                                                 Binding="{Binding Mahkeme}" />
                             <DataGridTextColumn Header="Dava Konusu"
                                                 Binding="{Binding DavaKonusu}" />
-                            <DataGridTextColumn Header="Yapılan İşlemler"
-                                                Binding="{Binding Log}" />
                         </DataGrid.Columns>
                         <DataGrid.ContextMenu>
                             <ContextMenu>

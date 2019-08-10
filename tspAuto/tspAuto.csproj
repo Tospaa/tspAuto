@@ -126,6 +126,9 @@
     </Compile>
     <Compile Include="Domain\AramaYapDialogViewModel.cs" />
     <Compile Include="Domain\Converters.cs" />
+    <Compile Include="Domain\DialogWithContentControl.xaml.cs">
+      <DependentUpon>DialogWithContentControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Domain\DosyaIslemEkleDialog.xaml.cs">
       <DependentUpon>DosyaIslemEkleDialog.xaml</DependentUpon>
     </Compile>
@@ -151,6 +154,7 @@
     <Compile Include="Model\HatirlaticiModel.cs" />
     <Compile Include="Model\IData_tspAuto.cs" />
     <Compile Include="Model\IDosya_tspAuto.cs" />
+    <Compile Include="Model\IMuvekkil_tspAuto.cs" />
     <Compile Include="Model\IsModel.cs" />
     <Compile Include="Model\Kullanici.cs" />
     <Compile Include="Model\MuvekkilSahis.cs" />
@@ -183,6 +187,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Domain\BenimDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Domain\DialogWithContentControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

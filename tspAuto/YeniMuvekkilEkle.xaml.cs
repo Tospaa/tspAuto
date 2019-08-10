@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using tspAuto.Domain;
@@ -18,6 +19,45 @@ namespace tspAuto
             VekTarihi.Language = System.Windows.Markup.XmlLanguage.GetLanguage("tr-TR");
 
             VekTarihi.SelectedDate = DateTime.Now;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext != null && (DataContext as YeniMuvekkilEkleViewModel).GuncellemeModu && (DataContext as YeniMuvekkilEkleViewModel).Item != null)
+            {
+                IMuvekkil_tspAuto item = (DataContext as YeniMuvekkilEkleViewModel).Item;
+
+                MuvekkilNo.Text = item.MuvekkilNo;
+                NoterIsmi.Text = item.NoterIsmi;
+                VekTarihi.SelectedDate = item.VekaletTarihi;
+                VekYevNo.Text = item.VekYevmiyeNo;
+                AhzuKabza.SelectedIndex = Convert.ToInt32(item.AhzuKabza);
+                Feragat.SelectedIndex = Convert.ToInt32(item.Feragat);
+                Ibra.SelectedIndex = Convert.ToInt32(item.Ibra);
+                Sulh.SelectedIndex = Convert.ToInt32(item.Sulh);
+                Banka.Text = item.Banka;
+                Sube.Text = item.Sube;
+                IBANno.Text = item.IBANno;
+                Adres.Text = item.Adres;
+                Telefon.Text = item.Telefon;
+                Fax.Text = item.Fax;
+                Email.Text = item.Email;
+                if (item.GetType() == typeof(MuvekkilSahis))
+                {
+                    MuvekkilTuru.SelectedIndex = 0;
+                    IsimSoyisim.Text = (item as MuvekkilSahis).IsimSoyisim;
+                    TCKimlik.Text = (item as MuvekkilSahis).TCKimlik;
+                }
+                else if (item.GetType() == typeof(MuvekkilSirket))
+                {
+                    MuvekkilTuru.SelectedIndex = 1;
+                    SirketTuru.Text = (item as MuvekkilSirket).SirketTuru;
+                    SirketUnvan.Text = (item as MuvekkilSirket).SirketUnvan;
+                    VergiDairesi.Text = (item as MuvekkilSirket).VergiDairesi;
+                    VergiNo.Text = (item as MuvekkilSirket).VergiNo;
+                    MersisNo.Text = (item as MuvekkilSirket).MersisNo;
+                }
+            }
         }
 
         private void Sahis_Kaydet_Button_Click(object sender, RoutedEventArgs e)
@@ -131,7 +171,7 @@ namespace tspAuto
             MersisNo.Text = string.Empty;
         }
 
-        private DateTime VekTarihi_Duzeltme()
+        public DateTime VekTarihi_Duzeltme()
         {
             try
             {
@@ -141,6 +181,43 @@ namespace tspAuto
             {
                 return DateTime.Now;
             }
+        }
+    }
+
+    public class YeniMuvekkilEkleViewModel : INotifyPropertyChanged
+    {
+        private bool _guncellemeModu;
+        private IMuvekkil_tspAuto _item;
+
+        public YeniMuvekkilEkleViewModel(bool guncellemeModu, IMuvekkil_tspAuto item = null)
+        {
+            _guncellemeModu = guncellemeModu;
+            _item = item;
+        }
+
+        public bool GuncellemeModu
+        {
+            get { return _guncellemeModu; }
+            set
+            {
+                this.MutateVerbose(ref _guncellemeModu, value, RaisePropertyChanged());
+            }
+        }
+
+        public IMuvekkil_tspAuto Item
+        {
+            get { return _item; }
+            set
+            {
+                this.MutateVerbose(ref _item, value, RaisePropertyChanged());
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private Action<PropertyChangedEventArgs> RaisePropertyChanged()
+        {
+            return args => PropertyChanged?.Invoke(this, args);
         }
     }
 }

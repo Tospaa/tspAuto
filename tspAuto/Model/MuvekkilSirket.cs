@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace tspAuto.Model
 {
     [Table("MuvekkilSirket_tt")]
-    public class MuvekkilSirket : IData_tspAuto
+    public class MuvekkilSirket : IData_tspAuto, IMuvekkil_tspAuto
     {
         [Key]
         public int ID { get; set; }
