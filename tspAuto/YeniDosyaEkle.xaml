@@ -43,10 +43,12 @@
             <StackPanel Margin="16">
                 <ContentControl Name="Icerik"
                                 MaxWidth="450"
-                                MaxHeight="500" />
+                                MaxHeight="500"
+                                MouseDoubleClick="Dialog_Icerik_MouseDoubleClick"/>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right">
                     <Button Style="{StaticResource MaterialDesignFlatButton}"
+                            Name="DialogTamamButon"
                             IsDefault="True"
                             Margin="0 8 8 0"
                             Command="materialDesign:DialogHost.CloseDialogCommand">

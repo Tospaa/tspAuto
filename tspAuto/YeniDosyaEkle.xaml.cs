@@ -234,6 +234,11 @@ namespace tspAuto
             Konusu.Text = string.Empty;
             IcraDairesi.Text = string.Empty;
         }
+
+        private void Dialog_Icerik_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DialogTamamButon.Command.Execute(true);
+        }
     }
 
     public enum WorkModes { Filling_1, Filling_1_Vekil, Filling_2, Filling_2_Vekil }
