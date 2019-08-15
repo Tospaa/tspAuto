@@ -90,9 +90,9 @@ namespace tspAuto
                             {
                                 using (var db = new DbConnection())
                                 {
-                                    int isEntryID = db.Isler.LastOrDefault().ID;
+                                    int isEntryID = db.Isler.OrderByDescending(s => s.ID).FirstOrDefault().ID;
 
-                                    MethodPack.YeniHatirlatici(Baslik.Text, Aciklama.Text, tarih, "dbo.Isler", isEntryID);
+                                    MethodPack.YeniHatirlatici(Baslik.Text, Aciklama.Text, tarih, ((Kullanici)IlgiliKisiComBox.SelectedItem).ID, isEntryID, "dbo.Isler");
                                 }
                             }
                             catch (Exception ex) { MessageBox.Show("Hatırlatıcı eklemede bir hata oluştu.\n\n" + ex.ToString()); }

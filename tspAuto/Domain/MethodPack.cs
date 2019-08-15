@@ -52,7 +52,7 @@ namespace tspAuto.Domain
             }
         }
 
-        public static bool YeniHatirlatici(string baslik, string aciklama, DateTime tarih, string tablo = "Tablosuz", int id = 0)
+        public static bool YeniHatirlatici(string baslik, string aciklama, DateTime tarih, int ilgiliID, int tabloID = 0, string tablo = "Tablosuz")
         {
             if (baslik != string.Empty && aciklama != string.Empty && tarih != null)
             {
@@ -68,8 +68,9 @@ namespace tspAuto.Domain
                             IJobDetail job = JobBuilder.Create<Gorev>()
                                 .UsingJobData("Baslik", baslik)
                                 .UsingJobData("Aciklama", aciklama)
+                                .UsingJobData("IlgiliID", ilgiliID)
+                                .UsingJobData("TabloID", tabloID)
                                 .UsingJobData("Tablo", tablo)
-                                .UsingJobData("ID", id)
                                 .Build();
 
                             // trigger builder creates simple trigger by default, actually an ITrigger is returned

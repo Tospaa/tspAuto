@@ -175,9 +175,17 @@ namespace tspAuto
 
                 DateTime tarih = new DateTime(trh.Year, trh.Month, trh.Day, st.Hour, st.Minute, 0, DateTimeKind.Local);
 
-                bool basarili = MethodPack.YeniHatirlatici(Baslik.Text, Aciklama.Text, tarih);
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window.GetType() == typeof(MainWindow) && window.DataContext != null)
+                    {
+                        MainWindowViewModel MainWindowDataContext = (window as MainWindow).DataContext as MainWindowViewModel;
 
-                if (basarili) { Yenile_Button_Click(sender, eventArgs); }
+                        bool basarili = MethodPack.YeniHatirlatici(Baslik.Text, Aciklama.Text, tarih, MainWindowDataContext.MevcutKullanici.ID);
+
+                        if (basarili) { Yenile_Button_Click(sender, eventArgs); }
+                    }
+                }
             }
             catch (Exception ex)
             {

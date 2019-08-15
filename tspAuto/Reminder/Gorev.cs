@@ -1,10 +1,12 @@
 ﻿using Quartz;
 using System;
+using System.Linq;
 using System.Net.Mail;
 using System.Security;
 using System.Threading.Tasks;
 using System.Windows;
 using tspAuto.Domain;
+using tspAuto.Model;
 
 namespace tspAuto.Reminder
 {
@@ -15,33 +17,18 @@ namespace tspAuto.Reminder
             JobDataMap dataMap = context.JobDetail.JobDataMap;
             string baslik = dataMap.GetString("Baslik");
             string aciklama = dataMap.GetString("Aciklama");
+            int ilgiliID = dataMap.GetInt("IlgiliID");
+            int tabloID = dataMap.GetInt("TabloID");
             string tablo = dataMap.GetString("Tablo");
-            int id = dataMap.GetInt("ID");
 
-            #region E-Mail
-            SecureString securePwd = new SecureString();
-            try
+            Kullanici ilgiliKisi;
+            IsModel ilgiliIs;
+
+            using (var db = new DbConnection())
             {
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-
-                mail.From = new MailAddress("tspauto7935@gmail.com");
-                mail.To.Add("musaecer@gmail.com");
-                mail.Subject = baslik;
-                mail.Body = aciklama;
-
-                SmtpServer.Port = 587;
-                SmtpServer.Credentials = new System.Net.NetworkCredential("tspauto7935", securePwd);
-                SmtpServer.EnableSsl = true;
-
-                //SmtpServer.Send(mail);
+                ilgiliKisi = db.Kullanicilar.FirstOrDefault(s => s.ID == ilgiliID);
+                ilgiliIs = db.Isler.FirstOrDefault(s => s.ID == tabloID);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            finally { securePwd.Dispose(); }
-            #endregion
 
             try
             {
@@ -49,19 +36,45 @@ namespace tspAuto.Reminder
                 {
                     foreach (Window window in Application.Current.Windows)
                     {
-                        if (window.GetType() == typeof(MainWindow))
+                        if (window.GetType() == typeof(MainWindow) && window.DataContext != null && ilgiliKisi != null)
                         {
-                            (window as MainWindow).notifyIcon.BalloonTipTitle = baslik;
-                            (window as MainWindow).notifyIcon.BalloonTipText = aciklama;
-                            (window as MainWindow).notifyIcon.ShowBalloonTip(5000);
+                            MainWindowViewModel MainWindowDataContext = (window as MainWindow).DataContext as MainWindowViewModel;
 
-                            foreach (PanelItem item in (window as MainWindow).SolPanelListBox.Items)
+                            if (ilgiliKisi.ID == MainWindowDataContext.MevcutKullanici.ID)
                             {
-                                if (item.Content.GetType() == typeof(Hatirlatici))
-                                {
-                                    MethodPack.HatirlaticilarVeritabanina(item.Content as Hatirlatici);
-                                }
+                                (window as MainWindow).notifyIcon.BalloonTipTitle = baslik;
+                                (window as MainWindow).notifyIcon.BalloonTipText = aciklama;
+                                (window as MainWindow).notifyIcon.ShowBalloonTip(5000);
                             }
+
+                            #region E-Mail
+                            SecureString securePwd = new SecureString();
+                            try
+                            {
+                                MailMessage mail = new MailMessage();
+                                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                                mail.From = new MailAddress("tspauto7935@gmail.com");
+                                mail.To.Add(ilgiliKisi.Email);
+                                mail.Subject = baslik;
+                                mail.Body = aciklama;
+
+                                SmtpServer.Port = 587;
+                                SmtpServer.Credentials = new System.Net.NetworkCredential("tspauto7935", securePwd);
+                                SmtpServer.EnableSsl = true;
+
+                                SmtpServer.Send(mail);
+                            }
+                            catch (Exception ex)
+                            {
+                                //MessageBox.Show(ex.ToString());
+                                // TODO: Buradaki hatayı sadece log'a yazdır, messagebox'la program bloklanmasın.
+                            }
+                            finally { securePwd.Dispose(); }
+                            #endregion
+
+                            Hatirlatici hatirlaticiInstance = (Hatirlatici)MainWindowDataContext.PanelItems[5].Content;
+                            MethodPack.HatirlaticilarVeritabanina(hatirlaticiInstance);
                         }
                     }
                 });
