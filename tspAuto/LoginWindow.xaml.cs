@@ -95,17 +95,23 @@ namespace tspAuto
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            using (var db = new DbConnection())
+            try
             {
-                if (db.Kullanicilar.ToList().Count <= 1)
+                using (var db = new DbConnection())
                 {
-                    MessageBox.Show("Programı ilk defa açıyorsunuz. Bir kullanıcı eklemeniz gerekiyor.");
-                    Window window = new AddNewUserWindow();
-                    window.Show();
+                    if (db.Kullanicilar.ToList().Count <= 1)
+                    {
+                        MessageBox.Show("Programı ilk defa açıyorsunuz. Bir kullanıcı eklemeniz gerekiyor.");
+                        Window window = new AddNewUserWindow();
+                        window.Show();
+                    }
+                    else
+                    {
+                        KullaniciAdiKutusu.Focus();
+                    }
                 }
             }
-
-            KullaniciAdiKutusu.Focus();
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
         }
     }
 }

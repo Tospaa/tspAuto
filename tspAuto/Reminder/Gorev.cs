@@ -59,6 +59,8 @@ namespace tspAuto.Reminder
                                 mail.Subject = baslik;
                                 mail.Body = aciklama;
 
+                                // Burada şifre yazılacak.
+
                                 SmtpServer.Port = 587;
                                 SmtpServer.Credentials = new System.Net.NetworkCredential("tspauto7935", securePwd);
                                 SmtpServer.EnableSsl = true;

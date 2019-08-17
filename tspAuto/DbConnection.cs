@@ -6,7 +6,7 @@ namespace tspAuto
 {
     public class DbConnection : DbContext
     {
-        public DbConnection() : base("tspAutoDb")
+        public DbConnection() : base("name=tspAutoDbConnectionString")
         {
             Database.SetInitializer(new MyDbConnectionInitializer());
         }
