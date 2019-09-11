@@ -149,12 +149,15 @@
                               Grid.Row="5"
                               Name="IlgiliKisiComBox"
                               materialDesign:HintAssist.Hint="İlgili Kişi" />
-                    <Button Grid.Column="2"
-                            Grid.Row="6"
-                            HorizontalAlignment="Stretch"
-                            Click="DosyaSecButon_Click"
-                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                            Style="{StaticResource MaterialDesignFlatButton}">DOSYA SEÇİNİZ</Button>
+                    <StackPanel Grid.Column="2"
+                                Grid.Row="6">
+                        <Button HorizontalAlignment="Stretch"
+                                Click="DosyaSecButon_Click"
+                                Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                                Style="{StaticResource MaterialDesignFlatButton}">DOSYA SEÇİNİZ</Button>
+                        <TextBlock Name="SeciliDosyaNoEtiket"
+                                   Visibility="Collapsed">Seçili Dosya No:</TextBlock>
+                    </StackPanel>
                     <CheckBox Grid.Column="2"
                               Grid.Row="7"
                               IsChecked="True"

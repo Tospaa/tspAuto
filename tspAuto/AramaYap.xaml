@@ -11,520 +11,531 @@
     <UserControl.Resources>
         <domain:BooleanInverseConverter x:Key="BooleanInverseConverter" />
     </UserControl.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Auto"
-                  HorizontalScrollBarVisibility="Disabled">
-        <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}">
-            <StackPanel Orientation="Vertical">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="50" />
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:PackIcon HorizontalAlignment="Center"
-                                             VerticalAlignment="Center"
-                                             Kind="Magnify"
-                                             Opacity=".56" />
-                    <TextBox Name="AramaKutusu"
-                             FontSize="25"
-                             Grid.Column="1"
-                             Margin="8 0 8 0"
-                             materialDesign:HintAssist.Hint="Arama yap"
-                             materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-                             TextChanged="AramaKutusu_TextChanged" />
-                    <Menu Grid.Column="2"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Center">
-                        <MenuItem>
-                            <MenuItem.Icon>
-                                <materialDesign:PackIcon Kind="Settings" />
-                            </MenuItem.Icon>
-                            <MenuItem Header="Güncelleme Modu"
-                                      Name="GuncellemeModuAcik"
-                                      IsCheckable="True"
-                                      IsChecked="False"
-                                      ToolTip="Bu seçeneği aktif ederek veritabanınızda güncellemeler yapabilirsiniz" />
-                        </MenuItem>
-                    </Menu>
-                </Grid>
-                <Expander Name="MuvekkilSahisExpander"
-                          HorizontalAlignment="Stretch"
-                          IsExpanded="False"
-                          Header="Şahıs Müvekkiller (0)">
-                    <DataGrid Name="MuvekkilSahis_tt"
-                              EnableRowVirtualization="False"
-                              CanUserReorderColumns="True"
-                              CanUserResizeColumns="True"
-                              CanUserResizeRows="True"
-                              CanUserSortColumns="True"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="False"
-                              IsSynchronizedWithCurrentItem="True"
-                              MouseDoubleClick="MuvekkilSahis_tt_MouseDoubleClick">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Müvekkil No"
-                                                Binding="{Binding MuvekkilNo}" />
-                            <DataGridTextColumn Header="Müvekkil Türü"
-                                                Binding="{Binding MuvekkilTuru}" />
-                            <DataGridTextColumn Header="İsim Soyisim"
-                                                Binding="{Binding IsimSoyisim}" />
-                            <DataGridTextColumn Header="TC Kimlik No"
-                                                Binding="{Binding TCKimlik}" />
-                            <DataGridTextColumn Header="Noter İsmi"
-                                                Binding="{Binding NoterIsmi}" />
-                            <DataGridTextColumn Header="Vekalet Tarihi"
-                                                Binding="{Binding VekaletTarihi, StringFormat=\{0:dd/MM/yyyy\}}" />
-                            <DataGridTextColumn Header="Vek. Yevmiye No"
-                                                Binding="{Binding VekYevmiyeNo}" />
-                            <DataGridCheckBoxColumn Header="Ahzu Kabza"
-                                                    Binding="{Binding AhzuKabza}"
-                                                    ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
-                            <DataGridCheckBoxColumn Header="Feragat"
-                                                    Binding="{Binding Feragat}"
-                                                    ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
-                            <DataGridCheckBoxColumn Header="İbra"
-                                                    Binding="{Binding Ibra}"
-                                                    ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
-                            <DataGridCheckBoxColumn Header="Sulh"
-                                                    Binding="{Binding Sulh}"
-                                                    ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
-                            <DataGridTextColumn Header="Banka"
-                                                Binding="{Binding Banka}" />
-                            <DataGridTextColumn Header="Şube"
-                                                Binding="{Binding Sube}" />
-                            <DataGridTextColumn Header="IBAN No"
-                                                Binding="{Binding IBANno}" />
-                            <DataGridTextColumn Header="Adres"
-                                                Binding="{Binding Adres}" />
-                            <DataGridTextColumn Header="Telefon"
-                                                Binding="{Binding Telefon}" />
-                            <DataGridTextColumn Header="Fax"
-                                                Binding="{Binding Fax}" />
-                            <DataGridTextColumn Header="E-Mail"
-                                                Binding="{Binding Email}" />
-                        </DataGrid.Columns>
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Şunlarda ara..."
-                                          Name="MuvekkilSahisContextMenu">
-                                    <MenuItem Header="Müvekkil No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="MuvekkilNo" />
-                                    <MenuItem Header="Müvekkil Türü"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="MuvekkilTuru" />
-                                    <MenuItem Header="Noter İsmi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="NoterIsmi" />
-                                    <MenuItem Header="Vek. Yevmiye No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="VekYevmiyeNo" />
-                                    <MenuItem Header="Banka"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Banka" />
-                                    <MenuItem Header="Şube"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Sube" />
-                                    <MenuItem Header="IBAN No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="IBANno" />
-                                    <MenuItem Header="İsim Soyisim"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="IsimSoyisim" />
-                                    <MenuItem Header="TC Kimlik No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="TCKimlik" />
-                                    <MenuItem Header="Adres"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Adres" />
-                                    <MenuItem Header="Telefon"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Telefon" />
-                                    <MenuItem Header="Fax"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Fax" />
-                                    <MenuItem Header="E-Mail"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Email" />
+    <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="50" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <materialDesign:PackIcon HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Kind="Magnify"
+                                     Opacity=".56" />
+            <TextBox Name="AramaKutusu"
+                     FontSize="25"
+                     Grid.Column="1"
+                     Margin="8 0 8 0"
+                     materialDesign:HintAssist.Hint="Arama yap"
+                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                     TextChanged="AramaKutusu_TextChanged" />
+            <Menu Grid.Column="2"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center">
+                <MenuItem>
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="Settings" />
+                    </MenuItem.Icon>
+                    <MenuItem Header="Güncelleme Modu"
+                              Name="GuncellemeModuAcik"
+                              IsCheckable="True"
+                              IsChecked="False"
+                              ToolTip="Bu seçeneği aktif ederek veritabanınızda güncellemeler yapabilirsiniz" />
+                </MenuItem>
+            </Menu>
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Grid.ColumnSpan="3"
+                          Grid.Row="1"
+                          PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <StackPanel Orientation="Vertical">
+                    <Expander Name="MuvekkilSahisExpander"
+                              HorizontalAlignment="Stretch"
+                              IsExpanded="False"
+                              Margin="5"
+                              Header="Şahıs Müvekkiller (0)">
+                        <DataGrid Name="MuvekkilSahis_tt"
+                                  EnableRowVirtualization="False"
+                                  CanUserReorderColumns="True"
+                                  CanUserResizeColumns="True"
+                                  CanUserResizeRows="True"
+                                  CanUserSortColumns="True"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True"
+                                  AutoGenerateColumns="False"
+                                  IsSynchronizedWithCurrentItem="True"
+                                  MouseDoubleClick="MuvekkilSahis_tt_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Müvekkil No"
+                                                    Binding="{Binding MuvekkilNo}" />
+                                <DataGridTextColumn Header="Müvekkil Türü"
+                                                    Binding="{Binding MuvekkilTuru}" />
+                                <DataGridTextColumn Header="İsim Soyisim"
+                                                    Binding="{Binding IsimSoyisim}" />
+                                <DataGridTextColumn Header="TC Kimlik No"
+                                                    Binding="{Binding TCKimlik}" />
+                                <DataGridTextColumn Header="Noter İsmi"
+                                                    Binding="{Binding NoterIsmi}" />
+                                <DataGridTextColumn Header="Vekalet Tarihi"
+                                                    Binding="{Binding VekaletTarihi, StringFormat=\{0:dd/MM/yyyy\}}" />
+                                <DataGridTextColumn Header="Vek. Yevmiye No"
+                                                    Binding="{Binding VekYevmiyeNo}" />
+                                <DataGridCheckBoxColumn Header="Ahzu Kabza"
+                                                        Binding="{Binding AhzuKabza}"
+                                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
+                                <DataGridCheckBoxColumn Header="Feragat"
+                                                        Binding="{Binding Feragat}"
+                                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
+                                <DataGridCheckBoxColumn Header="İbra"
+                                                        Binding="{Binding Ibra}"
+                                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
+                                <DataGridCheckBoxColumn Header="Sulh"
+                                                        Binding="{Binding Sulh}"
+                                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
+                                <DataGridTextColumn Header="Banka"
+                                                    Binding="{Binding Banka}" />
+                                <DataGridTextColumn Header="Şube"
+                                                    Binding="{Binding Sube}" />
+                                <DataGridTextColumn Header="IBAN No"
+                                                    Binding="{Binding IBANno}" />
+                                <DataGridTextColumn Header="Adres"
+                                                    Binding="{Binding Adres}" />
+                                <DataGridTextColumn Header="Telefon"
+                                                    Binding="{Binding Telefon}" />
+                                <DataGridTextColumn Header="Fax"
+                                                    Binding="{Binding Fax}" />
+                                <DataGridTextColumn Header="E-Mail"
+                                                    Binding="{Binding Email}" />
+                            </DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Şunlarda ara..."
+                                              Name="MuvekkilSahisContextMenu">
+                                        <MenuItem Header="Müvekkil No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="MuvekkilNo" />
+                                        <MenuItem Header="Müvekkil Türü"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="MuvekkilTuru" />
+                                        <MenuItem Header="Noter İsmi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="NoterIsmi" />
+                                        <MenuItem Header="Vek. Yevmiye No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="VekYevmiyeNo" />
+                                        <MenuItem Header="Banka"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Banka" />
+                                        <MenuItem Header="Şube"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Sube" />
+                                        <MenuItem Header="IBAN No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="IBANno" />
+                                        <MenuItem Header="İsim Soyisim"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="IsimSoyisim" />
+                                        <MenuItem Header="TC Kimlik No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="TCKimlik" />
+                                        <MenuItem Header="Adres"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Adres" />
+                                        <MenuItem Header="Telefon"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Telefon" />
+                                        <MenuItem Header="Fax"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Fax" />
+                                        <MenuItem Header="E-Mail"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Email" />
+                                        <Separator />
+                                        <MenuItem Header="Tümünü seç"
+                                                  Click="ContextMenu_TumunuSec_Click" />
+                                        <MenuItem Header="Seçimleri kaldır"
+                                                  Click="ContextMenu_SecimleriKaldir_Click" />
+                                    </MenuItem>
                                     <Separator />
-                                    <MenuItem Header="Tümünü seç"
-                                              Click="ContextMenu_TumunuSec_Click" />
-                                    <MenuItem Header="Seçimleri kaldır"
-                                              Click="ContextMenu_SecimleriKaldir_Click" />
-                                </MenuItem>
-                                <Separator />
-                                <MenuItem Header="Sil"
-                                          Click="DataGrid_ContextMenu_SilButtonClick" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                    </DataGrid>
-                </Expander>
-                <Border Background="{DynamicResource MaterialDesignDivider}"
-                        Height="1"
-                        HorizontalAlignment="Stretch"
-                        SnapsToDevicePixels="True" />
-                <Expander Name="MuvekkilSirketExpander"
-                          HorizontalAlignment="Stretch"
-                          IsExpanded="False"
-                          Header="Şirket Müvekkiller (0)">
-                    <DataGrid Name="MuvekkilSirket_tt"
-                              EnableRowVirtualization="False"
-                              CanUserReorderColumns="True"
-                              CanUserResizeColumns="True"
-                              CanUserResizeRows="True"
-                              CanUserSortColumns="True"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="False"
-                              IsSynchronizedWithCurrentItem="True"
-                              MouseDoubleClick="MuvekkilSirket_tt_MouseDoubleClick">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Müvekkil No"
-                                                Binding="{Binding MuvekkilNo}" />
-                            <DataGridTextColumn Header="Müvekkil Türü"
-                                                Binding="{Binding MuvekkilTuru}" />
-                            <DataGridTextColumn Header="Noter İsmi"
-                                                Binding="{Binding NoterIsmi}" />
-                            <DataGridTextColumn Header="Vekalet Tarihi"
-                                                Binding="{Binding VekaletTarihi, StringFormat=\{0:dd/MM/yyyy\}}" />
-                            <DataGridTextColumn Header="Vek. Yevmiye No"
-                                                Binding="{Binding VekYevmiyeNo}" />
-                            <DataGridCheckBoxColumn Header="Ahzu Kabza"
-                                                    Binding="{Binding AhzuKabza}"
-                                                    ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
-                            <DataGridCheckBoxColumn Header="Feragat"
-                                                    Binding="{Binding Feragat}"
-                                                    ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
-                            <DataGridCheckBoxColumn Header="İbra"
-                                                    Binding="{Binding Ibra}"
-                                                    ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
-                            <DataGridCheckBoxColumn Header="Sulh"
-                                                    Binding="{Binding Sulh}"
-                                                    ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
-                            <DataGridTextColumn Header="Banka"
-                                                Binding="{Binding Banka}" />
-                            <DataGridTextColumn Header="Şube"
-                                                Binding="{Binding Sube}" />
-                            <DataGridTextColumn Header="IBAN No"
-                                                Binding="{Binding IBANno}" />
-                            <DataGridTextColumn Header="Şirket Türü"
-                                                Binding="{Binding SirketTuru}" />
-                            <DataGridTextColumn Header="Şirket Unvan"
-                                                Binding="{Binding SirketUnvan}" />
-                            <DataGridTextColumn Header="Vergi Dairesi"
-                                                Binding="{Binding VergiDairesi}" />
-                            <DataGridTextColumn Header="Vergi Numarası"
-                                                Binding="{Binding VergiNo}" />
-                            <DataGridTextColumn Header="Mersis Numarası"
-                                                Binding="{Binding MersisNo}" />
-                            <DataGridTextColumn Header="Adres"
-                                                Binding="{Binding Adres}" />
-                            <DataGridTextColumn Header="Telefon"
-                                                Binding="{Binding Telefon}" />
-                            <DataGridTextColumn Header="Fax"
-                                                Binding="{Binding Fax}" />
-                            <DataGridTextColumn Header="E-Mail"
-                                                Binding="{Binding Email}" />
-                        </DataGrid.Columns>
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Şunlarda ara..."
-                                          Name="MuvekkilSirketContextMenu">
-                                    <MenuItem Header="Müvekkil No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="MuvekkilNo" />
-                                    <MenuItem Header="Müvekkil Türü"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="MuvekkilTuru" />
-                                    <MenuItem Header="Noter İsmi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="NoterIsmi" />
-                                    <MenuItem Header="Vek. Yevmiye No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="VekYevmiyeNo" />
-                                    <MenuItem Header="Banka"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Banka" />
-                                    <MenuItem Header="Şube"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Sube" />
-                                    <MenuItem Header="IBAN No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="IBANno" />
-                                    <MenuItem Header="Şirket Türü"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="SirketTuru" />
-                                    <MenuItem Header="Şirket Unvan"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="SirketUnvan" />
-                                    <MenuItem Header="Vergi Dairesi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="VergiDairesi" />
-                                    <MenuItem Header="Vergi Numarası"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="VergiNo" />
-                                    <MenuItem Header="Mersis Numarası"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="MersisNo" />
-                                    <MenuItem Header="Adres"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Adres" />
-                                    <MenuItem Header="Telefon"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Telefon" />
-                                    <MenuItem Header="Fax"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Fax" />
-                                    <MenuItem Header="E-Mail"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Email" />
+                                    <MenuItem Header="Sil"
+                                              Click="DataGrid_ContextMenu_SilButtonClick" />
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </Expander>
+                    <Border Background="{DynamicResource MaterialDesignDivider}"
+                            Height="1"
+                            HorizontalAlignment="Stretch"
+                            SnapsToDevicePixels="True" />
+                    <Expander Name="MuvekkilSirketExpander"
+                              HorizontalAlignment="Stretch"
+                              IsExpanded="False"
+                              Margin="5"
+                              Header="Şirket Müvekkiller (0)">
+                        <DataGrid Name="MuvekkilSirket_tt"
+                                  EnableRowVirtualization="False"
+                                  CanUserReorderColumns="True"
+                                  CanUserResizeColumns="True"
+                                  CanUserResizeRows="True"
+                                  CanUserSortColumns="True"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True"
+                                  AutoGenerateColumns="False"
+                                  IsSynchronizedWithCurrentItem="True"
+                                  MouseDoubleClick="MuvekkilSirket_tt_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Müvekkil No"
+                                                    Binding="{Binding MuvekkilNo}" />
+                                <DataGridTextColumn Header="Müvekkil Türü"
+                                                    Binding="{Binding MuvekkilTuru}" />
+                                <DataGridTextColumn Header="Noter İsmi"
+                                                    Binding="{Binding NoterIsmi}" />
+                                <DataGridTextColumn Header="Vekalet Tarihi"
+                                                    Binding="{Binding VekaletTarihi, StringFormat=\{0:dd/MM/yyyy\}}" />
+                                <DataGridTextColumn Header="Vek. Yevmiye No"
+                                                    Binding="{Binding VekYevmiyeNo}" />
+                                <DataGridCheckBoxColumn Header="Ahzu Kabza"
+                                                        Binding="{Binding AhzuKabza}"
+                                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
+                                <DataGridCheckBoxColumn Header="Feragat"
+                                                        Binding="{Binding Feragat}"
+                                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
+                                <DataGridCheckBoxColumn Header="İbra"
+                                                        Binding="{Binding Ibra}"
+                                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
+                                <DataGridCheckBoxColumn Header="Sulh"
+                                                        Binding="{Binding Sulh}"
+                                                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" />
+                                <DataGridTextColumn Header="Banka"
+                                                    Binding="{Binding Banka}" />
+                                <DataGridTextColumn Header="Şube"
+                                                    Binding="{Binding Sube}" />
+                                <DataGridTextColumn Header="IBAN No"
+                                                    Binding="{Binding IBANno}" />
+                                <DataGridTextColumn Header="Şirket Türü"
+                                                    Binding="{Binding SirketTuru}" />
+                                <DataGridTextColumn Header="Şirket Unvan"
+                                                    Binding="{Binding SirketUnvan}" />
+                                <DataGridTextColumn Header="Vergi Dairesi"
+                                                    Binding="{Binding VergiDairesi}" />
+                                <DataGridTextColumn Header="Vergi Numarası"
+                                                    Binding="{Binding VergiNo}" />
+                                <DataGridTextColumn Header="Mersis Numarası"
+                                                    Binding="{Binding MersisNo}" />
+                                <DataGridTextColumn Header="Adres"
+                                                    Binding="{Binding Adres}" />
+                                <DataGridTextColumn Header="Telefon"
+                                                    Binding="{Binding Telefon}" />
+                                <DataGridTextColumn Header="Fax"
+                                                    Binding="{Binding Fax}" />
+                                <DataGridTextColumn Header="E-Mail"
+                                                    Binding="{Binding Email}" />
+                            </DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Şunlarda ara..."
+                                              Name="MuvekkilSirketContextMenu">
+                                        <MenuItem Header="Müvekkil No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="MuvekkilNo" />
+                                        <MenuItem Header="Müvekkil Türü"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="MuvekkilTuru" />
+                                        <MenuItem Header="Noter İsmi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="NoterIsmi" />
+                                        <MenuItem Header="Vek. Yevmiye No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="VekYevmiyeNo" />
+                                        <MenuItem Header="Banka"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Banka" />
+                                        <MenuItem Header="Şube"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Sube" />
+                                        <MenuItem Header="IBAN No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="IBANno" />
+                                        <MenuItem Header="Şirket Türü"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="SirketTuru" />
+                                        <MenuItem Header="Şirket Unvan"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="SirketUnvan" />
+                                        <MenuItem Header="Vergi Dairesi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="VergiDairesi" />
+                                        <MenuItem Header="Vergi Numarası"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="VergiNo" />
+                                        <MenuItem Header="Mersis Numarası"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="MersisNo" />
+                                        <MenuItem Header="Adres"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Adres" />
+                                        <MenuItem Header="Telefon"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Telefon" />
+                                        <MenuItem Header="Fax"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Fax" />
+                                        <MenuItem Header="E-Mail"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Email" />
+                                        <Separator />
+                                        <MenuItem Header="Tümünü seç"
+                                                  Click="ContextMenu_TumunuSec_Click" />
+                                        <MenuItem Header="Seçimleri kaldır"
+                                                  Click="ContextMenu_SecimleriKaldir_Click" />
+                                    </MenuItem>
                                     <Separator />
-                                    <MenuItem Header="Tümünü seç"
-                                              Click="ContextMenu_TumunuSec_Click" />
-                                    <MenuItem Header="Seçimleri kaldır"
-                                              Click="ContextMenu_SecimleriKaldir_Click" />
-                                </MenuItem>
-                                <Separator />
-                                <MenuItem Header="Sil"
-                                          Click="DataGrid_ContextMenu_SilButtonClick" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                    </DataGrid>
-                </Expander>
-                <Border Background="{DynamicResource MaterialDesignDivider}"
-                        Height="1"
-                        HorizontalAlignment="Stretch"
-                        SnapsToDevicePixels="True" />
-                <Expander Name="DosyaIcraExpander"
-                          HorizontalAlignment="Stretch"
-                          IsExpanded="False"
-                          Header="İcra Dosyaları (0)">
-                    <DataGrid Name="DosyaIcra_tt"
-                              EnableRowVirtualization="False"
-                              CanUserReorderColumns="True"
-                              CanUserResizeColumns="True"
-                              CanUserResizeRows="True"
-                              CanUserSortColumns="True"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="False"
-                              IsSynchronizedWithCurrentItem="True"
-                              MouseDoubleClick="DosyaIcra_tt_MouseDoubleClick">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Dosya Türü"
-                                                Binding="{Binding DosyaTuru}" />
-                            <DataGridTextColumn Header="Dosya No"
-                                                Binding="{Binding DosyaNo}" />
-                            <DataGridTextColumn Header="Arşiv No"
-                                                Binding="{Binding ArsivNo}" />
-                            <DataGridTextColumn Header="Alacaklı"
-                                                Binding="{Binding Alacakli}" />
-                            <DataGridTextColumn Header="Borçlu"
-                                                Binding="{Binding Borclu}" />
-                            <DataGridTextColumn Header="Alacaklı Vekili"
-                                                Binding="{Binding AlacakliVekil}" />
-                            <DataGridTextColumn Header="Borçlu Vekili"
-                                                Binding="{Binding BorcluVekil}" />
-                            <DataGridTextColumn Header="İcra Dairesi"
-                                                Binding="{Binding IcraDairesi}" />
-                        </DataGrid.Columns>
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="İşlem Ekle"
-                                          Click="DosyaIslemEkle_Click" />
-                                <MenuItem Header="Şunlarda ara..."
-                                          Name="DosyaIcraContextMenu">
-                                    <MenuItem Header="Dosya Türü"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="DosyaTuru" />
-                                    <MenuItem Header="Dosya No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="DosyaNo" />
-                                    <MenuItem Header="Arşiv No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="ArsivNo" />
-                                    <MenuItem Header="Alacaklı İsmi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Alacakli" />
-                                    <MenuItem Header="Borçlu İsmi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Borclu" />
-                                    <MenuItem Header="Alacaklı Vekili İsmi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="AlacakliVekil" />
-                                    <MenuItem Header="Borçlu Vekili İsmi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="BorcluVekil" />
-                                    <MenuItem Header="İcra Dairesi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="IcraDairesi" />
+                                    <MenuItem Header="Sil"
+                                              Click="DataGrid_ContextMenu_SilButtonClick" />
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </Expander>
+                    <Border Background="{DynamicResource MaterialDesignDivider}"
+                            Height="1"
+                            HorizontalAlignment="Stretch"
+                            SnapsToDevicePixels="True" />
+                    <Expander Name="DosyaIcraExpander"
+                              HorizontalAlignment="Stretch"
+                              IsExpanded="False"
+                              Margin="5"
+                              Header="İcra Dosyaları (0)">
+                        <DataGrid Name="DosyaIcra_tt"
+                                  EnableRowVirtualization="False"
+                                  CanUserReorderColumns="True"
+                                  CanUserResizeColumns="True"
+                                  CanUserResizeRows="True"
+                                  CanUserSortColumns="True"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True"
+                                  AutoGenerateColumns="False"
+                                  IsSynchronizedWithCurrentItem="True"
+                                  MouseDoubleClick="DosyaIcra_tt_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Dosya Türü"
+                                                    Binding="{Binding DosyaTuru}" />
+                                <DataGridTextColumn Header="Dosya No"
+                                                    Binding="{Binding DosyaNo}" />
+                                <DataGridTextColumn Header="Arşiv No"
+                                                    Binding="{Binding ArsivNo}" />
+                                <DataGridTextColumn Header="Alacaklı"
+                                                    Binding="{Binding Alacakli}" />
+                                <DataGridTextColumn Header="Borçlu"
+                                                    Binding="{Binding Borclu}" />
+                                <DataGridTextColumn Header="Alacaklı Vekili"
+                                                    Binding="{Binding AlacakliVekil}" />
+                                <DataGridTextColumn Header="Borçlu Vekili"
+                                                    Binding="{Binding BorcluVekil}" />
+                                <DataGridTextColumn Header="İcra Dairesi"
+                                                    Binding="{Binding IcraDairesi}" />
+                            </DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="İşlem Ekle"
+                                              Click="DosyaIslemEkle_Click" />
+                                    <MenuItem Header="Şunlarda ara..."
+                                              Name="DosyaIcraContextMenu">
+                                        <MenuItem Header="Dosya Türü"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="DosyaTuru" />
+                                        <MenuItem Header="Dosya No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="DosyaNo" />
+                                        <MenuItem Header="Arşiv No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="ArsivNo" />
+                                        <MenuItem Header="Alacaklı İsmi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Alacakli" />
+                                        <MenuItem Header="Borçlu İsmi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Borclu" />
+                                        <MenuItem Header="Alacaklı Vekili İsmi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="AlacakliVekil" />
+                                        <MenuItem Header="Borçlu Vekili İsmi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="BorcluVekil" />
+                                        <MenuItem Header="İcra Dairesi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="IcraDairesi" />
+                                        <Separator />
+                                        <MenuItem Header="Tümünü seç"
+                                                  Click="ContextMenu_TumunuSec_Click" />
+                                        <MenuItem Header="Seçimleri kaldır"
+                                                  Click="ContextMenu_SecimleriKaldir_Click" />
+                                    </MenuItem>
                                     <Separator />
-                                    <MenuItem Header="Tümünü seç"
-                                              Click="ContextMenu_TumunuSec_Click" />
-                                    <MenuItem Header="Seçimleri kaldır"
-                                              Click="ContextMenu_SecimleriKaldir_Click" />
-                                </MenuItem>
-                                <Separator />
-                                <MenuItem Header="Sil"
-                                          Click="DataGrid_ContextMenu_SilButtonClick" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                    </DataGrid>
-                </Expander>
-                <Border Background="{DynamicResource MaterialDesignDivider}"
-                        Height="1"
-                        HorizontalAlignment="Stretch"
-                        SnapsToDevicePixels="True" />
-                <Expander Name="DosyaDavaExpander"
-                          HorizontalAlignment="Stretch"
-                          IsExpanded="False"
-                          Header="Dava Dosyaları (0)">
-                    <DataGrid Name="DosyaDava_tt"
-                              EnableRowVirtualization="False"
-                              CanUserReorderColumns="True"
-                              CanUserResizeColumns="True"
-                              CanUserResizeRows="True"
-                              CanUserSortColumns="True"
-                              CanUserAddRows="False"
-                              CanUserDeleteRows="False"
-                              IsReadOnly="True"
-                              AutoGenerateColumns="False"
-                              IsSynchronizedWithCurrentItem="True"
-                              MouseDoubleClick="DosyaDava_tt_MouseDoubleClick">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Dosya Türü"
-                                                Binding="{Binding DosyaTuru}" />
-                            <DataGridTextColumn Header="Dosya No"
-                                                Binding="{Binding DosyaNo}" />
-                            <DataGridTextColumn Header="Arşiv No"
-                                                Binding="{Binding ArsivNo}" />
-                            <DataGridTextColumn Header="Davacı"
-                                                Binding="{Binding Davaci}" />
-                            <DataGridTextColumn Header="Davalı"
-                                                Binding="{Binding Davali}" />
-                            <DataGridTextColumn Header="Davacı Vekili"
-                                                Binding="{Binding DavaciVekil}" />
-                            <DataGridTextColumn Header="Davalı Vekili"
-                                                Binding="{Binding DavaliVekil}" />
-                            <DataGridTextColumn Header="Durum"
-                                                Binding="{Binding Durum}" />
-                            <DataGridTextColumn Header="Dava Türü"
-                                                Binding="{Binding DavaTuru}" />
-                            <DataGridTextColumn Header="Mahkeme"
-                                                Binding="{Binding Mahkeme}" />
-                            <DataGridTextColumn Header="Dava Konusu"
-                                                Binding="{Binding DavaKonusu}" />
-                        </DataGrid.Columns>
-                        <DataGrid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="İşlem Ekle"
-                                          Click="DosyaIslemEkle_Click" />
-                                <MenuItem Header="Şunlarda ara..."
-                                          Name="DosyaDavaContextMenu">
-                                    <MenuItem Header="Dosya Türü"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="DosyaTuru" />
-                                    <MenuItem Header="Dosya No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="DosyaNo" />
-                                    <MenuItem Header="Arşiv No"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="ArsivNo" />
-                                    <MenuItem Header="Davacı İsmi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Davaci" />
-                                    <MenuItem Header="Davalı İsmi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Davali" />
-                                    <MenuItem Header="Davacı Vekil İsmi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="DavaciVekil" />
-                                    <MenuItem Header="Davalı Vekil İsmi"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="DavaliVekil" />
-                                    <MenuItem Header="Dava Durumu"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Durum" />
-                                    <MenuItem Header="Dava Türü"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="DavaTuru" />
-                                    <MenuItem Header="Mahkeme"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="Mahkeme" />
-                                    <MenuItem Header="Dava Konusu"
-                                              IsCheckable="True"
-                                              IsChecked="True"
-                                              Tag="DavaKonusu" />
+                                    <MenuItem Header="Sil"
+                                              Click="DataGrid_ContextMenu_SilButtonClick" />
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </Expander>
+                    <Border Background="{DynamicResource MaterialDesignDivider}"
+                            Height="1"
+                            HorizontalAlignment="Stretch"
+                            SnapsToDevicePixels="True" />
+                    <Expander Name="DosyaDavaExpander"
+                              HorizontalAlignment="Stretch"
+                              IsExpanded="False"
+                              Margin="5"
+                              Header="Dava Dosyaları (0)">
+                        <DataGrid Name="DosyaDava_tt"
+                                  EnableRowVirtualization="False"
+                                  CanUserReorderColumns="True"
+                                  CanUserResizeColumns="True"
+                                  CanUserResizeRows="True"
+                                  CanUserSortColumns="True"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  IsReadOnly="True"
+                                  AutoGenerateColumns="False"
+                                  IsSynchronizedWithCurrentItem="True"
+                                  MouseDoubleClick="DosyaDava_tt_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Dosya Türü"
+                                                    Binding="{Binding DosyaTuru}" />
+                                <DataGridTextColumn Header="Dosya No"
+                                                    Binding="{Binding DosyaNo}" />
+                                <DataGridTextColumn Header="Arşiv No"
+                                                    Binding="{Binding ArsivNo}" />
+                                <DataGridTextColumn Header="Davacı"
+                                                    Binding="{Binding Davaci}" />
+                                <DataGridTextColumn Header="Davalı"
+                                                    Binding="{Binding Davali}" />
+                                <DataGridTextColumn Header="Davacı Vekili"
+                                                    Binding="{Binding DavaciVekil}" />
+                                <DataGridTextColumn Header="Davalı Vekili"
+                                                    Binding="{Binding DavaliVekil}" />
+                                <DataGridTextColumn Header="Durum"
+                                                    Binding="{Binding Durum}" />
+                                <DataGridTextColumn Header="Dava Türü"
+                                                    Binding="{Binding DavaTuru}" />
+                                <DataGridTextColumn Header="Mahkeme"
+                                                    Binding="{Binding Mahkeme}" />
+                                <DataGridTextColumn Header="Dava Konusu"
+                                                    Binding="{Binding DavaKonusu}" />
+                            </DataGrid.Columns>
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="İşlem Ekle"
+                                              Click="DosyaIslemEkle_Click" />
+                                    <MenuItem Header="Şunlarda ara..."
+                                              Name="DosyaDavaContextMenu">
+                                        <MenuItem Header="Dosya Türü"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="DosyaTuru" />
+                                        <MenuItem Header="Dosya No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="DosyaNo" />
+                                        <MenuItem Header="Arşiv No"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="ArsivNo" />
+                                        <MenuItem Header="Davacı İsmi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Davaci" />
+                                        <MenuItem Header="Davalı İsmi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Davali" />
+                                        <MenuItem Header="Davacı Vekil İsmi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="DavaciVekil" />
+                                        <MenuItem Header="Davalı Vekil İsmi"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="DavaliVekil" />
+                                        <MenuItem Header="Dava Durumu"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Durum" />
+                                        <MenuItem Header="Dava Türü"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="DavaTuru" />
+                                        <MenuItem Header="Mahkeme"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="Mahkeme" />
+                                        <MenuItem Header="Dava Konusu"
+                                                  IsCheckable="True"
+                                                  IsChecked="True"
+                                                  Tag="DavaKonusu" />
+                                        <Separator />
+                                        <MenuItem Header="Tümünü seç"
+                                                  Click="ContextMenu_TumunuSec_Click" />
+                                        <MenuItem Header="Seçimleri kaldır"
+                                                  Click="ContextMenu_SecimleriKaldir_Click" />
+                                    </MenuItem>
                                     <Separator />
-                                    <MenuItem Header="Tümünü seç"
-                                              Click="ContextMenu_TumunuSec_Click" />
-                                    <MenuItem Header="Seçimleri kaldır"
-                                              Click="ContextMenu_SecimleriKaldir_Click" />
-                                </MenuItem>
-                                <Separator />
-                                <MenuItem Header="Sil"
-                                          Click="DataGrid_ContextMenu_SilButtonClick" />
-                            </ContextMenu>
-                        </DataGrid.ContextMenu>
-                    </DataGrid>
-                </Expander>
-                <Border Background="{DynamicResource MaterialDesignDivider}"
-                        Height="1"
-                        HorizontalAlignment="Stretch"
-                        SnapsToDevicePixels="True" />
-            </StackPanel>
-        </materialDesign:Card>
-    </ScrollViewer>
+                                    <MenuItem Header="Sil"
+                                              Click="DataGrid_ContextMenu_SilButtonClick" />
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        </DataGrid>
+                    </Expander>
+                    <Border Background="{DynamicResource MaterialDesignDivider}"
+                            Height="1"
+                            HorizontalAlignment="Stretch"
+                            SnapsToDevicePixels="True" />
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </materialDesign:Card>
 </UserControl>
     

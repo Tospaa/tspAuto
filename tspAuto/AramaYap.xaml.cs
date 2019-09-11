@@ -459,5 +459,13 @@ namespace tspAuto
                 }
             }
         }
+
+        // from: https://stackoverflow.com/a/6693503
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scv = (ScrollViewer)sender;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
+        }
     }
 }

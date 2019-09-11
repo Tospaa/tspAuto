@@ -115,6 +115,7 @@ namespace tspAuto
             IsTuru.SelectedIndex = 0;
             TarihSec.SelectedDate = DateTime.Now;
             SaatSec.SelectedTime = DateTime.Now;
+            SeciliDosyaNoEtiket.Visibility = Visibility.Collapsed;
         }
 
         private void DosyaSecButon_Click(object sender, RoutedEventArgs e)
@@ -131,10 +132,16 @@ namespace tspAuto
             if ((Icerik.Content as AramaYap).DosyaIcra_tt.SelectedItem != null)
             {
                 yerelDosya = (Icerik.Content as AramaYap).DosyaIcra_tt.SelectedItem as DosyaIcra;
+
+                SeciliDosyaNoEtiket.Text = "Seçili Dosya No: " + yerelDosya.DosyaNo.ToString();
+                SeciliDosyaNoEtiket.Visibility = Visibility.Visible;
             }
             else if ((Icerik.Content as AramaYap).DosyaDava_tt.SelectedItem != null)
             {
                 yerelDosya = (Icerik.Content as AramaYap).DosyaDava_tt.SelectedItem as DosyaDava;
+
+                SeciliDosyaNoEtiket.Text = "Seçili Dosya No: " + yerelDosya.DosyaNo.ToString();
+                SeciliDosyaNoEtiket.Visibility = Visibility.Visible;
             }
         }
     }
